@@ -135,7 +135,7 @@ body {
     font-weight: 500;
     margin-bottom: 0.5rem;
 }
-
+table{border-collapse: none;}
 
 /* About */
 .about-section {

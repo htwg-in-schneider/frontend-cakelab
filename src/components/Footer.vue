@@ -3,16 +3,46 @@ import FooterLink from './FooterLink.vue';
 </script>
 
 <template>
-    <footer class="text-center py-4">
-        <p>&copy; 2025 Saitenweise. Alle Rechte vorbehalten.</p>
-        <nav>
-            <FooterLink text="Kontakt" label="Kontakt" href="/kontakt" />
-            <span aria-hidden="true" style="margin: 0 0.5rem">|</span>
-            <FooterLink text="Datenschutz" label="Datenschutz" href="/datenschutz" />
-            <span aria-hidden="true" style="margin: 0 0.5rem">|</span>
+  <footer class="text-center py-4">
+    <nav>
+      <table>
+        <tr>
+          <th>User info</th>
+          <th>Shop</th>
+          <th>Rechtliches</th>
+        </tr>
+
+        <tr>
+          <td>
+            <FooterLink text="Create an account" label="Registrierung" href="/registrierung" />
+          </td>
+
+          <td>
+            <FooterLink text="standard cake" label="standardCake" href="/standardCake" />
+          </td>
+
+          <td>
             <FooterLink text="Impressum" label="Impressum" href="/impressum" />
-        </nav>
-    </footer>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <FooterLink text="Login" label="Login" href="/login" />
+          </td>
+
+          <td>
+            <FooterLink text="customized cake" label="customizedCake" href="/customizedCake" />
+          </td>
+
+          <td>
+            <FooterLink text="Datenschutz" label="Datenschutz" href="/datenschutz" />
+          </td>
+        </tr>
+
+      </table>
+    </nav>
+  </footer>
 </template>
 
 <style scoped></style>
