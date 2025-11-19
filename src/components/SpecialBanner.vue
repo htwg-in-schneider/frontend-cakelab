@@ -7,7 +7,7 @@ const bannerStore = useBannerStore();
 defineProps({
     text: {
         type: String,
-        default: 'Viele Sonderangebote heute!',
+        default: 'Freier Versand für alle Bestellungen über 50€'
     }
 });
 </script>
