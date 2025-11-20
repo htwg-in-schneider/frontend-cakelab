@@ -5,42 +5,28 @@ import FooterLink from './FooterLink.vue';
 <template>
   <footer class="text-center py-4">
     <nav>
-      <table>
-        <tr>
-          <th>User info</th>
-          <th>Shop</th>
-          <th>Rechtliches</th>
-        </tr>
-
-        <tr>
-          <td>
-            <FooterLink text="Create an account" label="Registrierung" href="/registrierung" />
-          </td>
-
-          <td>
-            <FooterLink text="standard cake" label="standardCake" href="/standardCake" />
-          </td>
-
-          <td>
-            <FooterLink text="Impressum" label="Impressum" href="/impressum" />
-          </td>
-        </tr>
-
-        <tr>
-          <td>
-            <FooterLink text="Login" label="Login" href="/login" />
-          </td>
-
-          <td>
-            <FooterLink text="customized cake" label="customizedCake" href="/customizedCake" />
-          </td>
-
-          <td>
-            <FooterLink text="Datenschutz" label="Datenschutz" href="/datenschutz" />
-          </td>
-        </tr>
-
-      </table>
+       <div class="container">
+            <div class="row">
+                <div class="col-md-3 mb-4">
+                    <img src="./assets/images/Logo.png" alt="CakeLab Logo" class="logo-img mb-2">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <h6>User info</h6>
+                    <a href="#">Create an account</a><br>
+                    <a href="#">Login</a>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <h6>Shop</h6>
+                    <a href="#">Standard cake</a><br>
+                    <a href="#">Customize cake</a>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <h6>Rechtliches</h6>
+                    <a href="#">Impressum</a><br>
+                    <a href="#">Datenschutz</a>
+                </div>
+            </div>
+        </div>
     </nav>
   </footer>
 </template>

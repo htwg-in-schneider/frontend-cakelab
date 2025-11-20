@@ -30,6 +30,6 @@ const props = defineProps({
 }
 
 .footer-link:hover {
-  color: #ff6600;
+  color: #454545;
 }
 </style>

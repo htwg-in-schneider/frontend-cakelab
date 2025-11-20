@@ -21,7 +21,7 @@ defineProps({
 
 <style scoped>
 #specialbanner {
-    background-color: #ff6600;
-    color: white;
+    background-color: #D9D9D9;
+    color: black;
 }
 </style>
