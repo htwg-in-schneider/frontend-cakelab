@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import ProductCatalog from '@/views/ProductCatalog.vue';
-import ProductDetail from '@/views/ProductDetail.vue';
-
+import ProductCatalog from '../views/ProductCatalog.vue';
+import ProductDetail from '../views/ProductDetail.vue';
 const routes = [
   { path: '/', component: ProductCatalog },
   {

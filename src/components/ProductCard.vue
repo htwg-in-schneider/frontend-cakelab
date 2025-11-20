@@ -1,5 +1,5 @@
 <script setup>
-import Button from './Button.vue';
+import NavButton from './NavButton.vue';
 
 defineProps({
   product: {
@@ -18,12 +18,13 @@ defineProps({
       <h5 class="card-title">{{ product.name }}</h5>
       <p class="fw-bold">{{ product.preis }} €</p>
 
-      <Button
+      <NavButton
         variant="dark"
         class="mt-auto"
+        :to="`/product/${product.id}`"
       >
-        Details
-      </Button>
+        Zum Produkt
+      </NavButton>
     </div>
   </div>
 </template>

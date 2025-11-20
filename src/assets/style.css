@@ -18,6 +18,38 @@ body {
 
 }
 
+.btn {
+  display: inline-block;
+  border-radius: 30px;
+  padding: 0.5rem 1.5rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: .3s;
+  text-align: center;
+  text-decoration: none; 
+}
+
+.btn-accent {
+  background-color: var(--rose);
+  color: black;
+  font-size: larger;
+}
+
+.btn-accent:hover {
+  background-color: #a68291;
+}
+
+.btn-dark {
+  background-color: var(--black);
+  color: var(--white);
+}
+
+.btn-dark:hover {
+  opacity: 0.8;
+}
+
+
+
 /* Responsive */
 @media (max-width: 768px) {
     .footer .row {

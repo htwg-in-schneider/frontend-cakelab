@@ -4,9 +4,9 @@
 <template>
    <nav class="navbar navbar-expand-lg fixed-top shadow-sm">
         <div class="container d-flex justify-content-between align-items-center">
-            <a class="navbar-brand" href="#">
+            <router-link class="navbar-brand" to="/">
                 <img src="/src/assets/Images/Logo_schmal.png" alt="CakeLab Logo" class="logo-img">
-            </a>
+            </router-link>
              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
