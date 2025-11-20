@@ -3,32 +3,52 @@ import FooterLink from './FooterLink.vue';
 </script>
 
 <template>
-  <footer class="text-center py-4">
+  <footer class="footer row align-items-center">
     <nav>
-       <div class="container">
-            <div class="row">
-                <div class="col-md-3 mb-4">
-                    <img src="./assets/images/Logo.png" alt="CakeLab Logo" class="logo-img mb-2">
-                </div>
-                <div class="col-md-3 mb-3">
-                    <h6>User info</h6>
-                    <a href="#">Create an account</a><br>
-                    <a href="#">Login</a>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <h6>Shop</h6>
-                    <a href="#">Standard cake</a><br>
-                    <a href="#">Customize cake</a>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <h6>Rechtliches</h6>
-                    <a href="#">Impressum</a><br>
-                    <a href="#">Datenschutz</a>
-                </div>
-            </div>
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-md-3 mb-4">
+            <img src="/src/assets/images/Logo.png" alt="CakeLab Logo" class="logo-img mb-2">
+          </div>
+          <div class="col-md-3 mb-3">
+            <h6>User info</h6>
+            <FooterLink text="Create an account" />
+            <FooterLink text="Login" />
+          </div>
+          <div class="col-md-3 mb-3">
+            <h6>Shop</h6>
+            <FooterLink text="Standard cake" />
+            <FooterLink text="Customize cake" />
+          </div>
+          <div class="col-md-3 mb-3">
+            <h6>Rechtliches</h6>
+            <FooterLink text="Impressum" />
+            <FooterLink text="Datenschutz" />
+          </div>
         </div>
+
+
+      </div>
+
     </nav>
   </footer>
 </template>
 
-<style scoped></style>
+<style scoped>
+.footer {
+  background-color: var(--zweitfarbe);
+  color: var(--black);
+}
+h6 {
+  font-weight: bold;
+}
+
+.footer a {
+  color: var(--black);
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+</style>

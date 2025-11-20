@@ -1,19 +1,8 @@
 <script setup>
 const props = defineProps({
-  text: {
-    type: String,
-    required: true
-  },
-  label: {
-    type: String,
-    required: false,
-    default: ''
-  },
-  href: {
-    type: String,
-    required: false,
-    default: '#'
-  },
+  text: { type: String, required: true },
+  label: { type: String, default: '' },
+  href: { type: String, default: '#' }
 });
 </script>
 
@@ -25,11 +14,13 @@ const props = defineProps({
 
 <style scoped>
 .footer-link {
+  display: block;
   color: #aaa;
   text-decoration: none;
+  margin-bottom: 4px;
 }
 
 .footer-link:hover {
-  color: #454545;
+  opacity: 0.8;
 }
 </style>
