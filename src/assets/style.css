@@ -14,7 +14,7 @@ body {
     font-family: 'Inter', sans-serif;
     color: var(--dark-gray);
     background-color: var(--white);
-    padding-top: 80px;
+    padding-top: 100px;
 
 }
 
@@ -48,6 +48,14 @@ body {
   opacity: 0.8;
 }
 
+.btn-banner {
+  background-color: var(--light-gray);
+  color: var(--zweitfarbe);
+}
+
+.btn-banner:hover {
+  opacity: 0.8;
+}
 
 
 /* Responsive */
