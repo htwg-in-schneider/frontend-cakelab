@@ -23,8 +23,8 @@ const product = computed(() =>
 
 // Related products (alle außer dieses)
 const related = computed(() =>
-  torten.filter((t) => t.id !== product.value.id)
-);
+  torten.filter((t) => t.id !== product.value.id).slice(0, 4)
+  );
 </script>
 
 <template>
@@ -46,7 +46,7 @@ const related = computed(() =>
      <div class="col-lg-6 d-flex flex-column justify-content-center">
         <h2 class="fw-bold">{{ product.name }}</h2>
         <p class="fw-bold fs-4">{{ product.preis }} €</p>
-        <p>{{ product.beschreibung }}</p>
+        <p class="desc">{{ product.beschreibung }}</p>
 
         <Button variant="accent" class="mt-3 mb-5">In den Warenkorb</Button>
       </div>

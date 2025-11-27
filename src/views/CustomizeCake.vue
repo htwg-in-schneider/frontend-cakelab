@@ -1,18 +1,9 @@
 <script setup>
 import Navbar from '@/components/Navbar.vue';
 import Footer from '@/components/Footer.vue';
-import ProductCard from '@/components/ProductCard.vue';
+
+// <- das ist deine Produktliste
 import { torten } from '@/data.js';
-import { ref } from 'vue';
-
-/* ----------------------------
-   REAKTIVE AUSWAHLEN
------------------------------ */
-const selectedBase = ref(null);
-const selectedSize = ref(null);
-
-// für Sizes:
-const sizes = ["Ø 18 cm", "Ø 22 cm", "Ø 26 cm", "Ø 31 cm"];
 </script>
 
 <template>
@@ -20,7 +11,6 @@ const sizes = ["Ø 18 cm", "Ø 22 cm", "Ø 26 cm", "Ø 31 cm"];
 
   <section class="container py-5 customize-section">
 
-    <!-- Titel -->
     <h2 class="fw-bold mb-2">Customize your cake</h2>
     <p class="text-muted mb-4">
       Wähle eine Basis sowie Schriftart, Farbe und Größe für deine individuelle Torte.
@@ -28,28 +18,28 @@ const sizes = ["Ø 18 cm", "Ø 22 cm", "Ø 26 cm", "Ø 31 cm"];
 
     <div class="row gx-5">
 
-      <!-- BASIS (links) -->
+      <!-- BASIS = STANDARD CAKES LADEN -->
       <div class="col-12 col-lg-6 mb-5">
         <h4 class="fw-bold mb-3">Wähle die Basis</h4>
 
         <div class="row g-4">
-          <div
+          <div 
             v-for="cake in torten"
             :key="cake.id"
             class="col-12 col-md-6"
           >
-            <div
-              class="selectable-card"
-              :class="{ selected: selectedBase === cake.id }"
-              @click="selectedBase = cake.id"
-            >
-              <ProductCard :product="cake" :isSelectable="true" />
+            <div class="base-card p-3">
+              <img :src="cake.bildUrl" class="base-image" :alt="cake.name" />
+
+              <h6 class="mt-2 fw-bold">{{ cake.name }}</h6>
+              <p class="text-muted small">{{ cake.beschreibung }}</p>
+              <p class="fw-bold">{{ cake.preis }} €</p>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- TEXT (mitte) -->
+      <!-- TEXT KONFIGURATION -->
       <div class="col-12 col-lg-3 mb-5">
         <h4 class="fw-bold mb-3">Wähle deinen Text</h4>
 
@@ -73,25 +63,18 @@ const sizes = ["Ø 18 cm", "Ø 22 cm", "Ø 26 cm", "Ø 31 cm"];
         </div>
       </div>
 
-      <!-- GRÖSSEN (rechts) -->
+      <!-- GRÖSSE -->
       <div class="col-12 col-lg-3 mb-5">
         <h4 class="fw-bold mb-3">Wähle die Größe</h4>
 
         <div class="size-grid">
-          <div
-            v-for="size in sizes"
-            :key="size"
-            class="size-item"
-            :class="{ selected: selectedSize === size }"
-            @click="selectedSize = size"
-          >
-            {{ size }}
-          </div>
+          <div class="size-item">Ø 18 cm</div>
+          <div class="size-item">Ø 22 cm</div>
+          <div class="size-item">Ø 26 cm</div>
+          <div class="size-item">Ø 31 cm</div>
         </div>
 
-        <button class="fertig-btn mt-4">
-          Fertig
-        </button>
+        <button class="fertig-btn mt-4">Fertig</button>
       </div>
 
     </div>
@@ -103,39 +86,34 @@ const sizes = ["Ø 18 cm", "Ø 22 cm", "Ø 26 cm", "Ø 31 cm"];
 
 <style scoped>
 .customize-section {
-  max-width: 1300px;
+  max-width: 1200px;
 }
 
-/* -----------------------------------
-   BASIS-KARTEN AUSWAHL
------------------------------------ */
-.selectable-card {
-  border-radius: 1rem;
-  transition: 0.2s;
+/* Base cards */
+.base-card {
+  background: #f7f2f5;
+  border-radius: 16px;
   cursor: pointer;
+  transition: 0.2s;
 }
-
-.selectable-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 0 0 3px #e8beda;
-}
-
-.selectable-card.selected {
-  box-shadow: 0 0 0 4px #b76ba3;
+.base-card:hover {
   transform: translateY(-5px);
 }
 
-/* -----------------------------------
-   TEXT KONFIG BOX
------------------------------------ */
+.base-image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+/* Textbox style */
 .config-box {
   background: #f0d7e2;
   border-radius: 12px;
 }
 
-/* -----------------------------------
-   GRÖSSEN AUSWAHL
------------------------------------ */
+/* Sizes */
 .size-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -149,24 +127,8 @@ const sizes = ["Ø 18 cm", "Ø 22 cm", "Ø 26 cm", "Ø 31 cm"];
   text-align: center;
   font-weight: 600;
   font-size: 18px;
-  transition: 0.2s;
-  cursor: pointer;
 }
 
-.size-item:hover {
-  background: #e8cadd;
-  transform: translateY(-3px);
-}
-
-.size-item.selected {
-  background: #b76ba3;
-  color: white;
-  transform: translateY(-3px);
-}
-
-/* -----------------------------------
-   FERTIG BUTTON
------------------------------------ */
 .fertig-btn {
   width: 100%;
   background: black;
@@ -177,4 +139,5 @@ const sizes = ["Ø 18 cm", "Ø 22 cm", "Ø 26 cm", "Ø 31 cm"];
   font-size: 18px;
   font-weight: 600;
 }
+
 </style>

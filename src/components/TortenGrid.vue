@@ -11,7 +11,7 @@ import { torten } from '../data.js';
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="text-center flex-grow-1">Unsere Bestseller</h2>
         <button class="edit-btn ms-3">
-  <img src="@/assets/Images/edit_Icon.png" alt="Edit" class="edit-icon" />
+ 
 </button>
       </div>
 
@@ -46,16 +46,5 @@ import { torten } from '../data.js';
   font-weight: 700;
 }
 
-/* EDIT ICON */
-.edit-btn {
-  background: transparent;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-}
 
-.edit-icon {
-  width: 60px;
-  height: 60px;
-}
 </style>
