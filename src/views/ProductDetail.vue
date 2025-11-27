@@ -57,7 +57,7 @@ const related = computed(() =>
     <!-- Related products -->
     <div class="related-box mt-5 p-4 text-center" >
 
-      <h4 class="mb-4 fw-bold">Related products</h4>
+      <h4 class="mb-4 fw-bold">Ähnliche Produkte</h4>
 
       <!-- Desktop Grid -->
       <div class="row g-4 d-none d-md-flex">

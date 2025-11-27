@@ -42,4 +42,5 @@ defineProps({
   object-fit: cover;   /* Sauberer Crop */
   border-radius: 12px 12px 0 0;
 }
+
 </style>

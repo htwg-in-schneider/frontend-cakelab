@@ -3,6 +3,7 @@
     --rose: #caa5bf;
     --zweitfarbe: #926c87;
     --light-gray: #E5E5E5;
+   
     --dark-gray: #333333;
     --medium-gray: #999999;
     --white: #FFFFFF;
@@ -56,7 +57,18 @@ body {
 .btn-banner:hover {
   opacity: 0.8;
 }
+a,
+a:visited {
+  color: inherit !important;
+  text-decoration: none !important;
+}
 
+a:hover,
+a:focus,
+a:active {
+  color: inherit !important;
+  text-decoration: none !important;
+}
 
 /* Responsive */
 @media (max-width: 768px) {
