@@ -57,18 +57,7 @@ body {
 .btn-banner:hover {
   opacity: 0.8;
 }
-a,
-a:visited {
-  color: inherit !important;
-  text-decoration: none !important;
-}
 
-a:hover,
-a:focus,
-a:active {
-  color: inherit !important;
-  text-decoration: none !important;
-}
 
 /* Responsive */
 @media (max-width: 768px) {
