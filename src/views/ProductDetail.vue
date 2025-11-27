@@ -23,7 +23,8 @@ const product = computed(() =>
 
 // Related products (alle außer dieses)
 const related = computed(() =>
-  torten.filter((t) => t.id !== product.value.id).slice(0, 4)
+  torten.filter((t) => t.id !== product.value.id)
+  .slice(0, 4)
   );
 </script>
 

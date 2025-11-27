@@ -1,180 +1,45 @@
 <script setup>
-import Navbar from '@/components/Navbar.vue';
-import Footer from '@/components/Footer.vue';
-import ProductCard from '@/components/ProductCard.vue';
-import { torten } from '@/data.js';
-import { ref } from 'vue';
+import NavButton from './NavButton.vue';
 
-/* ----------------------------
-   REAKTIVE AUSWAHLEN
------------------------------ */
-const selectedBase = ref(null);
-const selectedSize = ref(null);
+defineProps({
+  product: {
+    type: Object,
+    required: true
+  }
+});
 
-// für Sizes:
-const sizes = ["Ø 18 cm", "Ø 22 cm", "Ø 26 cm", "Ø 31 cm"];
 </script>
 
 <template>
-  <Navbar />
+  <div class="card h-100 shadow-sm">
+    <img :src="product.bildUrl" class="card-img-top" alt="" />
 
-  <section class="container py-5 customize-section">
+    <div class="card-body d-flex flex-column">
+      <h5 class="card-title">{{ product.name }}</h5>
+      <p class="fw-bold">{{ product.preis }} €</p>
 
-    <!-- Titel -->
-    <h2 class="fw-bold mb-2">Customize your cake</h2>
-    <p class="text-muted mb-4">
-      Wähle eine Basis sowie Schriftart, Farbe und Größe für deine individuelle Torte.
-    </p>
-
-    <div class="row gx-5">
-
-      <!-- BASIS (links) -->
-      <div class="col-12 col-lg-6 mb-5">
-        <h4 class="fw-bold mb-3">Wähle die Basis</h4>
-
-        <div class="row g-4">
-          <div
-            v-for="cake in torten"
-            :key="cake.id"
-            class="col-12 col-md-6"
-          >
-            <div
-              class="selectable-card"
-              :class="{ selected: selectedBase === cake.id }"
-              @click="selectedBase = cake.id"
-            >
-              <ProductCard :product="cake" :isSelectable="true" />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- TEXT (mitte) -->
-      <div class="col-12 col-lg-3 mb-5">
-        <h4 class="fw-bold mb-3">Wähle deinen Text</h4>
-
-        <div class="config-box p-4">
-          
-          <label class="fw-bold mb-1">Schriftart</label>
-          <select class="form-select mb-3">
-            <option>Handwriting</option>
-            <option>Elegant</option>
-          </select>
-
-          <label class="fw-bold mb-1">Schriftfarbe</label>
-          <select class="form-select mb-3">
-            <option>Gold</option>
-            <option>Schwarz</option>
-            <option>Weiß</option>
-          </select>
-
-          <label class="fw-bold mb-1">Text</label>
-          <input type="text" class="form-control" placeholder="Gib deinen Text ein" />
-        </div>
-      </div>
-
-      <!-- GRÖSSEN (rechts) -->
-      <div class="col-12 col-lg-3 mb-5">
-        <h4 class="fw-bold mb-3">Wähle die Größe</h4>
-
-        <div class="size-grid">
-          <div
-            v-for="size in sizes"
-            :key="size"
-            class="size-item"
-            :class="{ selected: selectedSize === size }"
-            @click="selectedSize = size"
-          >
-            {{ size }}
-          </div>
-        </div>
-
-        <button class="fertig-btn mt-4">
-          Fertig
-        </button>
-      </div>
-
+      <NavButton
+        variant="dark"
+        class="mt-auto"
+        :to="`/product/${product.id}`"
+      >
+        Zum Produkt
+      </NavButton>
     </div>
-
-  </section>
-
-  <Footer />
+  </div>
 </template>
 
 <style scoped>
-.customize-section {
-  max-width: 1300px;
-}
 
-/* -----------------------------------
-   BASIS-KARTEN AUSWAHL
------------------------------------ */
-.selectable-card {
-  border-radius: 1rem;
-  transition: 0.2s;
-  cursor: pointer;
-}
-
-.selectable-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 0 0 3px #e8beda;
-}
-
-.selectable-card.selected {
-  box-shadow: 0 0 0 4px #b76ba3;
-  transform: translateY(-5px);
-}
-
-/* -----------------------------------
-   TEXT KONFIG BOX
------------------------------------ */
-.config-box {
-  background: #f0d7e2;
-  border-radius: 12px;
-}
-
-/* -----------------------------------
-   GRÖSSEN AUSWAHL
------------------------------------ */
-.size-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-}
-
-.size-item {
-  background: #f0d7e2;
-  padding: 20px;
-  border-radius: 12px;
-  text-align: center;
-  font-weight: 600;
-  font-size: 18px;
-  transition: 0.2s;
-  cursor: pointer;
-}
-
-.size-item:hover {
-  background: #e8cadd;
-  transform: translateY(-3px);
-}
-
-.size-item.selected {
-  background: #b76ba3;
-  color: white;
-  transform: translateY(-3px);
-}
-
-/* -----------------------------------
-   FERTIG BUTTON
------------------------------------ */
-.fertig-btn {
+.card
+  {
+    border: none;
+    border-radius: 1rem;
+  }
+.card-img-top {
   width: 100%;
-  background: black;
-  color: white;
-  padding: 12px;
-  border: none;
-  border-radius: 12px;
-  font-size: 18px;
-  font-weight: 600;
+  aspect-ratio: 1 / 1; /* Quadratische Fläche */
+  object-fit: cover;   /* Sauberer Crop */
+  border-radius: 12px 12px 0 0;
 }
 </style>

@@ -2,7 +2,7 @@ export const torten = [
     {
         id: 1,
         name: 'Lotus-Karamell',
-        beschreibung: 'Kuchen mit Lotus und Karamell',
+        beschreibung: 'Ein zarter Biskuitboden kombiniert mit einer cremigen Lotus-Biscoff-Schicht.',
         preis: 39.90,
         bildUrl: '/src/assets/images/Kuchen_Lotus-caramell.png',
     },
@@ -23,7 +23,7 @@ export const torten = [
     {
         id: 4,
         name: 'Beeren-Sahne',
-        beschreibung: 'Locker gebackener Vanilleboden mit einer Mischung aus Waldbeeren und fluffiger Sahnecreme.',
+        beschreibung: 'Locker gebackener Vanilleboden mit einer Mischung aus Waldbeeren und Sahnecreme.',
         preis: 37.90,
         bildUrl: '/src/assets/images/Kuchen_beeren-Sahne.png',
     },
