@@ -3,10 +3,15 @@ import ProductDetail from '../views/ProductDetail.vue';
 import Home from '../views/Home.vue';
 import StandardCakes from '../views/StandardCakes.vue';
 import CustomizeCake from '@/views/CustomizeCake.vue';
+import Login from '@/views/Login.vue';
+import Registrieren from '@/views/Registrieren.vue';
 
 
 const routes = [
-  { path: '/', component: Home },
+  {
+    path: '/',
+    component: Home
+  },
 
   {
     path: '/standard-cakes',
@@ -24,6 +29,16 @@ const routes = [
     path: '/customize-cake',
     name: 'customizeCake',
     component: CustomizeCake
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login
+  },
+  {
+    path: '/registrieren',
+    name: 'registrieren',
+    component: Registrieren
   }
 ];
 

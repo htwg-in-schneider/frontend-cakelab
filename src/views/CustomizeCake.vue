@@ -2,6 +2,7 @@
 import Footer from '@/components/Footer.vue';
 import { torten } from '@/data.js';
 import { ref } from 'vue';
+import ZusatzInfo from '@/components/ZusatzInfo.vue';
 
 const selectedBase = ref(null);
 const selectedSize = ref(null);
@@ -14,6 +15,7 @@ const textInput = ref("");
 
 <template>
   <Navbar />
+  <ZusatzInfo/>
   <section class="container py-5 customize-section">
     <h1 class="fw-bold mb-2">Customize your cake</h1>
     <p class="text-muted mb-4"> Wähle eine Basis sowie Schriftart, Farbe und Größe für deine individuelle Torte. </p>

@@ -20,7 +20,11 @@
                     </li>
                     <li class="nav-item mx-3"><a class="nav-link" href="#">About us</a></li>
                     <li class="nav-item ms-3">
-                        <a href="#"><img src="/src/assets/images/account_image.png" alt="Account" class="icon-img"></a>
+                        <a href="#">
+                            <router-link to="/login">
+                                <img src="/src/assets/images/account_image.png" alt="Account" class="icon-img">
+                            </router-link>
+                        </a>
                     </li>
                     <li class="nav-item ms-3">
                         <a href="#"><img src="/src/assets/images/warenkorb_image.png" alt="Cart" class="icon-img"></a>

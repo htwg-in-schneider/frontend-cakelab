@@ -18,6 +18,9 @@ body {
     padding-top: 100px;
 
 }
+body.no-nav-padding {
+  padding-top: 0;
+}
 
 .btn {
   display: inline-block;
