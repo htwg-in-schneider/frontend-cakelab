@@ -20,12 +20,20 @@ const textInput = ref("");
     <h2 class="fw-bold mb-3">1. Wähle die Basis</h2>
     <div class="row g-4">
       <div v-for="cake in torten" :key="cake.id" class="col-12 col-sm-6 col-lg-4">
-        <div class="base-card p-3" :class="{ selected: selectedBase === cake.id }" @click="selectedBase = cake.id"> <img
-            :src="cake.bildUrl" class="base-image" :alt="cake.name" />
+        <div class="base-card p-3" :class="{ selected: selectedBase === cake.id }" @click="selectedBase = cake.id">
+
+          <img :src="cake.bildUrl" class="base-image" :alt="cake.name" />
+
           <h6 class="mt-2 fw-bold">{{ cake.name }}</h6>
+
           <p class="text-muted small">{{ cake.beschreibung }}</p>
-          <p class="fw-bold">{{ cake.preis }} €</p>
+
+          <div class="flex-grow"></div> <!-- SCHIEBT Preis nach unten -->
+
+          <p class="fw-bold mt-2">{{ cake.preis }} €</p>
+
         </div>
+
       </div>
     </div>
     <div class="row mt-5">
@@ -34,7 +42,7 @@ const textInput = ref("");
         <div class="config-box p-4">
           <label class="fw-bold mb-1">Schriftart</label>
           <v-select
-            :options="['Handwriting', 'Elegant Script', 'Rounded Sans', 'Playful Brush', 'Classic Serif', 'Modern Sans']"
+            :options="['Handschrift', 'Serif', 'Sans-Serif', 'Playful Brush', 'Elegant', 'Modern']"
             v-model="fontFamily" class="custom-vselect mb-3" placeholder="Schriftart wählen" />
           <label class="fw-bold mb-1">Schriftfarbe</label>
 
@@ -74,71 +82,79 @@ const textInput = ref("");
 .customize-section {
   max-width: 1200px;
 }
+
+
 .customize-section h2 {
-  padding-top: 40px;
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
 }
+
+/* Step-Boxen */
+.config-box {
+  background: var(--light-gray);
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+}
+
 /* Base cards */
 .base-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   background: var(--light-gray);
   border-radius: 16px;
   cursor: pointer;
+  padding: 18px;
   transition: 0.2s;
-  border: 3px solid transparent;
+  border: 2px solid transparent;
+}
+
+.flex-grow {
+  flex-grow: 1;
 }
 
 .base-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-6px);
   border-color: var(--rose);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
 }
 
 .base-card.selected {
   border-color: var(--zweitfarbe);
-  transform: translateY(-5px);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.10);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+  background-color:rgba(105, 16, 49, 0.15) ;
 }
 
 .base-image {
   width: 100%;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 1/1;
   border-radius: 12px;
   object-fit: cover;
 }
 
-/* Textbox style */
-.config-box {
-  background: var(--light-gray);
-  border-radius: 12px;
-}
-
-.char-counter {
-  font-size: 14px;
-  color: var(--medium-gray);
-  margin-top: 4px;
-  text-align: right;
-}
-
-/* Sizes */
+/* Size selection */
 .size-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+  gap: 18px;
 }
 
 .size-item {
   background: var(--light-gray);
   padding: 20px;
-  border-radius: 12px;
+  border-radius: 16px;
   text-align: center;
   font-weight: 600;
   font-size: 18px;
   cursor: pointer;
   transition: 0.25s ease;
-  border: 3px solid transparent;
+  border: 2px solid transparent;
 }
 
 .size-item:hover {
   transform: translateY(-4px);
-  opacity: 0.8;
+  border-color: var(--rose);
 }
 
 .size-item.selected {
@@ -150,58 +166,36 @@ const textInput = ref("");
 /* Fertig Button */
 .fertig-btn {
   width: 100%;
+  max-width: 380px;
+  margin: 40px auto 0;
+  display: block;
   background: var(--black);
   color: var(--white);
-  padding: 12px;
-  border: none;
-  border-radius: 12px;
+  padding: 14px;
+  border-radius: 14px;
   font-size: 18px;
   font-weight: 600;
+  transition: 0.25s ease;
 }
 
-
-/* Geschlossener Bereich */
-
-.custom-vselect :deep(.vs__dropdown-toggle) {
-  border-radius: 30px;
-  background: var(--white);
-  color: var(--dark-gray);
+.fertig-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
 }
 
-/* Hover */
-.custom-vselect :deep(.vs__dropdown-toggle:hover) {
-  border-color: var(--black);
+/* Character counter */
+.char-counter {
+  font-size: 14px;
+  color: var(--medium-gray);
+  margin-top: 4px;
+  text-align: right;
 }
 
-/* Dropdown Menü */
-.custom-vselect :deep(.vs__dropdown-menu) {
-  border-radius: 30px;
-  background: var(--white);
-  border: 1px solid var(--rose);
-}
-
-/* Optionen */
-.custom-vselect :deep(.vs__option) {
-  color: var(--dark-gray);
-}
-
-/* Hovered option */
-.custom-vselect :deep(.vs__dropdown-option--highlight) {
-  background: var(--zweitfarbe);
-  color: var(--white);
-  transition: 0.2s;
-}
-
-/* Clear X entfernen */
-.custom-vselect :deep(.vs__clear) {
-  display: none;
-}
-
-/* Inputs (Text-Eingabefeld) */
+/* Inputs */
 .form-control {
   border-radius: 30px;
   padding: 12px 16px;
-  border: 1px solid var(--zweitfarbe);
+  border: 2px solid var(--zweitfarbe);
   background-color: var(--white);
   color: var(--dark-gray);
   transition: 0.2s;
@@ -213,7 +207,50 @@ const textInput = ref("");
 
 .form-control:focus {
   border-color: var(--zweitfarbe);
-  box-shadow: 0 0 0 4px rgba(146, 108, 135, 0.25);
-  background-color: var(--white);
+  box-shadow: 0 0 0 4px rgba(146,108,135,0.25);
 }
+
+/* v-select styling */
+.custom-vselect {
+  width: 100%;
+}
+
+.custom-vselect :deep(.vs__dropdown-toggle) {
+  border-radius: 30px;
+  background: var(--white);
+  border: 2px solid var(--zweitfarbe);
+  padding: 8px 18px;
+}
+
+.custom-vselect :deep(.vs__dropdown-toggle:hover) {
+  border-color: var(--black);
+}
+
+.custom-vselect :deep(.vs__dropdown-menu) {
+  border-radius: 16px;
+  background: var(--white);
+  border: 1px solid var(--rose);
+}
+
+.custom-vselect :deep(.vs__option) {
+  color: var(--dark-gray);
+}
+
+.custom-vselect :deep(.vs__dropdown-option--highlight) {
+  background: var(--zweitfarbe);
+  color: var(--white);
+}
+/* Kein Eingabe-Cursor im geschlossenen Zustand UND im offenen: */
+.custom-vselect :deep(.vs__dropdown-toggle),
+.custom-vselect :deep(.vs__search){
+  cursor: pointer ;
+  caret-color: transparent;
+}
+
+
+/* Clear X entfernen */
+.custom-vselect :deep(.vs__clear) {
+  display: none;
+}
+
 </style>
