@@ -3,10 +3,10 @@
 </script>
 <template>
   <div class="custom-search">
-    <ph-magnifying-glass size="20" class="icon search-icon"></ph-magnifying-glass>
+      <img src="/src/assets/images/magnifying-glass.png" alt="Suchleiste" class="icon search-icon">
     <input type="text" placeholder="Search" />
     <button class="filter-btn">
-      <ph-sliders-horizontal size="20" class="icon"></ph-sliders-horizontal>
+        <img src="/src/assets/images/sliders-horizontal.png" alt="filter" class="icon"> 
     </button>
   </div>
 </template>
