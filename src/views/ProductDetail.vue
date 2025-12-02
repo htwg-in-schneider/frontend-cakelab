@@ -7,6 +7,7 @@ import NavButton from '@/components/NavButton.vue';
 import Button from '@/components/Button.vue';
 import ProductCard from '@/components/ProductCard.vue';
 
+
 import { computed } from 'vue';
 import { torten } from '@/data.js';
 
@@ -30,7 +31,6 @@ const related = computed(() =>
 
 <template>
   <Navbar />
-  
   <ZusatzInfo />
 
   <section class="container py-5">

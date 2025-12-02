@@ -4,11 +4,13 @@ import { torten } from "@/data";
 import Navbar from '@/components/Navbar.vue'
 import Footer from '@/components/Footer.vue'
 import ZusatzInfo from '@/components/ZusatzInfo.vue';
+import Searching  from '@/components/Searching.vue';
 </script>
 
 <template>
   <Navbar />
   <ZusatzInfo/>
+  <Searching/>
   <div class="container mt-5 pt-5 pb-5">
 
     <!-- HEADER + ICON ALS FLEX-BOX -->
