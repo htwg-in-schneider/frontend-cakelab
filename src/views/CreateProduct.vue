@@ -56,6 +56,22 @@ async function createProduct() {
         isSaving.value = false;
     }
 }
+
+
+const categories = ref([]);
+
+async function loadCategories() {
+    const res = await fetch("http://localhost:8081/api/category");
+    categories.value = await res.json();
+}
+
+function formatCategory(c) {
+    return c.charAt(0) + c.slice(1).toLowerCase();
+}
+
+onMounted(loadCategories);
+
+
 </script>
 
 <template>
@@ -93,12 +109,14 @@ async function createProduct() {
 
                 <div class="mb-3">
                     <label class="form-label">Kategorie</label>
+
                     <select v-model="product.category" class="form-select">
-                        <option value="KARAMELL">Karamell</option>
-                        <option value="SCHOKOLADIG">Schokoladig</option>
-                        <option value="FRUCHTIG">Fruchtig</option>
+                        <option v-for="category in categories" :key="category" :value="category">
+                            {{ formatCategory(category) }}
+                        </option>
                     </select>
                 </div>
+
 
                 <div class="button-row">
                     <Button type="submit" variant="dark" :disabled="isSaving">

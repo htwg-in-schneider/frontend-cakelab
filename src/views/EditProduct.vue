@@ -90,6 +90,21 @@ async function deleteProduct() {
 function goBack() {
   router.push(previousPage.value);
 }
+
+const categories = ref([]);
+
+async function loadCategories() {
+  const res = await fetch("http://localhost:8081/api/category");
+  categories.value = await res.json();
+}
+
+function formatCategory(c) {
+  return c.charAt(0) + c.slice(1).toLowerCase();
+}
+
+onMounted(loadCategories);
+
+
 </script>
 
 
@@ -110,11 +125,7 @@ function goBack() {
       <div v-else-if="product">
         <!-- Bildvorschau -->
         <div class="image-wrapper">
-          <img
-            :src="product.bildUrl"
-            alt="Produktbild"
-            class="product-image"
-          />
+          <img :src="product.bildUrl" alt="Produktbild" class="product-image" />
         </div>
 
         <form @submit.prevent="updateProduct" class="edit-form">
@@ -130,21 +141,12 @@ function goBack() {
 
           <div class="mb-3">
             <label class="form-label">Beschreibung</label>
-            <textarea
-              class="form-control"
-              rows="3"
-              v-model="product.beschreibung"
-            ></textarea>
+            <textarea class="form-control" rows="3" v-model="product.beschreibung"></textarea>
           </div>
 
           <div class="mb-3">
             <label class="form-label">Preis</label>
-            <input
-              type="number"
-              step="0.01"
-              class="form-control"
-              v-model="product.preis"
-            />
+            <input type="number" step="0.01" class="form-control" v-model="product.preis" />
           </div>
 
           <div class="mb-3">
@@ -152,26 +154,24 @@ function goBack() {
             <input class="form-control" v-model="product.bildUrl" />
           </div>
 
+
           <div class="mb-3">
             <label class="form-label">Kategorie</label>
-            <select class="form-select" v-model="product.category">
-              <option value="KARAMELL">Karamell</option>
-              <option value="SCHOKOLADIG">Schokoladig</option>
-              <option value="FRUCHTIG">Fruchtig</option>
+
+            <select v-model="product.category" class="form-select">
+              <option v-for="category in categories" :key="category" :value="category">
+                {{ formatCategory(category) }}
+              </option>
             </select>
           </div>
+
 
           <div class="button-row">
             <Button :disabled="isSaving" variant="dark" type="submit">
               {{ isSaving ? 'Speichere…' : 'Aktualisieren' }}
             </Button>
 
-            <Button
-              type="button"
-              variant="outline"
-              class="btn-delete"
-              @click="deleteProduct"
-            >
+            <Button type="button" variant="outline" class="btn-delete" @click="deleteProduct">
               Löschen
             </Button>
           </div>
