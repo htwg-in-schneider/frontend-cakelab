@@ -1,18 +1,18 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-const categoryUrl = 'http://localhost:8081/api/flavor';
+const categoryUrl = 'http://localhost:8081/api/category';
 
 const emit = defineEmits(['productUpdate']);
-const flavors = ref([]);
+const category = ref([]);
 
 const searchName = ref('');
-const selectedFlavour = ref('');
+const selectedCategory = ref('');
 onMounted(async () => {
-    await Promise.all([fetchFlavors()]);
+    await Promise.all([fetchCategory()]);
 });
 
-async function fetchFlavors() {
+async function fetchCategorys() {
     try {
         const response = await fetch(categoryUrl);
         if (response.ok) {
@@ -23,12 +23,12 @@ async function fetchFlavors() {
     }
 }
 function onSearch() {
-    emit('productUpdate', { name: searchName.value, category: selectedFlavor.value });
+    emit('productUpdate', { name: searchName.value, category: selectedCategory.value });
 }
 
 function onReset() {
     searchName.value = '';
-    selectedFlavor.value = '';
+    selectedCategory.value = '';
     emit('productUpdate');
 }
 </script>

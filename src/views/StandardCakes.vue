@@ -6,16 +6,17 @@ import Footer from '@/components/Footer.vue'
 import ZusatzInfo from '@/components/ZusatzInfo.vue';
 import Searching  from '@/components/Searching.vue';
 import { ref, onMounted } from 'vue';
-const url = 'http://localhost:8081/api/cake';
-const products = ref([]);
+const url = 'http://localhost:8081/api/product';
+const torten = ref([]);
+onMounted(async () => fetchProducts());
 async function fetchProducts() {
   try {
     const response = await fetch(url);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    products.value = await response.json();
-    console.log(products.value);
+    torten.value = await response.json();
+    console.log(torten.value);
   } catch (error) {
     console.error('Error fetching products:', error);
   }
@@ -30,7 +31,7 @@ async function fetchProducts() {
     <!-- HEADER + ICON ALS FLEX-BOX -->
     <div class="d-flex align-items-start justify-content-between">
 
-      <div>
+       <div>
         <h1 class="fw-bold mb-2">Standard cakes</h1>
         <p class="text-muted" style="max-width: 500px;">
          Wähle aus unseren beliebtesten Standardtorten, bereit zum Bestellen und Genießen.
