@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import ProductDetail from '../views/ProductDetail.vue';
+import CreateProduct from '@/views/CreateProduct.vue';
+import EditProduct from '@/views/EditProduct.vue';
 import Home from '../views/Home.vue';
 import StandardCakes from '../views/StandardCakes.vue';
 import CustomizeCake from '@/views/CustomizeCake.vue';
@@ -25,6 +27,19 @@ const routes = [
     component: ProductDetail,
     props: true
   },
+  {
+    path: '/product/create',
+    name: 'product-create',
+    component: CreateProduct,
+  },
+
+  {
+    path: '/product/edit/:id',
+    name: 'product-edit',
+    component: () => import('@/views/EditProduct.vue'),
+    props: true
+  },
+
   {
     path: '/customize-cake',
     name: 'customizeCake',

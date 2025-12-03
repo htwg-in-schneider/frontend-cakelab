@@ -20,7 +20,7 @@ const bannerStore = useBannerStore()
 
 <style scoped>
 .versand-info {
-  background-color:rgb(72, 105, 94);
+  background-color:var(--rose);
   color: var(--light-gray);
   font-weight: 600;
 }

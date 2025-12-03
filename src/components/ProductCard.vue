@@ -7,7 +7,6 @@ defineProps({
     required: true
   }
 });
-
 </script>
 
 <template>
@@ -18,6 +17,7 @@ defineProps({
       <h5 class="card-title">{{ product.name }}</h5>
       <p class="fw-bold">{{ product.preis }} €</p>
 
+      <!-- Zum Produkt -->
       <NavButton
         variant="dark"
         class="mt-auto"
@@ -25,22 +25,29 @@ defineProps({
       >
         Zum Produkt
       </NavButton>
+
+      <!-- Bearbeiten -->
+      <NavButton
+        variant="outline-dark"
+        class="mt-2"
+        :to="`/product/edit/${product.id}`"
+      >
+        Bearbeiten
+      </NavButton>
     </div>
   </div>
 </template>
 
 <style scoped>
+.card {
+  border: none;
+  border-radius: 1rem;
+}
 
-.card
-  {
-    border: none;
-    border-radius: 1rem;
-  }
 .card-img-top {
   width: 100%;
   aspect-ratio: 1 / 1; /* Quadratische Fläche */
   object-fit: cover;   /* Sauberer Crop */
   border-radius: 12px 12px 0 0;
 }
-
 </style>

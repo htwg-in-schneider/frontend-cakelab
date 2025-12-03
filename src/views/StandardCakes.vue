@@ -27,27 +27,26 @@ onMounted(async () => {
 
 <template>
   <Navbar />
-  <ZusatzInfo/>
-  <Searching/>
+  <ZusatzInfo />
+  <Searching />
   <div class="container mt-5 pt-5 pb-5">
 
     <!-- HEADER + ICON ALS FLEX-BOX -->
-    <div class="d-flex align-items-start justify-content-between">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+  <div>
+    <h1 class="fw-bold mb-2 d-flex align-items-center">
+      Standard cakes
+    </h1>
+    <p class="text-muted" style="max-width: 500px;">
+      Wähle aus unseren beliebtesten Standardtorten, bereit zum Bestellen und Genießen.
+    </p>
+  </div>
 
-       <div>
-        <h1 class="fw-bold mb-2">Standard cakes</h1>
-        <p class="text-muted" style="max-width: 500px;">
-         Wähle aus unseren beliebtesten Standardtorten, bereit zum Bestellen und Genießen.
-        </p>
-      </div>
-
-      <img 
-        src="@/assets/Images/edit_Icon.png" 
-        alt="Edit" 
-        class="edit-icon"
-      />
-
-    </div>
+  <!-- Add Icon -->
+  <RouterLink to="/product/create" class="icon-wrapper">
+    <img src="\assets\images\plus_icon.png" alt="Torte hinzufügen" class="add-icon" />
+  </RouterLink>
+</div>
 
     <div class="row g-4 mt-4">
       <div v-for="item in torten" :key="item.id" class="col-12 col-md-6 col-lg-4">
@@ -61,18 +60,19 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-/* EDIT ICON */
-.edit-btn {
-  background: transparent;
-  border: none;
-  padding: 0;
+.add-icon {
+  width: 35px;
+  height: 35px;
   cursor: pointer;
+  transition: 0.2s ease;
 }
 
-.edit-icon {
-  width: 40px;
-  height: 40px;
-  cursor: pointer;
+.add-icon:hover {
+  transform: scale(1.1);
 }
 
+.icon-wrapper {
+  display: flex;
+  align-items: center;
+}
 </style>

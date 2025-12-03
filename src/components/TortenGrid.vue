@@ -1,6 +1,29 @@
 <script setup>
-import ProductCard from './ProductCard.vue';
-import { torten } from '../data.js';
+import { ref, onMounted } from 'vue';
+import ProductCard from '@/components/ProductCard.vue';
+
+const torten = ref([]); // Lokaler State für Produkte
+
+const url = 'http://localhost:8081/api/product';
+
+async function fetchProducts() {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+    // Wenn Backend direkt ein Array zurückgibt:
+    torten.value = await response.json();
+
+    // Wenn Backend etwas wie { content: [...] } zurückgibt,
+    // dann stattdessen:
+    // const data = await response.json();
+    // torten.value = data.content;
+  } catch (error) {
+    console.error('Error fetching products:', error);
+  }
+}
+
+onMounted(fetchProducts);
 </script>
 
 <template>
@@ -12,7 +35,11 @@ import { torten } from '../data.js';
       </div>
 
       <div class="row g-4">
-        <div v-for="torte in torten.slice(0, 4)" :key="torte.id" class="col-12 col-sm-6 col-lg-3">
+        <div
+          v-for="torte in torten.slice(0, 4)"
+          :key="torte.id"
+          class="col-12 col-sm-6 col-lg-3"
+        >
           <ProductCard :product="torte" />
         </div>
       </div>
