@@ -1,25 +1,28 @@
 <script setup>
-import ProductCard from "@/components/ProductCard.vue";
-
-import Navbar from '@/components/Navbar.vue'
-import Footer from '@/components/Footer.vue'
-import ZusatzInfo from '@/components/ZusatzInfo.vue';
-import Searching  from '@/components/Searching.vue';
 import { ref, onMounted } from 'vue';
+import Navbar from '@/components/Navbar.vue';
+import Footer from '@/components/Footer.vue';
+import ZusatzInfo from '@/components/ZusatzInfo.vue';
+import Searching from '@/components/Searching.vue';
+import ProductCard from '@/components/ProductCard.vue';
+
 const url = 'http://localhost:8081/api/product';
 const torten = ref([]);
-onMounted(async () => fetchProducts());
+
 async function fetchProducts() {
   try {
     const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
     torten.value = await response.json();
     console.log(torten.value);
   } catch (error) {
     console.error('Error fetching products:', error);
   }
+}
+
+onMounted(async () => {
+  await fetchProducts();
+});
 </script>
 
 <template>

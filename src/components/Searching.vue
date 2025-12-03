@@ -9,17 +9,17 @@ const category = ref([]);
 const searchName = ref('');
 const selectedCategory = ref('');
 onMounted(async () => {
-    await Promise.all([fetchCategory()]);
+    await Promise.all([fetchCategorys()]);
 });
 
 async function fetchCategorys() {
     try {
         const response = await fetch(categoryUrl);
         if (response.ok) {
-            flavors.value = await response.json();
+            category.value = await response.json();
         }
     } catch (error) {
-        console.error('Error fetching flavors:', error);
+        console.error('Error fetching category:', error);
     }
 }
 function onSearch() {
@@ -37,7 +37,14 @@ function onReset() {
       <img src="/src/assets/images/magnifying-glass.svg" alt="Suchleiste" class="icon search-icon">
     <input type="text" placeholder="Search" aria-label="Produktname suchen ..."  @keyup.enter="onSearch" />/>
     <button class="filter-btn"  aria-label="Filter">
-        <img src="/src/assets/images/sliders-horizontal.svg" alt="filter" class="icon" > 
+        <img src="/src/assets/images/sliders-horizontal.svg" alt="filter"    @keyup.enter="onSearch" /> 
+                    <select v-model="selectedCategory" class="form-select" @change="onSearch">
+                        <option value="">Alle Kategorien</option>
+                        <option v-for="category in categories" :key="category" :value="category"> </option>
+                        </select>
+                           <Button variant="accent" :onClick="onSearch">Suchen</Button>
+                    <Button variant="secondary" :onClick="onReset">Reset</Button>
+                        
     </button>
 
   </div>
