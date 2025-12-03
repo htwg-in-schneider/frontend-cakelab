@@ -20,7 +20,8 @@ const props = defineProps({
 });
 
 const product = ref(null);
-onMounted(async () => fetchProduct());
+const allProducts = ref([]); 
+
 
 async function fetchProduct() {
   try {
@@ -34,10 +35,24 @@ async function fetchProduct() {
     console.error('Error fetching product:', error);
   }
 }
+async function fetchAllProducts() {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(response.statusText);
+    allProducts.value = await response.json();
+  } catch (error) {
+    console.error('Error fetching all products:', error);
+  }
+}
+onMounted(async () => {await fetchProduct(); await fetchAllProducts()} );
+
 // Related products (alle außer dieses)
 const related = computed(() =>
-  torten.filter((t) => t.id !== product.value.id)
-  .slice(0, 4)
+    if (!product.value) return [];
+  return allProducts.value
+    .filter((p) => p.id !== product.value.id)
+    .slice(0, 4);
+
   );
 </script>
 

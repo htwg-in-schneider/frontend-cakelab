@@ -37,17 +37,18 @@ function onReset() {
 <template>
   <div class="custom-search">
       <img src="/src/assets/images/magnifying-glass.svg" alt="Suchleiste" class="icon search-icon">
-    <input type="text" placeholder="Produktname suchen ..." aria-label="Produktname suchen ..."  @keyup.enter="onSearch" />/>
-    <button class="filter-btn"  aria-label="Filter">
+    <input type="text" placeholder="Produktname suchen ..." aria-label="Produktname suchen ..."   v-model="searchName"
+           @keyup.enter="onSearch" />/>
+    <button class="filter-btn" @click="showFilter = !showFilter" aria-label="Filter">
         <img src="/src/assets/images/sliders-horizontal.svg" alt="filter"    @keyup.enter="onSearch" /> 
     </button>
                        <div v-if="showFilter" class="filter-dropdown">
           <select v-model="selectedCategory" @change="onSearch">
               <option value="">Alle Kategorien</option>
-              <option v-for="cat in categories" :key="cat.id" :value="cat.name">{{ cat.name }}</option>
+              <option v-for="category in categories" :key="category" :value="category"></option>
           </select>
-          <button @click="onSearch">Suchen</button>
-          <button @click="onReset">Reset</button>
+          <button id="search" @click="onSearch">Suchen</button>
+          <button id= "Reset" @click="onReset">Reset</button>
                         
   
   </div>
@@ -59,6 +60,9 @@ function onReset() {
 
 
 <style scoped>
+#search, #Reset{
+  background-color: white;
+}
 .custom-search {
   display: flex;
   align-items: center;
