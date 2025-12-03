@@ -9,12 +9,22 @@ import ProductCard from '@/components/ProductCard.vue';
 const url = 'http://localhost:8081/api/product';
 const torten = ref([]);
 
-async function fetchProducts() {
+async function fetchProducts(filters={}) {
   try {
-    const response = await fetch(url);
+     const params = new URLSearchParams();
+      if (filters.name && filters.name.trim() !== '') {
+      params.append('name', filters.name.trim());
+    }
+    if (filters.category && filters.category.trim() !== '') {
+      params.append('category', filters.category.trim());
+    }
+      
+  const response = await fetch(`${url}?${params.toString()}`);
+
+
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
     torten.value = await response.json();
-    console.log(torten.value);
+      console.log("Fetching products:", response);
   } catch (error) {
     console.error('Error fetching products:', error);
   }
@@ -28,7 +38,7 @@ onMounted(async () => {
 <template>
   <Navbar />
   <ZusatzInfo />
-  <Searching />
+  <Searching @productUpdate="fetchProducts" />
   <div class="container mt-5 pt-5 pb-5">
 
     <!-- HEADER + ICON ALS FLEX-BOX -->
