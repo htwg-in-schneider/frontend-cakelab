@@ -7,8 +7,8 @@ import NavButton from '@/components/NavButton.vue';
 import Button from '@/components/Button.vue';
 import ProductCard from '@/components/ProductCard.vue';
 
+import { ref, onMounted, computed } from 'vue';
 
-import { ref, onMounted } from 'vue';
 const url = 'http://localhost:8081/api/product';
 
 
@@ -47,13 +47,13 @@ async function fetchAllProducts() {
 onMounted(async () => {await fetchProduct(); await fetchAllProducts()} );
 
 // Related products (alle außer dieses)
-const related = computed(() =>
+const related = computed(() =>{
     if (!product.value) return [];
   return allProducts.value
     .filter((p) => p.id !== product.value.id)
     .slice(0, 4);
 
-  );
+  });
 </script>
 
 <template>
