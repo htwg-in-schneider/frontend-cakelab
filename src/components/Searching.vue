@@ -4,19 +4,21 @@ import { ref, onMounted } from 'vue';
 const categoryUrl = 'http://localhost:8081/api/category';
 
 const emit = defineEmits(['productUpdate']);
-const category = ref([]);
+const categories = ref([]);
 
 const searchName = ref('');
 const selectedCategory = ref('');
+const showFilter = ref(false);
+
 onMounted(async () => {
-    await Promise.all([fetchCategorys()]);
+    await Promise.all([fetchCategories()]);
 });
 
-async function fetchCategorys() {
+async function fetchCategories() {
     try {
         const response = await fetch(categoryUrl);
         if (response.ok) {
-            category.value = await response.json();
+            categories.value = await response.json();
         }
     } catch (error) {
         console.error('Error fetching category:', error);
@@ -35,18 +37,20 @@ function onReset() {
 <template>
   <div class="custom-search">
       <img src="/src/assets/images/magnifying-glass.svg" alt="Suchleiste" class="icon search-icon">
-    <input type="text" placeholder="Search" aria-label="Produktname suchen ..."  @keyup.enter="onSearch" />/>
+    <input type="text" placeholder="Produktname suchen ..." aria-label="Produktname suchen ..."  @keyup.enter="onSearch" />/>
     <button class="filter-btn"  aria-label="Filter">
         <img src="/src/assets/images/sliders-horizontal.svg" alt="filter"    @keyup.enter="onSearch" /> 
-                    <select v-model="selectedCategory" class="form-select" @change="onSearch">
-                        <option value="">Alle Kategorien</option>
-                        <option v-for="category in categories" :key="category" :value="category"> </option>
-                        </select>
-                           <Button variant="accent" :onClick="onSearch">Suchen</Button>
-                    <Button variant="secondary" :onClick="onReset">Reset</Button>
-                        
     </button>
-
+                       <div v-if="showFilter" class="filter-dropdown">
+          <select v-model="selectedCategory" @change="onSearch">
+              <option value="">Alle Kategorien</option>
+              <option v-for="cat in categories" :key="cat.id" :value="cat.name">{{ cat.name }}</option>
+          </select>
+          <button @click="onSearch">Suchen</button>
+          <button @click="onReset">Reset</button>
+                        
+  
+  </div>
   </div>
 
 </template>
