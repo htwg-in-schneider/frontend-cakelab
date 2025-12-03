@@ -38,14 +38,14 @@ function onReset() {
   <div class="custom-search">
       <img src="/src/assets/images/magnifying-glass.svg" alt="Suchleiste" class="icon search-icon">
     <input type="text" placeholder="Produktname suchen ..." aria-label="Produktname suchen ..."   v-model="searchName"
-           @keyup.enter="onSearch" />/>
+           @keyup.enter="onSearch" />
     <button class="filter-btn" @click="showFilter = !showFilter" aria-label="Filter">
-        <img src="/src/assets/images/sliders-horizontal.svg" alt="filter"    @keyup.enter="onSearch" /> 
+        <img src="/src/assets/images/sliders-horizontal.svg" alt="filter"  /> 
     </button>
                        <div v-if="showFilter" class="filter-dropdown">
           <select v-model="selectedCategory" @change="onSearch">
               <option value="">Alle Kategorien</option>
-              <option v-for="category in categories" :key="category" :value="category"></option>
+              <option v-for="category in categories" :key="category" :value="category">{{ category }}</option>
           </select>
           <button id="search" @click="onSearch">Suchen</button>
           <button id= "Reset" @click="onReset">Reset</button>
