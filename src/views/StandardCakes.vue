@@ -38,7 +38,7 @@ onMounted(async () => {
 <template>
   <Navbar />
   <ZusatzInfo />
-  <Searching />
+  <Searching @productUpdate="fetchProducts" />
   <div class="container mt-5 pt-5 pb-5">
 
     <!-- HEADER + ICON ALS FLEX-BOX -->
