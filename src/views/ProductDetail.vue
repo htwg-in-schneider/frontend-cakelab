@@ -8,8 +8,9 @@ import Button from '@/components/Button.vue';
 import ProductCard from '@/components/ProductCard.vue';
 
 
-import { computed } from 'vue';
-import { torten } from '@/data.js';
+import { ref, onMounted } from 'vue';
+const url = 'http://localhost:8081/api/product';
+
 
 const props = defineProps({
   id: {
@@ -18,10 +19,21 @@ const props = defineProps({
   },
 });
 
-const product = computed(() =>
-  torten.find((t) => String(t.id) === String(props.id))
-);
+const product = ref(null);
+onMounted(async () => fetchProduct());
 
+async function fetchProduct() {
+  try {
+    const response = await fetch(`${url}/${props.id}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    product.value = await response.json();
+    console.log(product.value);
+  } catch (error) {
+    console.error('Error fetching product:', error);
+  }
+}
 // Related products (alle außer dieses)
 const related = computed(() =>
   torten.filter((t) => t.id !== product.value.id)

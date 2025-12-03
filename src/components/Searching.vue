@@ -1,14 +1,47 @@
 
 <script setup>
+import { ref, onMounted } from 'vue';
+const categoryUrl = 'http://localhost:8081/api/flavor';
+
+const emit = defineEmits(['productUpdate']);
+const flavors = ref([]);
+
+const searchName = ref('');
+const selectedFlavour = ref('');
+onMounted(async () => {
+    await Promise.all([fetchFlavors()]);
+});
+
+async function fetchFlavors() {
+    try {
+        const response = await fetch(categoryUrl);
+        if (response.ok) {
+            flavors.value = await response.json();
+        }
+    } catch (error) {
+        console.error('Error fetching flavors:', error);
+    }
+}
+function onSearch() {
+    emit('productUpdate', { name: searchName.value, category: selectedFlavor.value });
+}
+
+function onReset() {
+    searchName.value = '';
+    selectedFlavor.value = '';
+    emit('productUpdate');
+}
 </script>
 <template>
   <div class="custom-search">
-      <img src="/src/assets/images/magnifying-glass.png" alt="Suchleiste" class="icon search-icon">
-    <input type="text" placeholder="Search" />
-    <button class="filter-btn">
-        <img src="/src/assets/images/sliders-horizontal.png" alt="filter" class="icon"> 
+      <img src="/src/assets/images/magnifying-glass.svg" alt="Suchleiste" class="icon search-icon">
+    <input type="text" placeholder="Search" aria-label="Produktname suchen ..."  @keyup.enter="onSearch" />/>
+    <button class="filter-btn"  aria-label="Filter">
+        <img src="/src/assets/images/sliders-horizontal.svg" alt="filter" class="icon" > 
     </button>
+
   </div>
+
 </template>
 
 
@@ -21,7 +54,7 @@
   background-color: #BFA3B2;
   padding: 8px 12px;
   border-radius: 12px;
-  width: 300px;
+  width: 100%;
 }
 
 .custom-search input {

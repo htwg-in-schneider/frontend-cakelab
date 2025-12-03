@@ -1,10 +1,24 @@
 <script setup>
 import ProductCard from "@/components/ProductCard.vue";
-import { torten } from "@/data";
+
 import Navbar from '@/components/Navbar.vue'
 import Footer from '@/components/Footer.vue'
 import ZusatzInfo from '@/components/ZusatzInfo.vue';
 import Searching  from '@/components/Searching.vue';
+import { ref, onMounted } from 'vue';
+const url = 'http://localhost:8081/api/cake';
+const products = ref([]);
+async function fetchProducts() {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    products.value = await response.json();
+    console.log(products.value);
+  } catch (error) {
+    console.error('Error fetching products:', error);
+  }
 </script>
 
 <template>
