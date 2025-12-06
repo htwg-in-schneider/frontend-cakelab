@@ -3,6 +3,7 @@ import { ref, onMounted, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import Button from '@/components/Button.vue';
 import Popup from '@/components/Popup.vue';
+import DropdownMenu from '@/components/DropdownMenu.vue';
 
 const popup = ref(null);
 
@@ -170,11 +171,9 @@ onMounted(loadCategories);
           <div class="mb-3">
             <label class="form-label">Kategorie</label>
 
-            <select v-model="product.category" class="form-select">
-              <option v-for="category in categories" :key="category" :value="category">
-                {{ formatCategory(category) }}
-              </option>
-            </select>
+            <DropdownMenu v-model="product.category" :options="categories" placeholder="Kategorie auswählen"
+              :allowAll="false" />
+
           </div>
 
 
