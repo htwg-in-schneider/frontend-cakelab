@@ -2,6 +2,9 @@
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import Button from '@/components/Button.vue';
+import Popup from '@/components/Popup.vue';
+
+const popup = ref(null);
 
 const route = useRoute();
 const router = useRouter();
@@ -12,7 +15,7 @@ const product = ref(null);
 const isLoading = ref(true);
 const isSaving = ref(false);
 
-// 🔥 Merke dir die vorherige Seite (intelligentes Zurück!)
+
 const previousPage = ref(
   router.options.history.state.back || "/"   // fallback: home
 );
@@ -37,7 +40,7 @@ async function fetchProduct() {
     product.value = await response.json();
   } catch (error) {
     console.error(error);
-    alert('Produkt konnte nicht geladen werden.');
+    popupRef.value?.show("Produkt konnte nicht geladen werden.", "error");
     router.push(previousPage.value);
   } finally {
     isLoading.value = false;
@@ -55,36 +58,44 @@ async function updateProduct() {
       body: JSON.stringify(product.value),
     });
 
-    if (!response.ok) throw new Error("Fehler beim Aktualisieren");
+    if (!response.ok) throw new Error();
 
-    alert("Produkt erfolgreich aktualisiert!");
-    router.push(previousPage.value);   // ← Zurück zur richtigen Seite
+    popup.value.show("Produkt erfolgreich aktualisiert!", "success");
+
+    setTimeout(() => {
+      router.push(previousPage.value);
+    }, 800);
+
   } catch (err) {
-    console.error(err);
-    alert("Produkt konnte nicht aktualisiert werden.");
+    popup.value.show("Fehler beim Aktualisieren!", "error");
   } finally {
     isSaving.value = false;
   }
 }
 
+
+
 // Produkt löschen
 async function deleteProduct() {
-  if (!confirm("Willst du dieses Produkt wirklich löschen?")) return;
 
   try {
     const response = await fetch(`${API_URL}/${product.value.id}`, {
       method: "DELETE",
     });
 
-    if (!response.ok) throw new Error("Fehler beim Löschen");
+    if (!response.ok) throw new Error();
 
-    alert("Produkt gelöscht!");
-    router.push(previousPage.value);   // ← wieder zurück wohin du willst
+    popup.value.show("Produkt gelöscht!", "success");
+
+    setTimeout(() => {
+      router.push(previousPage.value);
+    }, 800);
+
   } catch (err) {
-    console.error(err);
-    alert("Produkt konnte nicht gelöscht werden.");
+    popup.value.show("Fehler beim Löschen!", "error");
   }
 }
+
 
 // ✕ Button = intelligentes Zurück
 function goBack() {
@@ -109,6 +120,7 @@ onMounted(loadCategories);
 
 
 <template>
+  <Popup ref="popup" />
   <div class="edit-page">
     <div class="edit-card">
       <!-- Close / Zurück-Knopf -->
