@@ -112,6 +112,10 @@ const related = computed(() =>{
 </template>
 
 <style scoped>
+  .ProductCard {
+  width: 100% !important;
+}
+
 .detail-container {
   align-items: start;
 }
@@ -145,4 +149,20 @@ const related = computed(() =>{
   min-width: 75%;
   scroll-snap-align: center;
 }
+
+/* 2 Karten bereits sehr früh aktiv */
+@media (max-width: 1500px) {
+  .slider-item {
+    min-width: 50%; /* halb so breit → 2 sichtbar */
+  }
+}
+
+/* 1 Karte erst auf kleinen Geräten */
+@media (max-width: 700px) {
+  .slider-item {
+    min-width: 75%;
+  }
+}
+
+
 </style>
