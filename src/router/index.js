@@ -54,7 +54,16 @@ const routes = [
     path: '/registrieren',
     name: 'registrieren',
     component: Registrieren
+  },
+  {
+    path: '/impressum',
+    component: () => import('@/views/Impressum.vue')
+  },
+  {
+    path: '/datenschutz',
+    component: () => import('@/views/Datenschutz.vue')
   }
+
 ];
 
 const router = createRouter({

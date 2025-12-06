@@ -12,18 +12,18 @@ import FooterLink from './FooterLink.vue';
           </div>
           <div class="col-md-3 mb-3">
             <h6>User info</h6>
-            <FooterLink text="Create an account" />
-            <FooterLink text="Login" />
+            <FooterLink text="Create an account" to="/registrieren" />
+            <FooterLink text="Login" to="/login" />
           </div>
           <div class="col-md-3 mb-3">
             <h6>Shop</h6>
-            <FooterLink text="Standard cake" />
-            <FooterLink text="Customize cake" />
+            <FooterLink text="Standard cake" to="/standard-cakes" />
+            <FooterLink text="Customize cake" to="/customize-cake" />
           </div>
           <div class="col-md-3 mb-3">
             <h6>Rechtliches</h6>
-            <FooterLink text="Impressum" />
-            <FooterLink text="Datenschutz" />
+            <FooterLink text="Impressum" to="/impressum" />
+            <FooterLink text="Datenschutz" to="/datenschutz" />
           </div>
         </div>
 
@@ -39,6 +39,7 @@ import FooterLink from './FooterLink.vue';
   background-color: var(--zweitfarbe);
   color: var(--black);
 }
+
 h6 {
   font-weight: bold;
 }
