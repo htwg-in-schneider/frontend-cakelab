@@ -1,7 +1,6 @@
 <script setup>import Navbar from '@/components/Navbar.vue';
 import Footer from '@/components/Footer.vue';
-import { torten } from '@/data.js';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import ZusatzInfo from '@/components/ZusatzInfo.vue';
 
 const selectedBase = ref(null);
@@ -9,8 +8,26 @@ const selectedSize = ref(null);
 const fontColor = ref("");
 const fontFamily = ref("");
 const textInput = ref("");
+const torten = ref([]);
 
+const url = 'http://localhost:8081/api/product';
+
+async function fetchTorten() {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error("Fehler beim Laden der Produkte");
+    }
+    torten.value = await response.json();
+    console.log("CustomizeCake → Torten geladen:", torten.value);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+onMounted(fetchTorten);
 </script>
+
 
 
 <template>
@@ -254,5 +271,4 @@ const textInput = ref("");
 .custom-vselect :deep(.vs__clear) {
   display: none;
 }
-
 </style>
