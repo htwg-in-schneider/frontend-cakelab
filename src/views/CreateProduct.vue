@@ -2,8 +2,11 @@
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import Button from '@/components/Button.vue';
+import Popup from '@/components/Popup.vue';
+import DropdownMenu from '@/components/DropdownMenu.vue';
 
 const router = useRouter();
+const popup = ref(null);
 const API_URL = 'http://localhost:8081/api/product';
 
 // Body-Padding entfernen (wie Edit-Seite)
@@ -46,12 +49,14 @@ async function createProduct() {
             throw new Error(`Fehler beim Erstellen: ${response.status}`);
         }
 
-        alert('Produkt erfolgreich erstellt!');
-        router.push("/standard-cakes");
+        popup.value.show("Produkt erstellt!", "success");
+        setTimeout(() => {
+            router.push("/standard-cakes");
+        }, 800);
 
     } catch (error) {
         console.error('Fehler beim Erstellen:', error);
-        alert('Produkt konnte nicht erstellt werden.');
+        popup.value.show("Produkt konnte nicht erstellt werden!", "error");
     } finally {
         isSaving.value = false;
     }
@@ -75,6 +80,7 @@ onMounted(loadCategories);
 </script>
 
 <template>
+    <Popup ref="popup" />
     <div class="create-page">
         <div class="create-card">
 
@@ -110,11 +116,9 @@ onMounted(loadCategories);
                 <div class="mb-3">
                     <label class="form-label">Kategorie</label>
 
-                    <select v-model="product.category" class="form-select">
-                        <option v-for="category in categories" :key="category" :value="category">
-                            {{ formatCategory(category) }}
-                        </option>
-                    </select>
+                    <DropdownMenu v-model="product.category" :options="categories" placeholder="Kategorie auswählen"
+                        :allowAll="false" />
+
                 </div>
 
 

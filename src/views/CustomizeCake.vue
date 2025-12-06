@@ -2,6 +2,7 @@
 import Footer from '@/components/Footer.vue';
 import { ref, onMounted } from 'vue';
 import ZusatzInfo from '@/components/ZusatzInfo.vue';
+import DropdownMenu from '@/components/DropdownMenu.vue';
 
 const selectedBase = ref(null);
 const selectedSize = ref(null);
@@ -32,7 +33,7 @@ onMounted(fetchTorten);
 
 <template>
   <Navbar />
-  <ZusatzInfo/>
+  <ZusatzInfo />
   <section class="container py-5 customize-section">
     <h1 class="fw-bold mb-2">Customize your cake</h1>
     <p class="text-muted mb-4"> Wähle eine Basis sowie Schriftart, Farbe und Größe für deine individuelle Torte. </p>
@@ -60,13 +61,14 @@ onMounted(fetchTorten);
         <h2 class="fw-bold mb-3">2. Wähle deinen Text</h2>
         <div class="config-box p-4">
           <label class="fw-bold mb-1">Schriftart</label>
-          <v-select
-            :options="['Handschrift', 'Serif', 'Sans-Serif', 'Playful Brush', 'Elegant', 'Modern']"
-            v-model="fontFamily" class="custom-vselect mb-3" placeholder="Schriftart wählen" />
+          <DropdownMenu :options="['Handschrift', 'Serif', 'Sans-Serif', 'Playful Brush', 'Elegant', 'Modern']"
+            v-model="fontFamily" placeholder="Schriftart wählen" />
+
           <label class="fw-bold mb-1">Schriftfarbe</label>
 
-          <v-select :options="['Schwarz', 'Weiß', 'Rot', 'Rosa', 'Blau', 'Grün', 'Gelb', 'Orange', 'Braun', 'Lila']"
-            v-model="fontColor" class="custom-vselect mb-3" placeholder="Farbe wählen" />
+          <DropdownMenu :options="['Schwarz', 'Weiß', 'Rot', 'Rosa', 'Blau', 'Grün', 'Gelb', 'Orange', 'Braun', 'Lila']"
+            v-model="fontColor" placeholder="Farbe wählen" />
+
           <label class="fw-bold mb-1">Text</label>
           <input type="text" class="form-control" placeholder="Gib deinen Text ein" v-model="textInput"
             maxlength="50" />
@@ -113,7 +115,7 @@ onMounted(fetchTorten);
   background: var(--light-gray);
   border-radius: 16px;
   padding: 32px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
 }
 
 /* Base cards */
@@ -136,13 +138,13 @@ onMounted(fetchTorten);
 .base-card:hover {
   transform: translateY(-6px);
   border-color: var(--rose);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
 }
 
 .base-card.selected {
   border-color: var(--zweitfarbe);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-  background-color:rgba(105, 16, 49, 0.15) ;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  background-color: rgba(105, 16, 49, 0.15);
 }
 
 .base-image {
@@ -226,49 +228,6 @@ onMounted(fetchTorten);
 
 .form-control:focus {
   border-color: var(--zweitfarbe);
-  box-shadow: 0 0 0 4px rgba(146,108,135,0.25);
-}
-
-/* v-select styling */
-.custom-vselect {
-  width: 100%;
-}
-
-.custom-vselect :deep(.vs__dropdown-toggle) {
-  border-radius: 30px;
-  background: var(--white);
-  border: 2px solid var(--zweitfarbe);
-  padding: 8px 18px;
-}
-
-.custom-vselect :deep(.vs__dropdown-toggle:hover) {
-  border-color: var(--black);
-}
-
-.custom-vselect :deep(.vs__dropdown-menu) {
-  border-radius: 16px;
-  background: var(--white);
-  border: 1px solid var(--rose);
-}
-
-.custom-vselect :deep(.vs__option) {
-  color: var(--dark-gray);
-}
-
-.custom-vselect :deep(.vs__dropdown-option--highlight) {
-  background: var(--zweitfarbe);
-  color: var(--white);
-}
-/* Kein Eingabe-Cursor im geschlossenen Zustand UND im offenen: */
-.custom-vselect :deep(.vs__dropdown-toggle),
-.custom-vselect :deep(.vs__search){
-  cursor: pointer ;
-  caret-color: transparent;
-}
-
-
-/* Clear X entfernen */
-.custom-vselect :deep(.vs__clear) {
-  display: none;
+  box-shadow: 0 0 0 4px rgba(146, 108, 135, 0.25);
 }
 </style>
