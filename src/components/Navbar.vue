@@ -24,6 +24,11 @@ const cart = useCartStore();
 
       <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <ul class="navbar-nav align-items-center">
+            <li class="nav-item">
+                <router-link to="/admin/orders" class="nav-link">
+                     Bestellungen
+                </router-link>
+            </li>
 
           <li class="nav-item mx-3">
             <router-link class="nav-link" to="/standard-cakes">Standard Cake</router-link>

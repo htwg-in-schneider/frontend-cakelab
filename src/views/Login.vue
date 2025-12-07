@@ -7,7 +7,7 @@ import "@/assets/auth.css";
 
 const route = useRoute();
 
-const justRegistered = ref(false);
+      const justRegistered = ref(false);
 const email = ref("");
 const password = ref("");
 

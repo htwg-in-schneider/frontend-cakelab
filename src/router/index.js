@@ -7,7 +7,8 @@ import StandardCakes from '../views/StandardCakes.vue';
 import CustomizeCake from '@/views/CustomizeCake.vue';
 import Login from '@/views/Login.vue';
 import Registrieren from '@/views/Registrieren.vue';
-
+import MitarbeiterBestellungen from '@/views/MitarbeiterBestellungen.vue';
+import MitarbeiterBestellungDetails from '@/views/MitarbeiterBestellungDetails.vue';
 
 
 const routes = [
@@ -40,7 +41,18 @@ const routes = [
     component: () => import('@/views/EditProduct.vue'),
     props: true
   },
+  {
+    path: "/admin/orders",
+    name: "admin-orders",
+    component: MitarbeiterBestellungen
+  },
 
+  {
+    path: "/admin/orders/:id",
+    name: "admin-order-details",
+    component: MitarbeiterBestellungDetails,
+    props: true
+  },
   {
     path: '/customize-cake',
     name: 'customizeCake',
@@ -56,6 +68,7 @@ const routes = [
     name: 'registrieren',
     component: Registrieren
   },
+
   {
     path: '/impressum',
     component: () => import('@/views/Impressum.vue')
