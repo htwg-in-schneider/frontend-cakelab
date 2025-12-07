@@ -1,6 +1,6 @@
 <script setup>import Navbar from '@/components/Navbar.vue';
 import Footer from '@/components/Footer.vue';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import ZusatzInfo from '@/components/ZusatzInfo.vue';
 import DropdownMenu from '@/components/DropdownMenu.vue';
 import Popup from '@/components/Popup.vue';
@@ -14,6 +14,42 @@ const textInput = ref("");
 const torten = ref([]);
 const cart = useCartStore();
 const popup = ref(null);
+
+const errors = ref({
+  base: false,
+  size: false,
+  fontFamily: false,
+  fontColor: false,
+  textInput: false
+});
+
+const sizePrices = {
+  "Ø 18 cm": 0,
+  "Ø 22 cm": 3,
+  "Ø 26 cm": 6,
+  "Ø 31 cm": 9
+};
+
+const isFormValid = computed(() => {
+  return (
+    selectedBase.value &&
+    selectedSize.value &&
+    fontFamily.value &&
+    fontColor.value &&
+    textInput.value.trim().length > 0
+  );
+});
+
+const totalPrice = computed(() => {
+  if (!selectedBase.value) return 0;
+
+  const base = torten.value.find(p => p.id === selectedBase.value);
+  if (!base) return 0;
+
+  const extra = selectedSize.value ? sizePrices[selectedSize.value] : 0;
+
+  return base.preis + extra;
+});
 
 const url = 'http://localhost:8081/api/product';
 
@@ -32,8 +68,20 @@ async function fetchTorten() {
 
 onMounted(fetchTorten);
 
-
 function addCustomizedCake() {
+  // Einzelvalidierung
+  errors.value.base = !selectedBase.value;
+  errors.value.size = !selectedSize.value;
+  errors.value.fontFamily = !fontFamily.value;
+  errors.value.fontColor = !fontColor.value;
+  errors.value.textInput = textInput.value.trim().length === 0;
+
+  // Wenn ungültig → Popup + Abbruch
+  if (!isFormValid.value) {
+    popup.value?.show("Bitte alle Felder ausfüllen.", "error");
+    return;
+  }
+
   const base = torten.value.find(p => p.id === selectedBase.value);
 
   const customization = {
@@ -47,13 +95,17 @@ function addCustomizedCake() {
   const item = {
     id: 999,
     name: "Customized Cake",
-    preis: base.preis,
+    preis: totalPrice.value,  
     bildUrl: base.bildUrl,
   };
 
   cart.addItem(item, customization);
   cart.openCart();
+
+  popup.value?.show("Torte wurde hinzugefügt!", "success");
+
 }
+
 
 </script>
 
@@ -114,15 +166,27 @@ function addCustomizedCake() {
       <div class="col-12 col-lg-6 mb-5">
         <h2 class="fw-bold mb-3">3. Wähle die Größe</h2>
         <div class="size-grid">
-          <div v-for="size in ['Ø 18 cm', 'Ø 22 cm', 'Ø 26 cm', 'Ø 31 cm']" :key="size" class="size-item"
-            :class="{ selected: selectedSize === size }" @click="selectedSize = size">
-            {{ size }}
-          </div>
+         <div
+  v-for="size in Object.keys(sizePrices)"
+  :key="size"
+  class="size-item"
+  :class="{ selected: selectedSize === size }"
+  @click="selectedSize = size"
+>
+  <div>{{ size }}</div>
+  <div class="size-extra">+{{ sizePrices[size] }} €</div>
+</div>
+
+          <p class="fw-bold mt-3 " style="font-size: 24px;">
+            Gesamtpreis: {{ totalPrice }} €
+          </p>
+
         </div>
       </div>
-      <button class="fertig-btn mt-3" @click="addCustomizedCake">Fertig</button>
+      <button class="fertig-btn mt-3" :disabled="!isFormValid" @click="addCustomizedCake">Fertig</button>
     </div>
   </section>
+  <Popup ref="popup" />
   <Footer />
 </template>
 
@@ -211,6 +275,13 @@ function addCustomizedCake() {
   transform: translateY(-4px);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
 }
+.size-extra {
+  font-size: 14px;
+  color: var(--dark-gray);
+  margin-top: 4px;
+  opacity: 0.8;
+}
+
 
 /* Fertig Button */
 .fertig-btn {
@@ -231,6 +302,12 @@ function addCustomizedCake() {
   opacity: 0.9;
   transform: translateY(-2px);
 }
+
+.fertig-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
 
 /* Character counter */
 .char-counter {
@@ -258,4 +335,5 @@ function addCustomizedCake() {
   border-color: var(--zweitfarbe);
   box-shadow: 0 0 0 4px rgba(146, 108, 135, 0.25);
 }
+
 </style>

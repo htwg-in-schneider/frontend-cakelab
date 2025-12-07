@@ -11,9 +11,52 @@ const progress = computed(() => (cart.freeShippingProgress * 100).toFixed(0));
 
 const freeShippingText = computed(() =>
   cart.amountMissingForFreeShipping === 0
-    ? "Versandkostenfrei erreicht 🎉"
-    : `Noch ${missing.value}€ bis versandkostenfrei`
+    ? "Versandkostenfrei erreicht"
+    : `Noch ${missing.value}€ bis Versandkostenfrei`
 );
+async function submitOrder() {
+  if (cart.items.length === 0) return;
+
+  const orderPayload = {
+    items: cart.items.map(item => ({
+      productId: item.id,
+      name: item.name,
+      price: item.preis,
+      quantity: item.quantity,
+      customization: item.customization ?? null
+    })),
+    total: cart.cartTotal
+  };
+
+  try {
+    const response = await fetch("http://localhost:8081/api/orders", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(orderPayload)
+    });
+
+    if (!response.ok) {
+      throw new Error("Fehler beim Absenden der Bestellung");
+    }
+
+    // Backend Antwort
+    const savedOrder = await response.json();
+    console.log("Bestellung gespeichert:", savedOrder);
+
+    // Warenkorb leeren
+    cart.clearCart();
+
+    alert("Bestellung erfolgreich!");
+    
+  } catch (err) {
+    console.error(err);
+    alert("Es ist ein Fehler aufgetreten!");
+  }
+}
+
+
 </script>
 
 
@@ -59,13 +102,12 @@ const freeShippingText = computed(() =>
 
             <!-- Custom -->
             <div v-if="item.customization" class="small text-muted">
-              <div>Basis: {{ item.customization.baseCakeId }}</div>
               <div>Größe: {{ item.customization.size }}</div>
-              <div>Schrift: {{ item.customization.fontFamily }}</div>
-              <div>Farbe: {{ item.customization.fontColor }}</div>
-              <div v-if="item.customization.text">
-                Text: "{{ item.customization.text }}"
-              </div>
+              <div>Schriftart: {{ item.customization.fontFamily }}</div>
+              <div>Schriftfarbe: {{ item.customization.fontColor }}</div>
+            <div v-if="item.customization.text" class="cart-text">
+             Text: "{{ item.customization.text }}"
+            </div>
             </div>
 
             <div class="fw-bold mt-1">
@@ -113,12 +155,13 @@ const freeShippingText = computed(() =>
           <span>{{ total }} €</span>
         </div>
 
-        <button
-          class="checkout-btn"
-          :disabled="cartItems.length === 0"
+      <button 
+         class="checkout-btn"
+        :disabled="cartItems.length === 0"
+         @click="submitOrder"
         >
-          Bestellung abschließen
-        </button>
+         Bestellung abschließen
+      </button>
       </div>
     </div>
   </div>
@@ -167,6 +210,13 @@ const freeShippingText = computed(() =>
   font-weight: 700;
   font-size: 1.1rem;
 }
+.cart-text {
+  overflow-wrap: break-word;  
+  word-break: break-word;     
+  white-space: normal;       
+  max-width: 100%;
+}
+
 
 /* Versandinfo */
 .free-shipping-wrapper {
