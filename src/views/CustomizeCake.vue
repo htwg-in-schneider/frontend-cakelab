@@ -3,6 +3,8 @@ import Footer from '@/components/Footer.vue';
 import { ref, onMounted } from 'vue';
 import ZusatzInfo from '@/components/ZusatzInfo.vue';
 import DropdownMenu from '@/components/DropdownMenu.vue';
+import Popup from '@/components/Popup.vue';
+import { useCartStore } from '@/stores/cart';
 
 const selectedBase = ref(null);
 const selectedSize = ref(null);
@@ -10,6 +12,8 @@ const fontColor = ref("");
 const fontFamily = ref("");
 const textInput = ref("");
 const torten = ref([]);
+const cart = useCartStore();
+const popup = ref(null);
 
 const url = 'http://localhost:8081/api/product';
 
@@ -27,6 +31,30 @@ async function fetchTorten() {
 }
 
 onMounted(fetchTorten);
+
+
+function addCustomizedCake() {
+  const base = torten.value.find(p => p.id === selectedBase.value);
+
+  const customization = {
+    baseCakeId: selectedBase.value,
+    size: selectedSize.value,
+    fontFamily: fontFamily.value,
+    fontColor: fontColor.value,
+    text: textInput.value,
+  };
+
+  const item = {
+    id: 999,
+    name: "Customized Cake",
+    preis: base.preis,
+    bildUrl: base.bildUrl,
+  };
+
+  cart.addItem(item, customization);
+  cart.openCart();
+}
+
 </script>
 
 
@@ -92,7 +120,7 @@ onMounted(fetchTorten);
           </div>
         </div>
       </div>
-      <button class="fertig-btn mt-3">Fertig</button>
+      <button class="fertig-btn mt-3" @click="addCustomizedCake">Fertig</button>
     </div>
   </section>
   <Footer />

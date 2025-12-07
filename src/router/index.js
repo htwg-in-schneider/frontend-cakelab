@@ -9,6 +9,7 @@ import Login from '@/views/Login.vue';
 import Registrieren from '@/views/Registrieren.vue';
 
 
+
 const routes = [
   {
     path: '/',
