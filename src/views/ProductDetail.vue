@@ -6,7 +6,7 @@ import ZusatzInfo from '@/components/ZusatzInfo.vue';
 import NavButton from '@/components/NavButton.vue';
 import Button from '@/components/Button.vue';
 import ProductCard from '@/components/ProductCard.vue';
-
+import ProductReviews from '@/components/ProductReviews.vue';
 import { ref, onMounted, computed } from 'vue';
 import { useCartStore } from "@/stores/cart";
 const url = 'http://localhost:8081/api/product';
@@ -94,10 +94,11 @@ function addToCart() {
 >
   In den Warenkorb
 </Button>
-
+ <ProductReviews :productId="id"/>
       </div>
 
-    </div>   
+    </div>  
+   
 
     <!-- Related products -->
     <div class="related-box mt-5 p-4 text-center" >
@@ -108,6 +109,7 @@ function addToCart() {
       <div class="row g-4 d-none d-md-flex">
         <div v-for="prod in related" :key="prod.id" class="col-md-3">
           <ProductCard :product="prod" />
+          
         </div>
       </div>
 
@@ -119,6 +121,7 @@ function addToCart() {
           class="slider-item"
         >
           <ProductCard :product="prod" />
+            <ProductReviews :productId="id" />
         </div>
       </div>
 
