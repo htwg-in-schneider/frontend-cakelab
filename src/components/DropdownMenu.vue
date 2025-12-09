@@ -1,5 +1,20 @@
 <script setup>
+  import { useAuth0 } from '@auth0/auth0-vue'
 import { defineProps, defineModel } from "vue";
+const { loginWithRedirect, logout, user, isAuthenticated, isLoading } = useAuth0()
+
+const handleLogin = () => {
+  loginWithRedirect()
+}
+
+const handleLogout = () => {
+  logout({
+    logoutParams: {
+      returnTo: window.location.origin
+    }
+  })
+}
+
 
 const model = defineModel(); // v-model wrapper
 
@@ -11,12 +26,17 @@ const props = defineProps({
 </script>
 
 <template>
+   <div v-if="!isLoading">
+    <button v-if="!isAuthenticated" @click="handleLogin" class="btn btn-accent">
+      Anmelden
+    </button>
  <v-select
   :options="props.allowAll ? props.options : props.options.filter(o => o !== 'Alle Kategorien')"
   v-model="model"
   :placeholder="props.placeholder"
   class="styled-dropdown"
 />
+</div>
 </template>
 
 <style scoped>

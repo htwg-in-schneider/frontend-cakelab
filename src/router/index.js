@@ -9,6 +9,7 @@ import Login from '@/views/Login.vue';
 import Registrieren from '@/views/Registrieren.vue';
 import MitarbeiterBestellungen from '@/views/MitarbeiterBestellungen.vue';
 import MitarbeiterBestellungDetails from '@/views/MitarbeiterBestellungDetails.vue';
+import Profile from '@/views/Profile.vue';
 
 
 const routes = [
@@ -34,11 +35,13 @@ const routes = [
     name: 'product-create',
     component: CreateProduct,
   },
+    { path: '/profile', component: Profile },
 
   {
     path: '/product/edit/:id',
     name: 'product-edit',
     component: () => import('@/views/EditProduct.vue'),
+    
     props: true
   },
   {
