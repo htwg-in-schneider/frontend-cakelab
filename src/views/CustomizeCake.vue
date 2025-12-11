@@ -82,21 +82,25 @@ function addCustomizedCake() {
     return;
   }
 
-  const base = torten.value.find(p => p.id === selectedBase.value);
+const baseProduct = torten.value.find(p => p.id === selectedBase.value);
 
-  const customization = {
-    baseCakeId: selectedBase.value,
-    size: selectedSize.value,
-    fontFamily: fontFamily.value,
-    fontColor: fontColor.value,
-    text: textInput.value,
-  };
+const customization = {
+  baseCakeId: baseProduct.id,
+  baseName: baseProduct.name,
+  baseBildUrl: baseProduct.bildUrl,
+  size: selectedSize.value,
+  fontFamily: fontFamily.value,
+  fontColor: fontColor.value,
+  text: textInput.value,
+};
+
+
 
   const item = {
-    id: 999,
+    id: baseProduct.id,  
     name: "Customized Cake",
     preis: totalPrice.value,  
-    bildUrl: base.bildUrl,
+    bildUrl: baseProduct.bildUrl,
   };
 
   cart.addItem(item, customization);

@@ -6,51 +6,90 @@ import Footer from '@/components/Footer.vue';
 
 const route = useRoute();
 const order = ref(null);
+const props = defineProps({
+  id: {
+    type: String,
+    required: false
+  }
+});
+
+
+async function loadProduct(productId) {
+  const res = await fetch(`http://localhost:8081/api/product/${productId}`);
+  return await res.json();
+}
+
+async function loadAllProducts() {
+  const res = await fetch("http://localhost:8081/api/product");
+  return await res.json();
+}
 
 async function loadOrder() {
   const id = route.params.id;
 
   const res = await fetch(`http://localhost:8081/api/orders/${id}`);
   const data = await res.json();
-
-  console.log("Geladene Bestellung:", data);
-
   order.value = data;
+
+  const allProducts = await loadAllProducts();
+  console.log("ORDER ITEMS:", JSON.stringify(order.value.items, null, 2));
+
+
+  for (const item of order.value.items) {
+
+    // Normaler Kuchen
+    if (item.productId) {
+      const product = allProducts.find(p => p.id === item.productId);
+      if (product) {
+        item.bildUrl = product.bildUrl;
+        item.beschreibung = product.beschreibung;
+      }
+    }
+
+    // Custom Cake mit Base
+ // Custom Cake – direkt Bild & Name aus der Bestellung
+else if (item.customization && item.customization.baseBildUrl) {
+  item.bildUrl = item.customization.baseBildUrl;
+  item.beschreibung = ""; // optional
 }
 
 
+}
+
+
+}
 
 onMounted(loadOrder);
 </script>
 <template>
   <NavBar />
-
+<section class="page-content">
   <div class="details-wrapper" v-if="order">
     
     <!-- HEADER -->
-  <div class="details-header">
-  <button class="back-btn" @click="$router.back()">‹</button>
+    <div class="details-header">
+      <button class="back-btn" @click="$router.back()">‹</button>
 
-  <div>
-    <h2 class="order-title">Bestellung #{{ order.id }}</h2>
-    <div class="customer-name">Kunde: Mustermann</div>
-  </div>
-</div>
-
+      <div>
+        <h2 class="order-title">Bestellung #{{ order.id }}</h2>
+        <div class="customer-name">Kunde: Mustermann</div>
+      </div>
+    </div>
 
     <!-- ITEMS -->
     <div class="items-list">
       <div class="item-card" v-for="item in order.items" :key="item.id">
-        
-        <img
-          :src="'/img/products/' + item.productId + '.jpg'"
-          class="item-image"
-        />
 
+        <!-- Bild -->
+        <img :src="item.bildUrl" class="item-image" />
+
+        <!-- Infos -->
         <div class="item-info">
+
           <div class="item-name">{{ item.name }}</div>
 
           <div class="item-custom" v-if="item.customization">
+            <div>Basis: {{ item.customization.baseName }}</div>
             <div>Größe: {{ item.customization.size }}</div>
             <div>Schriftart: {{ item.customization.fontFamily }}</div>
             <div>Farbe: {{ item.customization.fontColor }}</div>
@@ -60,8 +99,9 @@ onMounted(loadOrder);
           </div>
 
           <div class="item-price">
-            {{ item.price.toFixed(2) }} €
+            {{ (item.price * item.quantity).toFixed(2) }} €
           </div>
+
         </div>
       </div>
     </div>
@@ -69,129 +109,151 @@ onMounted(loadOrder);
     <!-- TOTAL -->
     <div class="total-box">
       <span>Gesamtbetrag</span>
-      <span>{{ (order.total ?? 0).toFixed(2) }} €</span>
+      <span class="total-amount">{{ (order.total ?? 0).toFixed(2) }} €</span>
     </div>
+
   </div>
 
-  <Footer />
+</section>
+    <Footer />
+ 
 </template>
 
+
+
 <style scoped>
-.details-container {
-  width: 100%;
-  max-width: 700px;
+.page-content {
+  min-height: calc(100vh - 350px);
+}
+
+
+.details-wrapper {
+  max-width: 850px;
   margin: 40px auto;
-  padding: 10px;
+  padding: 20px;
 }
 
 /* HEADER CARD */
 .details-header {
   background: var(--rose);
-  padding: 22px;
+  padding: 25px;
   border-radius: 18px;
+
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 18px;
 
-  box-shadow: 0 4px 14px rgba(0,0,0,0.12);
-  margin-bottom: 25px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.12);
+  margin-bottom: 35px;
 }
 
-/* BACK BUTTON */
 .back-btn {
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  background: var(--white);
-  border-radius: 50%;
+  background: white;
   border: none;
+  border-radius: 50%;
 
   font-size: 20px;
   cursor: pointer;
 
+  transition: 0.25s ease;
   box-shadow: 0 2px 10px rgba(0,0,0,0.12);
-  transition: 0.2s ease;
 }
 
 .back-btn:hover {
-  transform: translateX(-3px);
-  box-shadow: 0 3px 14px rgba(0,0,0,0.18);
+  transform: translateX(-4px);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.18);
 }
 
 .order-title {
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   font-weight: 700;
-  margin: 0;
-  color: var(--black);
 }
 
 .customer-name {
-  margin-top: -4px;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
+  margin-top: 4px;
   color: var(--dark-gray);
 }
 
 /* PRODUKT-LISTE */
-.item-row {
+.items-list {
   display: flex;
-  align-items: center;
-  padding: 16px;
-  background: var(--light-gray);
-  margin-bottom: 14px;
-  border-radius: 14px;
-
-  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  flex-direction: column;
+  gap: 18px;
 }
 
-.item-img {
-  width: 85px;
-  height: 85px;
-  border-radius: 12px;
+.item-card {
+  display: flex;
+  background: var(--light-gray);
+  border-radius: 18px;
+  padding: 16px;
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  gap: 16px;
+}
+
+.item-image {
+  width: 110px;
+  height: 110px;
   object-fit: cover;
+  border-radius: 14px;
 }
 
 .item-info {
   flex-grow: 1;
-  padding-left: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .item-name {
+  font-size: 1.1rem;
   font-weight: 600;
-  font-size: 1rem;
 }
 
-.item-price {
-  font-weight: 700;
-  color: var(--black);
+.item-custom {
+  font-size: 0.85rem;
+  color: var(--dark-gray);
   margin-top: 5px;
 }
 
-/* CHECKMARK ICON */
-.item-check {
-  font-size: 1.2rem;
-  color: var(--zweitfarbe);
-  font-weight: bold;
+.item-price {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--black);
+  margin-top: 8px;
 }
 
 /* SUMME */
-.total-row {
-  background: var(--light-gray);
+.total-box {
+  margin-top: 30px;
+  background: var(--rose);
   padding: 20px;
-  margin-top: 10px;
 
+  border-radius: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-  border-radius: 14px;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: 700;
+  color: white;
 
-  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+.total-amount {
+  font-size: 1.3rem;
+}
+.footer-wrapper {
+  margin-top: auto;
 }
 
 

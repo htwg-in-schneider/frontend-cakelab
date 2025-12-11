@@ -1,14 +1,55 @@
 <script setup>
 import { onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
 import Navbar from '@/components/Navbar.vue';
 import Footer from '@/components/Footer.vue';
 
-
 const orders = ref([]);
+const router = useRouter();
+
+
+const API_URL = "http://localhost:8081/api/orders";
 
 async function loadOrders() {
-  const res = await fetch("http://localhost:8081/api/orders");
-  orders.value = await res.json();
+  const res = await fetch(API_URL);
+  const allOrders = await res.json();
+
+  // Nur Bestellungen anzeigen, die NICHT fertig sind
+  orders.value = allOrders.filter(o => o.status !== "fertig");
+}
+
+
+async function setStatus(id, status) {
+  // komplette Bestellung abrufen
+  const res = await fetch(`${API_URL}/${id}`);
+  const fullOrder = await res.json();
+
+  // Wenn Status bereits gesetzt → wieder auf "offen"
+  const newStatus = fullOrder.status === status ? "offen" : status;
+
+  fullOrder.status = newStatus;
+
+  // speichern
+  await fetch(`${API_URL}/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(fullOrder),
+  });
+
+  loadOrders();
+}
+
+
+async function finishOrder(id) {
+  await fetch(`${API_URL}/${id}/finish`, {
+    method: "PATCH"
+  });
+
+  loadOrders();
+}
+
+function goToOrderDetails(id) {
+  router.push(`/admin/orders/${id}`);
 }
 
 onMounted(loadOrders);
@@ -18,7 +59,6 @@ onMounted(loadOrders);
   <Navbar />
 
   <div class="admin-container">
-
     <h2 class="admin-title">Bestellübersicht</h2>
 
     <div class="orders-list">
@@ -27,33 +67,59 @@ onMounted(loadOrders);
         <div class="order-header">
           <div>
             <div class="order-id">Bestell-ID: {{ order.id }}</div>
+
             <div class="order-meta">
-        Anzahl Artikel: {{ order.items.length }}
+              Anzahl Artikel: {{ order.items.length }}
             </div>
+
             <div class="order-meta">
               Summe: {{ (order.total ?? 0).toFixed(2) }} €
-
             </div>
-          </div>
 
-          <button class="delete-btn">🗑</button>
+            <div class="order-meta">
+              Status:
+              <span class="status-badge" :class="order.status">
+                {{ order.status ?? "offen" }}
+              </span>
+            </div>
+
+          </div>
         </div>
 
-        <!-- Status -->
         <div class="order-actions">
-          <button class="btn-order" @click="$router.push({ name: 'admin-order-details', params: { id: order.id } })">
-            Zur Bestellung
-          </button>
+  
+  <!-- Linker Button -->
+  <button
+    class="btn-order"
+    @click="goToOrderDetails(order.id)"
+  >
+    Zur Bestellung →
+  </button>
 
-          <div class="order-status-buttons">
-            <button class="btn-status">In Bearbeitung</button>
-            <button class="btn-status">Fertig</button>
-          </div>
-        </div>
+  <!-- Rechte Buttons -->
+  <div class="order-status-buttons">
+    <button
+      class="btn-status"
+      :class="{ activeButton: order.status === 'In bearbeitung' }"
+      @click="setStatus(order.id, 'In bearbeitung')"
+    >
+      In Bearbeitung
+    </button>
+
+    <button
+      class="btn-status"
+      @click="finishOrder(order.id)"
+    >
+      Fertig
+    </button>
+  </div>
+
+</div>
 
       </div>
     </div>
   </div>
+
   <Footer />
 </template>
 
@@ -82,6 +148,18 @@ onMounted(loadOrders);
   border-radius: 16px;
   border: 1px solid #ddd;
 }
+.order-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  width: 100%;
+}
+
+.order-status-buttons {
+  display: flex;
+  gap: 10px;
+}
 
 .order-header {
   display: flex;
@@ -100,12 +178,42 @@ onMounted(loadOrders);
   font-size: 0.9rem;
 }
 
-.delete-btn {
+
+.btn-order {
+  background: var(--rose);
   border: none;
-  background: transparent;
-  font-size: 1.3rem;
+  padding: 6px 16px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 600;
   cursor: pointer;
+  transition: 0.25s ease;
+  color: white;
 }
+
+.btn-order:hover {
+  background: var(--zweitfarbe);
+  transform: translateY(-2px);
+}
+
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: capitalize;
+  margin-left: 6px;
+}
+
+
+.btn-status.activeButton {
+  background: var(--zweitfarbe);
+  color: white;
+  border-color: var(--zweitfarbe);
+  transform: translateY(-2px);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+}
+
 
 .status-row {
   margin-top: 15px;
