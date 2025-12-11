@@ -1,5 +1,5 @@
 <script setup>
-  import { useAuth0 } from '@auth0/auth0-vue'
+  import { useAuth0 } from '@auth0/auth0-vue';
 import { defineProps, defineModel } from "vue";
 const { loginWithRedirect, logout, user, isAuthenticated, isLoading } = useAuth0()
 

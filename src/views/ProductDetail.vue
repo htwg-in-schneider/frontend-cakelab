@@ -7,7 +7,7 @@ import NavButton from '@/components/NavButton.vue';
 import Button from '@/components/Button.vue';
 import ProductCard from '@/components/ProductCard.vue';
 import ProductReviews from '@/components/ProductReviews.vue';
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed , watch} from 'vue';
 import { useCartStore } from "@/stores/cart";
 const url = 'http://localhost:8081/api/product';
 
@@ -45,6 +45,9 @@ async function fetchAllProducts() {
   }
 }
 onMounted(async () => {await fetchProduct(); await fetchAllProducts()} );
+watch(() => props.id, async () => {
+  await fetchProduct();
+});
 
 // Related products (alle außer dieses)
 const related = computed(() =>{
