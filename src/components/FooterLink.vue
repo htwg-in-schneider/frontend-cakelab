@@ -1,15 +1,14 @@
 <script setup>
 const props = defineProps({
   text: { type: String, required: true },
-  label: { type: String, default: '' },
-  href: { type: String, default: '#' }
+  to:   { type: String, required: true }
 });
 </script>
 
 <template>
-  <a :href="href" class="footer-link" :aria-label="label">
+  <router-link :to="to" class="footer-link">
     {{ text }}
-  </a>
+  </router-link>
 </template>
 
 <style scoped>

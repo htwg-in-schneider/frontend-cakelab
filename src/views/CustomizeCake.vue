@@ -1,21 +1,119 @@
 <script setup>import Navbar from '@/components/Navbar.vue';
 import Footer from '@/components/Footer.vue';
-import { torten } from '@/data.js';
-import { ref } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import ZusatzInfo from '@/components/ZusatzInfo.vue';
+import DropdownMenu from '@/components/DropdownMenu.vue';
+import Popup from '@/components/Popup.vue';
+import { useCartStore } from '@/stores/cart';
 
 const selectedBase = ref(null);
 const selectedSize = ref(null);
 const fontColor = ref("");
 const fontFamily = ref("");
 const textInput = ref("");
+const torten = ref([]);
+const cart = useCartStore();
+const popup = ref(null);
+
+const errors = ref({
+  base: false,
+  size: false,
+  fontFamily: false,
+  fontColor: false,
+  textInput: false
+});
+
+const sizePrices = {
+  "Ø 18 cm": 0,
+  "Ø 22 cm": 3,
+  "Ø 26 cm": 6,
+  "Ø 31 cm": 9
+};
+
+const isFormValid = computed(() => {
+  return (
+    selectedBase.value &&
+    selectedSize.value &&
+    fontFamily.value &&
+    fontColor.value &&
+    textInput.value.trim().length > 0
+  );
+});
+
+const totalPrice = computed(() => {
+  if (!selectedBase.value) return 0;
+
+  const base = torten.value.find(p => p.id === selectedBase.value);
+  if (!base) return 0;
+
+  const extra = selectedSize.value ? sizePrices[selectedSize.value] : 0;
+
+  return base.preis + extra;
+});
+
+const url = 'http://localhost:8081/api/product';
+
+async function fetchTorten() {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error("Fehler beim Laden der Produkte");
+    }
+    torten.value = await response.json();
+    console.log("CustomizeCake → Torten geladen:", torten.value);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+onMounted(fetchTorten);
+
+function addCustomizedCake() {
+  // Einzelvalidierung
+  errors.value.base = !selectedBase.value;
+  errors.value.size = !selectedSize.value;
+  errors.value.fontFamily = !fontFamily.value;
+  errors.value.fontColor = !fontColor.value;
+  errors.value.textInput = textInput.value.trim().length === 0;
+
+  // Wenn ungültig → Popup + Abbruch
+  if (!isFormValid.value) {
+    popup.value?.show("Bitte alle Felder ausfüllen.", "error");
+    return;
+  }
+
+  const base = torten.value.find(p => p.id === selectedBase.value);
+
+  const customization = {
+    baseCakeId: selectedBase.value,
+    size: selectedSize.value,
+    fontFamily: fontFamily.value,
+    fontColor: fontColor.value,
+    text: textInput.value,
+  };
+
+  const item = {
+    id: 999,
+    name: "Customized Cake",
+    preis: totalPrice.value,  
+    bildUrl: base.bildUrl,
+  };
+
+  cart.addItem(item, customization);
+  cart.openCart();
+
+  popup.value?.show("Torte wurde hinzugefügt!", "success");
+
+}
+
 
 </script>
 
 
+
 <template>
   <Navbar />
-  <ZusatzInfo/>
+  <ZusatzInfo />
   <section class="container py-5 customize-section">
     <h1 class="fw-bold mb-2">Customize your cake</h1>
     <p class="text-muted mb-4"> Wähle eine Basis sowie Schriftart, Farbe und Größe für deine individuelle Torte. </p>
@@ -43,13 +141,14 @@ const textInput = ref("");
         <h2 class="fw-bold mb-3">2. Wähle deinen Text</h2>
         <div class="config-box p-4">
           <label class="fw-bold mb-1">Schriftart</label>
-          <v-select
-            :options="['Handschrift', 'Serif', 'Sans-Serif', 'Playful Brush', 'Elegant', 'Modern']"
-            v-model="fontFamily" class="custom-vselect mb-3" placeholder="Schriftart wählen" />
+          <DropdownMenu :options="['Handschrift', 'Serif', 'Sans-Serif', 'Playful Brush', 'Elegant', 'Modern']"
+            v-model="fontFamily" placeholder="Schriftart wählen" />
+
           <label class="fw-bold mb-1">Schriftfarbe</label>
 
-          <v-select :options="['Schwarz', 'Weiß', 'Rot', 'Rosa', 'Blau', 'Grün', 'Gelb', 'Orange', 'Braun', 'Lila']"
-            v-model="fontColor" class="custom-vselect mb-3" placeholder="Farbe wählen" />
+          <DropdownMenu :options="['Schwarz', 'Weiß', 'Rot', 'Rosa', 'Blau', 'Grün', 'Gelb', 'Orange', 'Braun', 'Lila']"
+            v-model="fontColor" placeholder="Farbe wählen" />
+
           <label class="fw-bold mb-1">Text</label>
           <input type="text" class="form-control" placeholder="Gib deinen Text ein" v-model="textInput"
             maxlength="50" />
@@ -67,15 +166,27 @@ const textInput = ref("");
       <div class="col-12 col-lg-6 mb-5">
         <h2 class="fw-bold mb-3">3. Wähle die Größe</h2>
         <div class="size-grid">
-          <div v-for="size in ['Ø 18 cm', 'Ø 22 cm', 'Ø 26 cm', 'Ø 31 cm']" :key="size" class="size-item"
-            :class="{ selected: selectedSize === size }" @click="selectedSize = size">
-            {{ size }}
-          </div>
+         <div
+  v-for="size in Object.keys(sizePrices)"
+  :key="size"
+  class="size-item"
+  :class="{ selected: selectedSize === size }"
+  @click="selectedSize = size"
+>
+  <div>{{ size }}</div>
+  <div class="size-extra">+{{ sizePrices[size] }} €</div>
+</div>
+
+          <p class="fw-bold mt-3 " style="font-size: 24px;">
+            Gesamtpreis: {{ totalPrice }} €
+          </p>
+
         </div>
       </div>
-      <button class="fertig-btn mt-3">Fertig</button>
+      <button class="fertig-btn mt-3" :disabled="!isFormValid" @click="addCustomizedCake">Fertig</button>
     </div>
   </section>
+  <Popup ref="popup" />
   <Footer />
 </template>
 
@@ -96,7 +207,7 @@ const textInput = ref("");
   background: var(--light-gray);
   border-radius: 16px;
   padding: 32px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
 }
 
 /* Base cards */
@@ -119,13 +230,13 @@ const textInput = ref("");
 .base-card:hover {
   transform: translateY(-6px);
   border-color: var(--rose);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
 }
 
 .base-card.selected {
   border-color: var(--zweitfarbe);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-  background-color:rgba(105, 16, 49, 0.15) ;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  background-color: rgba(105, 16, 49, 0.15);
 }
 
 .base-image {
@@ -164,6 +275,13 @@ const textInput = ref("");
   transform: translateY(-4px);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
 }
+.size-extra {
+  font-size: 14px;
+  color: var(--dark-gray);
+  margin-top: 4px;
+  opacity: 0.8;
+}
+
 
 /* Fertig Button */
 .fertig-btn {
@@ -184,6 +302,12 @@ const textInput = ref("");
   opacity: 0.9;
   transform: translateY(-2px);
 }
+
+.fertig-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
 
 /* Character counter */
 .char-counter {
@@ -209,50 +333,7 @@ const textInput = ref("");
 
 .form-control:focus {
   border-color: var(--zweitfarbe);
-  box-shadow: 0 0 0 4px rgba(146,108,135,0.25);
-}
-
-/* v-select styling */
-.custom-vselect {
-  width: 100%;
-}
-
-.custom-vselect :deep(.vs__dropdown-toggle) {
-  border-radius: 30px;
-  background: var(--white);
-  border: 2px solid var(--zweitfarbe);
-  padding: 8px 18px;
-}
-
-.custom-vselect :deep(.vs__dropdown-toggle:hover) {
-  border-color: var(--black);
-}
-
-.custom-vselect :deep(.vs__dropdown-menu) {
-  border-radius: 16px;
-  background: var(--white);
-  border: 1px solid var(--rose);
-}
-
-.custom-vselect :deep(.vs__option) {
-  color: var(--dark-gray);
-}
-
-.custom-vselect :deep(.vs__dropdown-option--highlight) {
-  background: var(--zweitfarbe);
-  color: var(--white);
-}
-/* Kein Eingabe-Cursor im geschlossenen Zustand UND im offenen: */
-.custom-vselect :deep(.vs__dropdown-toggle),
-.custom-vselect :deep(.vs__search){
-  cursor: pointer ;
-  caret-color: transparent;
-}
-
-
-/* Clear X entfernen */
-.custom-vselect :deep(.vs__clear) {
-  display: none;
+  box-shadow: 0 0 0 4px rgba(146, 108, 135, 0.25);
 }
 
 </style>

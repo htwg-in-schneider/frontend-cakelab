@@ -8,7 +8,7 @@ import Button from '@/components/Button.vue';
 import ProductCard from '@/components/ProductCard.vue';
 
 import { ref, onMounted, computed } from 'vue';
-
+import { useCartStore } from "@/stores/cart";
 const url = 'http://localhost:8081/api/product';
 
 
@@ -54,6 +54,17 @@ const related = computed(() =>{
     .slice(0, 4);
 
   });
+
+
+const cart = useCartStore();
+const showCart = ref(false);
+
+function addToCart() {
+  if (!product.value) return;
+  cart.addItem(product.value);
+  showCart.value = true;
+}
+
 </script>
 
 <template>
@@ -76,7 +87,14 @@ const related = computed(() =>{
         <p class="fw-bold fs-4">{{ product.preis }} €</p>
         <p class="desc">{{ product.beschreibung }}</p>
 
-        <Button variant="accent" class="mt-3 mb-5">In den Warenkorb</Button>
+        <Button 
+  variant="accent" 
+  class="mt-3 mb-5"
+  @click="addToCart"
+>
+  In den Warenkorb
+</Button>
+
       </div>
 
     </div>   
@@ -112,6 +130,10 @@ const related = computed(() =>{
 </template>
 
 <style scoped>
+  .ProductCard {
+  width: 100% !important;
+}
+
 .detail-container {
   align-items: start;
 }
@@ -145,4 +167,20 @@ const related = computed(() =>{
   min-width: 75%;
   scroll-snap-align: center;
 }
+
+/* 2 Karten bereits sehr früh aktiv */
+@media (max-width: 1500px) {
+  .slider-item {
+    min-width: 50%; /* halb so breit → 2 sichtbar */
+  }
+}
+
+/* 1 Karte erst auf kleinen Geräten */
+@media (max-width: 700px) {
+  .slider-item {
+    min-width: 75%;
+  }
+}
+
+
 </style>
