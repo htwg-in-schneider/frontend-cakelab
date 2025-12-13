@@ -1,13 +1,31 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
+import { useAuth0 } from '@auth0/auth0-vue';
 import { useRouter } from 'vue-router';
 import Button from '@/components/Button.vue';
 import Popup from '@/components/Popup.vue';
 import DropdownMenu from '@/components/DropdownMenu.vue';
+ const { loginWithRedirect, logout, user, isAuthenticated, isLoading } = useAuth0(); 
+
+
 
 const router = useRouter();
 const popup = ref(null);
 const API_URL = 'http://localhost:8081/api/product';
+
+
+const handleLogin = () => {
+  loginWithRedirect()
+}
+
+const handleLogout = () => {
+  logout({
+    logoutParams: {
+      returnTo: window.location.origin
+    }
+  })
+}
+
 
 // Body-Padding entfernen (wie Edit-Seite)
 onMounted(() => {
@@ -80,6 +98,15 @@ onMounted(loadCategories);
 </script>
 
 <template>
+    
+      <div v-if="!isLoading">
+              <h2>Login erforderlich</h2>
+      <p>Um diese Seite zu nutzen, musst du dich anmelden.</p>
+    <button v-if="!isAuthenticated" @click="handleLogin" class="btn btn-accent">
+      Anmelden
+    </button>
+</div>
+ <div v-else>
     <Popup ref="popup" />
     <div class="create-page">
         <div class="create-card">
@@ -131,6 +158,7 @@ onMounted(loadCategories);
             </form>
         </div>
     </div>
+     </div>
 </template>
 
 <style scoped>

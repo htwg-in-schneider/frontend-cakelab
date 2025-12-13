@@ -16,10 +16,12 @@ function copyToClipboard(event) {
 
 function getRoleName(constant) {
   switch (constant) {
-    case 'MITARBEITER':
-      return 'Mitarbeiter'
-    case 'BENUTZER':
-      return 'regulärer Benutzer'
+    case 'KUNDE':
+      return 'Kunde'
+    case 'ADMIN':
+      return 'Admin'
+      case 'Gast':
+        return 'Gast'
     default:
       return constant;
   }
