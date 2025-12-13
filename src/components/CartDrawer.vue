@@ -1,8 +1,10 @@
 <script setup>
 import { computed } from "vue";
 import { useCartStore } from "@/stores/cart";
+import { useRouter } from "vue-router";
 
 const cart = useCartStore();
+const router = useRouter();
 
 // Items
 const cartItems = computed(() => cart.items);
@@ -21,7 +23,7 @@ const shippingLabel = computed(() => {
     : "3.99 €";
 });
 
-// Fortschritt für Versandfrei
+// Versandfrei
 const missing = computed(() => cart.amountMissingForFreeShipping.toFixed(2));
 const progress = computed(() => (cart.freeShippingProgress * 100).toFixed(0));
 
@@ -32,6 +34,7 @@ const freeShippingText = computed(() =>
 );
 
 // Bestellung absenden
+
 async function submitOrder() {
   if (cart.items.length === 0) return;
 
@@ -57,7 +60,6 @@ async function submitOrder() {
     total: cart.cartTotal + shippingCost.value
   };
 
-  try {
     const response = await fetch("http://localhost:8081/api/orders", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -65,19 +67,24 @@ async function submitOrder() {
     });
 
     if (!response.ok) {
-      throw new Error("Fehler beim Absenden der Bestellung");
+      return; 
     }
 
-    const savedOrder = await response.json();
-    console.log("Bestellung gespeichert:", savedOrder);
+    
+   const finalTotal = cart.cartTotal + shippingCost.value;
+
+cart.saveLastOrder({
+  itemCount: cart.itemCount,
+  total: finalTotal,
+  shippingFree: shippingCost.value === 0
+});
 
     cart.clearCart();
-    alert("Bestellung erfolgreich!");
-  } catch (err) {
-    console.error(err);
-    alert("Es ist ein Fehler aufgetreten!");
-  }
+    cart.closeCart?.(); 
+    router.push("/bestellbestaetigung");
+
 }
+
 </script>
 
 <template>

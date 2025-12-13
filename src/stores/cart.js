@@ -7,6 +7,7 @@ export const useCartStore = defineStore("cart", {
     items: [],
     showCart: false,
     freeShippingLimit: FREE_SHIPPING_LIMIT,
+    lastOrder: null,
   }),
 
   getters: {
@@ -38,6 +39,10 @@ export const useCartStore = defineStore("cart", {
       this.showCart = false;
     },
 
+    saveLastOrder(order) {
+      this.lastOrder = order;
+    },
+
     addItem(product, customization = null) {
       const lineId = crypto.randomUUID
         ? crypto.randomUUID()
@@ -45,7 +50,6 @@ export const useCartStore = defineStore("cart", {
 
       this.items.push({
         lineId,
-        id: lineId,
         productId: product.id,
         name: product.name,
         preis: product.preis,
@@ -75,11 +79,11 @@ export const useCartStore = defineStore("cart", {
       const order = {
         total: this.cartTotal,
         items: this.items.map((item) => ({
-          productId: item.id,
+          productId: item.productId,
           name: item.name,
           price: item.preis,
           quantity: item.quantity,
-          customization: item.customization || null,
+          customization: item.customization ?? null,
         })),
       };
 
@@ -89,13 +93,18 @@ export const useCartStore = defineStore("cart", {
         body: JSON.stringify(order),
       });
 
-      if (!response.ok) {
-        throw new Error("Fehler beim Abschicken der Bestellung");
-      }
+      if (!response.ok) return null;
 
       const savedOrder = await response.json();
 
-      this.items = []; // Warenkorb leeren
+      this.saveLastOrder({
+        itemCount: this.itemCount,
+        total: this.cartTotal,
+        shippingFree: this.cartTotal >= this.freeShippingLimit,
+      });
+
+      this.items = [];
+      this.showCart = false;
 
       return savedOrder;
     },

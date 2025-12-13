@@ -3,7 +3,6 @@ import Footer from '@/components/Footer.vue';
 import { ref, onMounted, computed } from 'vue';
 import ZusatzInfo from '@/components/ZusatzInfo.vue';
 import DropdownMenu from '@/components/DropdownMenu.vue';
-import Popup from '@/components/Popup.vue';
 import { useCartStore } from '@/stores/cart';
 
 const selectedBase = ref(null);
@@ -13,7 +12,6 @@ const fontFamily = ref("");
 const textInput = ref("");
 const torten = ref([]);
 const cart = useCartStore();
-const popup = ref(null);
 
 const errors = ref({
   base: false,
@@ -76,11 +74,7 @@ function addCustomizedCake() {
   errors.value.fontColor = !fontColor.value;
   errors.value.textInput = textInput.value.trim().length === 0;
 
-  // Wenn ungültig → Popup + Abbruch
-  if (!isFormValid.value) {
-    popup.value?.show("Bitte alle Felder ausfüllen.", "error");
-    return;
-  }
+
 
 const baseProduct = torten.value.find(p => p.id === selectedBase.value);
 
@@ -106,7 +100,6 @@ const customization = {
   cart.addItem(item, customization);
   cart.openCart();
 
-  popup.value?.show("Torte wurde hinzugefügt!", "success");
 
 }
 
@@ -190,7 +183,8 @@ const customization = {
       <button class="fertig-btn mt-3" :disabled="!isFormValid" @click="addCustomizedCake">Fertig</button>
     </div>
   </section>
-  <Popup ref="popup" />
+
+
   <Footer />
 </template>
 
