@@ -2,6 +2,10 @@
 import { ref } from "vue";
 import { useCartStore } from "@/stores/cart";
 import CartDrawer from "@/components/CartDrawer.vue";
+import router from "@/router";
+import { useAuth0 } from '@auth0/auth0-vue';
+import { routerKey } from "vue-router";
+ const { user, isAuthenticated } = useAuth0(); 
 
 console.log("Drawer:", CartDrawer); // <-- Test
 
@@ -44,10 +48,15 @@ const cart = useCartStore();
 
           <!-- Account -->
           <li class="nav-item ms-3">
-            <router-link to="/login">
-              <img src="/src/assets/images/account_image.png" alt="Account" class="icon-img">
-            </router-link>
+            <router-link v-if="!isAuthenticated" to="/login">
+    <img src="/src/assets/images/account_image.png" alt="Account" class="icon-img">
+  </router-link>
+
+  <router-link v-else to="/profile">
+    <img src="/src/assets/images/account_image.png" alt="Account" class="icon-img">
+  </router-link>
           </li>
+         
 
           <!-- Warenkorb Icon -->
           <li class="nav-item ms-3 position-relative">

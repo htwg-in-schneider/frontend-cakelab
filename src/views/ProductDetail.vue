@@ -6,7 +6,7 @@ import ZusatzInfo from '@/components/ZusatzInfo.vue';
 import NavButton from '@/components/NavButton.vue';
 import Button from '@/components/Button.vue';
 import ProductCard from '@/components/ProductCard.vue';
-import ProductReviews from '@/components/ProductReviews.vue';
+import CakeReviews from '@/components/CakeReviews.vue';
 import { ref, onMounted, computed , watch} from 'vue';
 import { useCartStore } from "@/stores/cart";
 const url = 'http://localhost:8081/api/product';
@@ -97,7 +97,7 @@ function addToCart() {
 >
   In den Warenkorb
 </Button>
- <ProductReviews :productId="id"/>
+ <CakeReviews :productId="id"/>
       </div>
 
     </div>  

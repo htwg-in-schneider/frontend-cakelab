@@ -4,6 +4,9 @@ import { useRoute, useRouter } from 'vue-router';
 import Button from '@/components/Button.vue';
 import Popup from '@/components/Popup.vue';
 import DropdownMenu from '@/components/DropdownMenu.vue';
+import { useAuth0 } from '@auth0/auth0-vue';
+ const { loginWithRedirect, logout, user, isAuthenticated,  getAccessTokenSilently } = useAuth0(); 
+
 
 const popup = ref(null);
 
@@ -52,10 +55,13 @@ async function fetchProduct() {
 async function updateProduct() {
   try {
     isSaving.value = true;
-
+const token = await getAccessTokenSilently();
     const response = await fetch(`${API_URL}/${product.value.id}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+     headers: { 
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
       body: JSON.stringify(product.value),
     });
 
@@ -80,8 +86,12 @@ async function updateProduct() {
 async function deleteProduct() {
 
   try {
+     const token = await getAccessTokenSilently();
     const response = await fetch(`${API_URL}/${product.value.id}`, {
       method: "DELETE",
+       headers: {
+        Authorization: `Bearer ${token}`
+      }
     });
 
     if (!response.ok) throw new Error();
@@ -121,6 +131,7 @@ onMounted(loadCategories);
 
 
 <template>
+
   <Popup ref="popup" />
   <div class="edit-page">
     <div class="edit-card">
@@ -190,6 +201,7 @@ onMounted(loadCategories);
       </div>
     </div>
   </div>
+ 
 </template>
 
 <style scoped>

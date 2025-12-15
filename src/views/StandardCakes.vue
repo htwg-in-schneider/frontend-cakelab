@@ -1,15 +1,43 @@
 <script setup>
-import { ref, onMounted } from 'vue';
 import Navbar from '@/components/Navbar.vue';
 import Footer from '@/components/Footer.vue';
 import ZusatzInfo from '@/components/ZusatzInfo.vue';
 import Searching from '@/components/Searching.vue';
 import ProductCard from '@/components/ProductCard.vue';
+import { ref, onMounted, watch } from 'vue';
+import { useAuth0 } from '@auth0/auth0-vue';
 
+const { isAuthenticated, getAccessTokenSilently } = useAuth0();
+const isAdmin = ref(false);
 const url = 'http://localhost:8081/api/product';
 
 const torten = ref([]);
+onMounted(async () => {
+  fetchProducts();
+  if (isAuthenticated.value) {
+    checkAdminRole();
+  }
+});
 
+watch(isAuthenticated, (newValue) => {
+  if (newValue) {
+    checkAdminRole();
+  }
+});
+async function checkAdminRole() {
+  try {
+    const token = await getAccessTokenSilently();
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/profile`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (response.ok) {
+      const data = await response.json();
+      isAdmin.value = data.role === 'ADMIN';
+    }
+  } catch (error) {
+    console.error('Error checking admin role:', error);
+  }
+}
 async function fetchProducts(filters = {}) {
   try {
     const params = new URLSearchParams();
@@ -45,7 +73,7 @@ onMounted(() => {
   <Navbar />
   <ZusatzInfo />
   <Searching @productUpdate="fetchProducts" />
-  <div class="container mt-5 pt-5 pb-5">
+  
 
     <!-- HEADER + ICON ALS FLEX-BOX -->
   <div class="d-flex align-items-center justify-content-between mb-3">
@@ -59,14 +87,16 @@ onMounted(() => {
   </div>
 
   <!-- Add Icon -->
+   <div v-if="isAdmin">
   <RouterLink to="/product/create" class="icon-wrapper">
     <img src="\assets\images\plus_icon.png" alt="Torte hinzufügen" class="add-icon" />
   </RouterLink>
 </div>
+  
 
     <div class="row g-4 mt-4">
       <div v-for="item in torten" :key="item.id" class="col-12 col-md-6 col-lg-4">
-        <ProductCard :product="item" />
+        <ProductCard :product="item" :show-edit-button="isAdmin"  />
       </div>
     </div>
 

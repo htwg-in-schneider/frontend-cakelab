@@ -3,7 +3,7 @@ import { useAuth0 } from '@auth0/auth0-vue'
 import { onMounted, ref } from 'vue'
 import Navbar from '@/components/Navbar.vue'
 import Footer from '@/components/Footer.vue'
-
+import Login  from './Login.vue'
 const { user, isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0()
 const profileData = ref(null)
 const bearerToken = ref('')
@@ -13,6 +13,7 @@ function copyToClipboard(event) {
   event.target.select()
   navigator.clipboard.writeText(event.target.value)
 }
+
 
 function getRoleName(constant) {
   switch (constant) {
@@ -89,6 +90,12 @@ onMounted(async () => {
           </details>
         </div>
       </div>
+      <RouterLink
+  to="/login"
+  class="btn btn-secondary w-100"
+>
+  Abmelden
+</RouterLink>
     </div>
 
     <div v-else class="alert alert-warning text-center">

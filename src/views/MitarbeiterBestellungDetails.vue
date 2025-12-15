@@ -3,6 +3,7 @@ import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import NavBar from '@/components/Navbar.vue';
 import Footer from '@/components/Footer.vue';
+import { useAuth0 } from '@auth0/auth0-vue';
 
 const route = useRoute();
 const order = ref(null);

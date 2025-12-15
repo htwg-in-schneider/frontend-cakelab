@@ -32,13 +32,13 @@ function handleLogout() {
     <!-- LEFT: Login Card -->
     <div v-if="!isLoading" class="auth-left">
       <div class="auth-card shadow-lg">
-        <h2 class="fw-bold text-center mb-3" v-if="!isAuthenticated">Willkommen zurück</h2>
-<h2 class="fw-bold text-center mb-3" v-else> Auf Wiedersehen</h2>
-        <p class="text-center mb-4" v-if="!isAuthenticated">
-          Melde dich an um fortzufahren
-        </p>
-        <p v-else> Sie möchten Sich abmelden</p>
+        <h2 class="fw-bold text-center mb-3">Willkommen zurück</h2>
 
+        <p v-if="!isAuthenticated" class="text-center mb-4">
+           Melde dich an, um fortzufahren
+        
+        </p>
+<p v-else > Sie möchten SIch abmelden? </p>
         <!-- Login Button -->
         <button v-if="!isAuthenticated" @click="handleLogin" class="btn btn-accent w-100">
           Anmelden

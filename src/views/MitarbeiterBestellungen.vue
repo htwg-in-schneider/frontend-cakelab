@@ -1,23 +1,51 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref , watch} from "vue";
 import Navbar from '@/components/Navbar.vue';
 import Footer from '@/components/Footer.vue';
-
-
+import { useAuth0 } from '@auth0/auth0-vue';
+ const {   isAuthenticated,  getAccessTokenSilently } = useAuth0(); 
 const orders = ref([]);
-
+const isAdmin=ref(false)
 async function loadOrders() {
   const res = await fetch("http://localhost:8081/api/orders");
   orders.value = await res.json();
 }
 
+onMounted(async () => {
+
+  if (isAuthenticated.value) {
+    checkAdminRole();
+  }
+});
+watch(isAuthenticated, (newValue) => {
+  if (newValue) {
+    checkAdminRole();
+  }
+});
+
+async function checkAdminRole() {
+  try {
+    const token = await getAccessTokenSilently();
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/profile`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (response.ok) {
+      const data = await response.json();
+      isAdmin.value = data.role === 'ADMIN';
+    }
+  } catch (error) {
+    console.error('Error checking admin role:', error);
+  }
+}
+
 onMounted(loadOrders);
 </script>
+
 
 <template>
   <Navbar />
 
-  <div class="admin-container">
+  <! -- div class="admin-container" v-if="isAdmin"  -->
 
     <h2 class="admin-title">Bestellübersicht</h2>
 
@@ -53,7 +81,7 @@ onMounted(loadOrders);
 
       </div>
     </div>
-  </div>
+  <!--/div-->
   <Footer />
 </template>
 

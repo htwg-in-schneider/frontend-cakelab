@@ -11,6 +11,7 @@ import MitarbeiterBestellungen from '@/views/MitarbeiterBestellungen.vue';
 import MitarbeiterBestellungDetails from '@/views/MitarbeiterBestellungDetails.vue';
 import Profile from '@/views/Profile.vue';
 
+import { authGuard } from '@auth0/auth0-vue';
 
 const routes = [
   {
@@ -27,12 +28,14 @@ const routes = [
   {
     path: '/product/:id',
     name: 'product',
+     beforeEnter: authGuard,
     component: ProductDetail,
     props: true
   },
   {
     path: '/product/create',
     name: 'product-create',
+     beforeEnter: authGuard,
     component: CreateProduct,
   },
     { path: '/profile', component: Profile },
@@ -40,6 +43,7 @@ const routes = [
   {
     path: '/product/edit/:id',
     name: 'product-edit',
+     beforeEnter: authGuard,
     component: () => import('@/views/EditProduct.vue'),
     
     props: true
@@ -47,6 +51,7 @@ const routes = [
   {
     path: "/admin/orders",
     name: "admin-orders",
+     beforeEnter: authGuard,
     component: MitarbeiterBestellungen
   },
 
@@ -54,17 +59,21 @@ const routes = [
     path: "/admin/orders/:id",
     name: "admin-order-details",
     component: MitarbeiterBestellungDetails,
+     beforeEnter: authGuard,
     props: true
   },
   {
     path: '/customize-cake',
     name: 'customizeCake',
-    component: CustomizeCake
+    component: CustomizeCake ,
+     beforeEnter: authGuard
   },
+
   {
     path: '/login',
     name: 'login',
-    component: Login
+    component: Login,
+     beforeEnter: authGuard
   },
   {
     path: '/registrieren',

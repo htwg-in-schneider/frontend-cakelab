@@ -5,7 +5,10 @@ import ZusatzInfo from '@/components/ZusatzInfo.vue';
 import DropdownMenu from '@/components/DropdownMenu.vue';
 import Popup from '@/components/Popup.vue';
 import { useCartStore } from '@/stores/cart';
+import { useAttrs } from 'vue';
 
+import  {useAuth0} from '@auth0/auth0-vue';
+const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
 const selectedBase = ref(null);
 const selectedSize = ref(null);
 const fontColor = ref("");
@@ -14,6 +17,13 @@ const textInput = ref("");
 const torten = ref([]);
 const cart = useCartStore();
 const popup = ref(null);
+onMounted(async () => {
+  fetchTorten();
+  if (isAuthenticated.value) {
+    checkAdminRole();
+  }
+});
+
 
 const errors = ref({
   base: false,
@@ -112,6 +122,7 @@ function addCustomizedCake() {
 
 
 <template>
+  <div v-if="isAuthenticated">
   <Navbar />
   <ZusatzInfo />
   <section class="container py-5 customize-section">
@@ -188,6 +199,7 @@ function addCustomizedCake() {
   </section>
   <Popup ref="popup" />
   <Footer />
+</div>
 </template>
 
 

@@ -5,7 +5,7 @@ import { useRouter } from 'vue-router';
 import Button from '@/components/Button.vue';
 import Popup from '@/components/Popup.vue';
 import DropdownMenu from '@/components/DropdownMenu.vue';
- const { loginWithRedirect, logout, user, isAuthenticated, isLoading } = useAuth0(); 
+ const {  getAccessTokenSilently , isAuthenticated } = useAuth0(); 
 
 
 
@@ -14,17 +14,6 @@ const popup = ref(null);
 const API_URL = 'http://localhost:8081/api/product';
 
 
-const handleLogin = () => {
-  loginWithRedirect()
-}
-
-const handleLogout = () => {
-  logout({
-    logoutParams: {
-      returnTo: window.location.origin
-    }
-  })
-}
 
 
 // Body-Padding entfernen (wie Edit-Seite)
@@ -56,10 +45,13 @@ function goBack() {
 async function createProduct() {
     try {
         isSaving.value = true;
-
+ const token = await getAccessTokenSilently();
         const response = await fetch(API_URL, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
             body: JSON.stringify(product.value),
         });
 
@@ -99,14 +91,7 @@ onMounted(loadCategories);
 
 <template>
     
-      <div v-if="!isLoading">
-              <h2>Login erforderlich</h2>
-      <p>Um diese Seite zu nutzen, musst du dich anmelden.</p>
-    <button v-if="!isAuthenticated" @click="handleLogin" class="btn btn-accent">
-      Anmelden
-    </button>
-</div>
- <div v-else>
+      
     <Popup ref="popup" />
     <div class="create-page">
         <div class="create-card">
@@ -158,7 +143,7 @@ onMounted(loadCategories);
             </form>
         </div>
     </div>
-     </div>
+    
 </template>
 
 <style scoped>

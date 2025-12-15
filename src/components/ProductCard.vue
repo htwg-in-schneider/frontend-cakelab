@@ -1,11 +1,14 @@
 <script setup>
 import NavButton from './NavButton.vue';
-
 defineProps({
   product: {
     type: Object,
-    required: true
-  }
+    required: true,
+  },
+  showEditButton: {
+    type: Boolean,
+    default: false,
+  },
 });
 </script>
 
@@ -27,7 +30,7 @@ defineProps({
       </NavButton>
 
       <!-- Bearbeiten -->
-      <NavButton
+      <NavButton v-if="showEditButton"
         variant="outline-dark"
         class="mt-2"
         :to="`/product/edit/${product.id}`"
