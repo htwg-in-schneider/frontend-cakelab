@@ -28,7 +28,7 @@ import Bestellbestaetigung from "@/views/Bestellbestaetigung.vue";
 import AboutUsSeite from "@/views/AboutUsSeite.vue";
 import Impressum from "@/views/Impressum.vue";
 import Datenschutz from "@/views/Datenschutz.vue";
->>>>>>> refs/remotes/origin/main
+import Profile from "@/views/Profile.vue";
 
 const routes = [
   {
@@ -65,7 +65,10 @@ const routes = [
 >>>>>>> refs/remotes/origin/main
     component: CreateProduct,
   },
-    { path: '/profile', component: Profile },
+
+  { path: "/profile",
+    component: Profile 
+  },
 
   {
 <<<<<<< HEAD
@@ -90,8 +93,7 @@ const routes = [
   {
     path: "/admin/orders",
     name: "admin-orders",
-     beforeEnter: authGuard,
-    component: MitarbeiterBestellungen
+    component: MitarbeiterBestellungen,
   },
 
   {

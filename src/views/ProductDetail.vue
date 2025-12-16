@@ -10,8 +10,7 @@ import CakeReviews from '@/components/CakeReviews.vue';
 import { ref, onMounted, computed , watch} from 'vue';
 =======
 
-import { ref, onMounted, computed } from 'vue';
->>>>>>> refs/remotes/origin/main
+import { ref, onMounted, computed, watch } from 'vue';
 import { useCartStore } from "@/stores/cart";
 const url = 'http://localhost:8081/api/product';
 
