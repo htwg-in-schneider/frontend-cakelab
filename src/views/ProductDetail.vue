@@ -6,7 +6,7 @@ import ZusatzInfo from '@/components/ZusatzInfo.vue';
 import Button from '@/components/Button.vue';
 import ProductCard from '@/components/ProductCard.vue';
 
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import { useCartStore } from "@/stores/cart";
 const url = 'http://localhost:8081/api/product';
 

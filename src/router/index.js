@@ -12,6 +12,7 @@ import Bestellbestaetigung from "@/views/Bestellbestaetigung.vue";
 import AboutUsSeite from "@/views/AboutUsSeite.vue";
 import Impressum from "@/views/Impressum.vue";
 import Datenschutz from "@/views/Datenschutz.vue";
+import Profile from "@/views/Profile.vue";
 
 const routes = [
   {
@@ -36,7 +37,10 @@ const routes = [
     name: "product-create",
     component: CreateProduct,
   },
-    { path: '/profile', component: Profile },
+
+  { path: "/profile",
+    component: Profile 
+  },
 
   {
     path: "/product/edit/:id",
@@ -52,7 +56,7 @@ const routes = [
   {
     path: "/admin/orders",
     name: "admin-orders",
-    component: MitarbeiterBestellungen
+    component: MitarbeiterBestellungen,
   },
 
   {

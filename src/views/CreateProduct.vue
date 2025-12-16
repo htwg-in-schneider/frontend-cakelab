@@ -1,6 +1,5 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
-import { useAuth0 } from '@auth0/auth0-vue';
 import { useRouter } from 'vue-router';
 import Button from '@/components/Button.vue';
 import Popup from '@/components/Popup.vue';
@@ -146,7 +145,6 @@ onMounted(loadCategories);
             </form>
         </div>
     </div>
-     </div>
 </template>
 
 <style scoped>
