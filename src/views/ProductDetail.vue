@@ -44,6 +44,9 @@ async function fetchAllProducts() {
   }
 }
 onMounted(async () => {await fetchProduct(); await fetchAllProducts()} );
+watch(() => props.id, async () => {
+  await fetchProduct();
+});
 
 // Related products (alle außer dieses)
 const related = computed(() =>{
@@ -56,7 +59,6 @@ const related = computed(() =>{
 
 
 const cart = useCartStore();
-
 
 function addToCart() {
   if (!product.value) return;
@@ -93,10 +95,10 @@ function addToCart() {
 >
   In den Warenkorb
 </Button>
-
       </div>
 
-    </div>   
+    </div>  
+   
 
     <!-- Related products -->
     <div class="related-box mt-5 p-4 text-center" >
@@ -194,7 +196,6 @@ function addToCart() {
   scroll-snap-align: center;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
-
 
 /* 2 Karten bereits sehr früh aktiv */
 @media (max-width: 1500px) {

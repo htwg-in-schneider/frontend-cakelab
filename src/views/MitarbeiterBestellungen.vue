@@ -119,7 +119,6 @@ onMounted(loadOrders);
       </div>
     </div>
   </div>
-
   <Footer />
 </template>
 

@@ -100,7 +100,7 @@ const cart = useCartStore();
 }
 
 .navbar .nav-link {
-    color: var(--black);
+    color: var(--rose);
     font-weight: 600;
 }
 

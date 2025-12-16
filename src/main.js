@@ -1,5 +1,5 @@
 import './assets/style.css'
-
+import { createAuth0 } from '@auth0/auth0-vue'
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router';
@@ -9,8 +9,16 @@ import 'vue3-select/dist/vue3-select.css'
 import 'https://unpkg.com/@phosphor-icons/web?module'
 
 const pinia = createPinia()
-
+const auth0 = createAuth0({
+    domain: import.meta.env.VITE_AUTH0_DOMAIN,
+    clientId: import.meta.env.VITE_AUTH0_CLIENT_ID,
+    authorizationParams: {
+        audience: import.meta.env.VITE_AUTH0_AUDIENCE,
+        redirect_uri: window.location.origin
+    }
+})
 createApp(App)
+.use(auth0)
   .use(router)
   .use(pinia)
   .component('v-select', Vue3Select)

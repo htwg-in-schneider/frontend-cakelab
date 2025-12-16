@@ -36,6 +36,7 @@ const routes = [
     name: "product-create",
     component: CreateProduct,
   },
+    { path: '/profile', component: Profile },
 
   {
     path: "/product/edit/:id",
@@ -47,6 +48,11 @@ const routes = [
     path: "/admin/orders",
     name: "admin-orders",
     component: MitarbeiterBestellungen,
+  },
+  {
+    path: "/admin/orders",
+    name: "admin-orders",
+    component: MitarbeiterBestellungen
   },
 
   {
