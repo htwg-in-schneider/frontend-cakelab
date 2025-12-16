@@ -15,7 +15,6 @@ const fontFamily = ref("");
 const textInput = ref("");
 const torten = ref([]);
 const cart = useCartStore();
-<<<<<<< HEAD
 const popup = ref(null);
 onMounted(async () => {
   fetchTorten();
@@ -23,10 +22,6 @@ onMounted(async () => {
     checkAdminRole();
   }
 });
-
-=======
->>>>>>> refs/remotes/origin/main
-
 const errors = ref({
   base: false,
   size: false,

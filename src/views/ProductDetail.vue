@@ -5,12 +5,10 @@ import ZusatzInfo from '@/components/ZusatzInfo.vue';
 
 import Button from '@/components/Button.vue';
 import ProductCard from '@/components/ProductCard.vue';
-<<<<<<< HEAD
+
 import CakeReviews from '@/components/CakeReviews.vue';
 import { ref, onMounted, computed , watch} from 'vue';
-=======
 
-import { ref, onMounted, computed, watch } from 'vue';
 import { useCartStore } from "@/stores/cart";
 const url = 'http://localhost:8081/api/product';
 
@@ -99,10 +97,9 @@ function addToCart() {
 >
   In den Warenkorb
 </Button>
-<<<<<<< HEAD
+
  <CakeReviews :productId="id"/>
-=======
->>>>>>> refs/remotes/origin/main
+
       </div>
 
     </div>  

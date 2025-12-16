@@ -1,6 +1,5 @@
 <script setup>
 import { onMounted, ref , watch} from "vue";
-import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import Navbar from '@/components/Navbar.vue';
 import Footer from '@/components/Footer.vue';
@@ -91,8 +90,6 @@ onMounted(loadOrders);
   <Navbar />
 
   <! -- div class="admin-container" v-if="isAdmin"  -->
-
-  <div class="admin-container">
     <h2 class="admin-title">Bestellübersicht</h2>
 
     <div class="orders-list">

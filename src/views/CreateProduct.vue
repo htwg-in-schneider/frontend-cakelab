@@ -4,13 +4,8 @@ import { useRouter } from 'vue-router';
 import Button from '@/components/Button.vue';
 import Popup from '@/components/Popup.vue';
 import DropdownMenu from '@/components/DropdownMenu.vue';
-<<<<<<< HEAD
+import { useAuth0 } from '@auth0/auth0-vue';
  const {  getAccessTokenSilently , isAuthenticated } = useAuth0(); 
-
-
-=======
->>>>>>> refs/remotes/origin/main
-
 const router = useRouter();
 const popup = ref(null);
 const API_URL = 'http://localhost:8081/api/product';
@@ -92,11 +87,6 @@ onMounted(loadCategories);
 </script>
 
 <template>
-<<<<<<< HEAD
-    
-      
-=======
->>>>>>> refs/remotes/origin/main
     <Popup ref="popup" />
     <div class="create-page">
         <div class="create-card">

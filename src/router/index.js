@@ -1,19 +1,7 @@
-<<<<<<< HEAD
-import { createRouter, createWebHistory } from 'vue-router';
-import ProductDetail from '../views/ProductDetail.vue';
-import CreateProduct from '@/views/CreateProduct.vue';
-import EditProduct from '@/views/EditProduct.vue';
-import Home from '../views/Home.vue';
-import StandardCakes from '../views/StandardCakes.vue';
-import CustomizeCake from '@/views/CustomizeCake.vue';
-import Login from '@/views/Login.vue';
-import Registrieren from '@/views/Registrieren.vue';
-import MitarbeiterBestellungen from '@/views/MitarbeiterBestellungen.vue';
-import MitarbeiterBestellungDetails from '@/views/MitarbeiterBestellungDetails.vue';
-import Profile from '@/views/Profile.vue';
+
 
 import { authGuard } from '@auth0/auth0-vue';
-=======
+
 import { createRouter, createWebHistory } from "vue-router";
 import ProductDetail from "../views/ProductDetail.vue";
 import CreateProduct from "@/views/CreateProduct.vue";
@@ -43,26 +31,18 @@ const routes = [
   },
 
   {
-<<<<<<< HEAD
+
     path: '/product/:id',
     name: 'product',
      beforeEnter: authGuard,
-=======
-    path: "/product/:id",
-    name: "product",
->>>>>>> refs/remotes/origin/main
     component: ProductDetail,
     props: true,
   },
   {
-<<<<<<< HEAD
+
     path: '/product/create',
     name: 'product-create',
      beforeEnter: authGuard,
-=======
-    path: "/product/create",
-    name: "product-create",
->>>>>>> refs/remotes/origin/main
     component: CreateProduct,
   },
 
@@ -71,36 +51,35 @@ const routes = [
   },
 
   {
-<<<<<<< HEAD
+
     path: '/product/edit/:id',
     name: 'product-edit',
      beforeEnter: authGuard,
     component: () => import('@/views/EditProduct.vue'),
     
     props: true
-=======
-    path: "/product/edit/:id",
-    name: "product-edit",
-    component: () => import("@/views/EditProduct.vue"),
-    props: true,
+
   },
   {
     path: "/admin/orders",
     name: "admin-orders",
     component: MitarbeiterBestellungen,
->>>>>>> refs/remotes/origin/main
+beforeEnter:authGuard,
+props:true
   },
   {
     path: "/admin/orders",
     name: "admin-orders",
     component: MitarbeiterBestellungen,
+    beforeEnter:authGuard,
+    props:true
+
   },
 
   {
     path: "/admin/orders/:id",
     name: "admin-order-details",
     component: MitarbeiterBestellungDetails,
-<<<<<<< HEAD
      beforeEnter: authGuard,
     props: true
   },
@@ -108,28 +87,22 @@ const routes = [
     path: '/customize-cake',
     name: 'customizeCake',
     component: CustomizeCake ,
-     beforeEnter: authGuard
-=======
+     beforeEnter: authGuard,
     props: true,
   },
-  {
-    path: "/customize-cake",
-    name: "customizeCake",
-    component: CustomizeCake,
->>>>>>> refs/remotes/origin/main
-  },
+
 
   {
-<<<<<<< HEAD
+
     path: '/login',
     name: 'login',
     component: Login,
      beforeEnter: authGuard
-=======
+  }, {
     path: "/about-us",
     name: "aboutUs",
     component: AboutUsSeite,
->>>>>>> refs/remotes/origin/main
+
   },
   {
     path: "/login",
