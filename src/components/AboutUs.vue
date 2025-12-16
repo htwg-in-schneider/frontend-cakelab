@@ -22,15 +22,16 @@ import Button from './Button.vue';
                     </Button>
                 </div>
                 <div class="col-md-7 text-center">
-                    <img src="/src/assets/images/Schwestern in der Küche_Gemini.png" class="img-fluid rounded shadow"
+                    <img src="/src/assets/images/Aboutus_bild.png" class="img-fluid rounded shadow"
                         alt="Bäckerteam">
                 </div>
             </div>
         </div>
     </section>
 </template>
+
 <style scoped>
-/* About */
+
 .about-section {
     margin: 5rem 0;
 }

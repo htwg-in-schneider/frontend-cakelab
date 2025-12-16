@@ -3,11 +3,15 @@ import Navbar from '@/components/Navbar.vue';
 import Footer from '@/components/Footer.vue';
 import ZusatzInfo from '@/components/ZusatzInfo.vue';
 
-import NavButton from '@/components/NavButton.vue';
 import Button from '@/components/Button.vue';
 import ProductCard from '@/components/ProductCard.vue';
+<<<<<<< HEAD
 import CakeReviews from '@/components/CakeReviews.vue';
 import { ref, onMounted, computed , watch} from 'vue';
+=======
+
+import { ref, onMounted, computed } from 'vue';
+>>>>>>> refs/remotes/origin/main
 import { useCartStore } from "@/stores/cart";
 const url = 'http://localhost:8081/api/product';
 
@@ -60,12 +64,11 @@ const related = computed(() =>{
 
 
 const cart = useCartStore();
-const showCart = ref(false);
 
 function addToCart() {
   if (!product.value) return;
   cart.addItem(product.value);
-  showCart.value = true;
+  cart.openCart();
 }
 
 </script>
@@ -97,7 +100,10 @@ function addToCart() {
 >
   In den Warenkorb
 </Button>
+<<<<<<< HEAD
  <CakeReviews :productId="id"/>
+=======
+>>>>>>> refs/remotes/origin/main
       </div>
 
     </div>  
@@ -108,25 +114,24 @@ function addToCart() {
 
       <h4 class="mb-4 fw-bold">Ähnliche Produkte</h4>
 
-      <!-- Desktop Grid -->
-      <div class="row g-4 d-none d-md-flex">
-        <div v-for="prod in related" :key="prod.id" class="col-md-3">
-          <ProductCard :product="prod" />
-          
-        </div>
-      </div>
+ <!-- Desktop Grid -->
+<div class="row g-4 d-none d-lg-flex">
+  <div v-for="prod in related" :key="prod.id" class="col-lg-3">
+    <ProductCard :product="prod" />
+  </div>
+</div>
 
-      <!-- Mobile Slider -->
-      <div class="mobile-slider d-md-none">
-        <div
-          v-for="prod in related"
-          :key="prod.id"
-          class="slider-item"
-        >
-          <ProductCard :product="prod" />
-            <ProductReviews :productId="id" />
-        </div>
-      </div>
+<!-- Mobile Slider -->
+<div class="mobile-slider d-lg-none">
+  <div
+    v-for="prod in related"
+    :key="prod.id"
+    class="slider-item"
+  >
+    <ProductCard :product="prod" />
+  </div>
+</div>
+
 
     </div>
 
@@ -143,7 +148,10 @@ function addToCart() {
 .detail-container {
   align-items: start;
 }
-
+.image-wrapper {
+  border-radius: 1rem;
+  overflow: hidden;
+}
 .image-wrapper img {
   width: 100%;
   border-radius: 1rem;
@@ -151,6 +159,7 @@ function addToCart() {
 .img-cake {
   width: 100%;
   border-radius: 1rem;
+  height: auto;
 }
 
 /* RELATED BOX */
@@ -163,15 +172,38 @@ function addToCart() {
 /* Mobile slider */
 .mobile-slider {
   display: flex;
+  gap: 1.2rem;
   overflow-x: auto;
-  gap: 1rem;
   scroll-snap-type: x mandatory;
-  padding-bottom: 0.5rem;
+  padding: 1rem 0 1.5rem;
+
+  scrollbar-width: thin;
+  scrollbar-color: var(--zweitfarbe) transparent;
+}
+
+
+.mobile-slider::-webkit-scrollbar {
+  height: 6px; /* dünn & elegant */
+}
+
+.mobile-slider::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
+}
+
+.mobile-slider::-webkit-scrollbar-thumb {
+  background: var(--zweitfarbe);
+  border-radius: 10px;
+}
+
+.mobile-slider::-webkit-scrollbar-thumb:hover {
+  background: #6f4f68; 
 }
 
 .slider-item {
-  min-width: 75%;
+  min-width: 70%;
   scroll-snap-align: center;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 /* 2 Karten bereits sehr früh aktiv */
@@ -185,6 +217,12 @@ function addToCart() {
 @media (max-width: 700px) {
   .slider-item {
     min-width: 75%;
+  }
+}
+@media (max-width: 991px) {
+  .image-wrapper {
+    max-width: 620px;   
+    margin: 0 auto;     
   }
 }
 

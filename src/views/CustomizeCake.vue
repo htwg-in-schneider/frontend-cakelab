@@ -3,7 +3,6 @@ import Footer from '@/components/Footer.vue';
 import { ref, onMounted, computed } from 'vue';
 import ZusatzInfo from '@/components/ZusatzInfo.vue';
 import DropdownMenu from '@/components/DropdownMenu.vue';
-import Popup from '@/components/Popup.vue';
 import { useCartStore } from '@/stores/cart';
 import { useAttrs } from 'vue';
 
@@ -16,6 +15,7 @@ const fontFamily = ref("");
 const textInput = ref("");
 const torten = ref([]);
 const cart = useCartStore();
+<<<<<<< HEAD
 const popup = ref(null);
 onMounted(async () => {
   fetchTorten();
@@ -24,6 +24,8 @@ onMounted(async () => {
   }
 });
 
+=======
+>>>>>>> refs/remotes/origin/main
 
 const errors = ref({
   base: false,
@@ -86,33 +88,32 @@ function addCustomizedCake() {
   errors.value.fontColor = !fontColor.value;
   errors.value.textInput = textInput.value.trim().length === 0;
 
-  // Wenn ungültig → Popup + Abbruch
-  if (!isFormValid.value) {
-    popup.value?.show("Bitte alle Felder ausfüllen.", "error");
-    return;
-  }
 
-  const base = torten.value.find(p => p.id === selectedBase.value);
 
-  const customization = {
-    baseCakeId: selectedBase.value,
-    size: selectedSize.value,
-    fontFamily: fontFamily.value,
-    fontColor: fontColor.value,
-    text: textInput.value,
-  };
+const baseProduct = torten.value.find(p => p.id === selectedBase.value);
+
+const customization = {
+  baseCakeId: baseProduct.id,
+  baseName: baseProduct.name,
+  baseBildUrl: baseProduct.bildUrl,
+  size: selectedSize.value,
+  fontFamily: fontFamily.value,
+  fontColor: fontColor.value,
+  text: textInput.value,
+};
+
+
 
   const item = {
-    id: 999,
+    id: baseProduct.id,  
     name: "Customized Cake",
     preis: totalPrice.value,  
-    bildUrl: base.bildUrl,
+    bildUrl: baseProduct.bildUrl,
   };
 
   cart.addItem(item, customization);
   cart.openCart();
 
-  popup.value?.show("Torte wurde hinzugefügt!", "success");
 
 }
 
@@ -197,7 +198,8 @@ function addCustomizedCake() {
       <button class="fertig-btn mt-3" :disabled="!isFormValid" @click="addCustomizedCake">Fertig</button>
     </div>
   </section>
-  <Popup ref="popup" />
+
+
   <Footer />
 </div>
 </template>

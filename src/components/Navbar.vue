@@ -43,7 +43,7 @@ const cart = useCartStore();
           </li>
 
           <li class="nav-item mx-3">
-            <a class="nav-link" href="#">About us</a>
+            <router-link class="nav-link" to="/about-us">About Us</router-link>
           </li>
 
           <!-- Account -->

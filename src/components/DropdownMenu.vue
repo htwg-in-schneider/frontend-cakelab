@@ -1,10 +1,5 @@
 <script setup>
-  
 import { defineProps, defineModel } from "vue";
-import { useRouter } from 'vue-router'
-
-const router = useRouter()
-
 
 const model = defineModel(); // v-model wrapper
 
@@ -16,14 +11,12 @@ const props = defineProps({
 </script>
 
 <template>
-
  <v-select
   :options="props.allowAll ? props.options : props.options.filter(o => o !== 'Alle Kategorien')"
   v-model="model"
   :placeholder="props.placeholder"
   class="styled-dropdown"
 />
-
 </template>
 
 <style scoped>

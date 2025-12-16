@@ -5,9 +5,12 @@ import { useRouter } from 'vue-router';
 import Button from '@/components/Button.vue';
 import Popup from '@/components/Popup.vue';
 import DropdownMenu from '@/components/DropdownMenu.vue';
+<<<<<<< HEAD
  const {  getAccessTokenSilently , isAuthenticated } = useAuth0(); 
 
 
+=======
+>>>>>>> refs/remotes/origin/main
 
 const router = useRouter();
 const popup = ref(null);
@@ -90,8 +93,11 @@ onMounted(loadCategories);
 </script>
 
 <template>
+<<<<<<< HEAD
     
       
+=======
+>>>>>>> refs/remotes/origin/main
     <Popup ref="popup" />
     <div class="create-page">
         <div class="create-card">
