@@ -4,10 +4,12 @@ import { useRouter } from 'vue-router';
 import Button from '@/components/Button.vue';
 import Popup from '@/components/Popup.vue';
 import DropdownMenu from '@/components/DropdownMenu.vue';
-import { useAuth0 } from '@auth0/auth0-vue';
+<<<<<<< HEAD
  const {  getAccessTokenSilently , isAuthenticated } = useAuth0(); 
 
 
+=======
+>>>>>>> refs/remotes/origin/main
 
 const router = useRouter();
 const popup = ref(null);
@@ -146,10 +148,7 @@ onMounted(loadCategories);
             </form>
         </div>
     </div>
-<<<<<<< HEAD
     
-=======
->>>>>>> 24609d1d55930f8a41ef3918386bcada673d4869
 </template>
 
 <style scoped>
