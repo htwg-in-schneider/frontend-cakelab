@@ -4,7 +4,7 @@ import ProductCard from '@/components/ProductCard.vue';
 
 const torten = ref([]); // Lokaler State für Produkte
 
-const url = 'http://localhost:8081/api/product';
+const url = import.meta.env.VITE_API_BASE_URL + '/api/product';
 
 async function fetchProducts() {
   try {

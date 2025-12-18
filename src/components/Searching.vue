@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue';
 import DropdownMenu from '@/components/DropdownMenu.vue';
 
-const categoryUrl = 'http://localhost:8081/api/category';
+const categoryUrl = import.meta.env.VITE_API_BASE_URL + '/api/category';
 
 const emit = defineEmits(['productUpdate']);
 const categories = ref([]);

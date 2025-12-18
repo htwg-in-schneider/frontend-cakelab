@@ -58,7 +58,7 @@ const totalPrice = computed(() => {
   return base.preis + extra;
 });
 
-const url = 'http://localhost:8081/api/product';
+const url = import.meta.env.VITE_API_BASE_URL + '/api/product';
 
 async function fetchTorten() {
   try {

@@ -60,7 +60,7 @@ async function submitOrder() {
     total: cart.cartTotal + shippingCost.value
   };
 
-    const response = await fetch("http://localhost:8081/api/orders", {
+    const response = await fetch(import.meta.env.VITE_API_BASE_URL + "/api/orders", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(orderPayload)

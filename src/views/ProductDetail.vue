@@ -10,7 +10,7 @@ import CakeReviews from '@/components/CakeReviews.vue';
 import { ref, onMounted, computed , watch} from 'vue';
 
 import { useCartStore } from "@/stores/cart";
-const url = 'http://localhost:8081/api/product';
+const url = import.meta.env.VITE_API_BASE_URL + '/api/product';
 
 
 const props = defineProps({

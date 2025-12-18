@@ -11,7 +11,7 @@ const isAdmin=ref(false)
 const router = useRouter();
 
 
-const API_URL = "http://localhost:8081/api/orders";
+const API_URL = import.meta.env.VITE_API_BASE_URL + "/api/orders";
 
 async function loadOrders() {
   const res = await fetch(API_URL);

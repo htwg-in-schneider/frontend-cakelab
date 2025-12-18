@@ -9,7 +9,7 @@ import { useAuth0 } from '@auth0/auth0-vue';
 
 const { isAuthenticated, getAccessTokenSilently } = useAuth0();
 const isAdmin = ref(false);
-const url = 'http://localhost:8081/api/product';
+const url = import.meta.env.VITE_API_BASE_URL + '/api/product';
 
 const torten = ref([]);
 onMounted(async () => {

@@ -8,7 +8,7 @@ import { useAuth0 } from '@auth0/auth0-vue';
  const {  getAccessTokenSilently , isAuthenticated } = useAuth0(); 
 const router = useRouter();
 const popup = ref(null);
-const API_URL = 'http://localhost:8081/api/product';
+const API_URL = import.meta.env.VITE_API_BASE_URL + '/api/product';
 
 
 
@@ -73,7 +73,7 @@ async function createProduct() {
 const categories = ref([]);
 
 async function loadCategories() {
-    const res = await fetch("http://localhost:8081/api/category");
+    const res = await fetch(import.meta.env.VITE_API_BASE_URL + "/api/category");
     categories.value = await res.json();
 }
 

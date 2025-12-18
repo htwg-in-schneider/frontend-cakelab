@@ -13,7 +13,7 @@ const popup = ref(null);
 const route = useRoute();
 const router = useRouter();
 
-const API_URL = 'http://localhost:8081/api/product';
+const API_URL = import.meta.env.VITE_API_BASE_URL + '/api/product';
 
 const product = ref(null);
 const isLoading = ref(true);
@@ -116,7 +116,7 @@ function goBack() {
 const categories = ref([]);
 
 async function loadCategories() {
-  const res = await fetch("http://localhost:8081/api/category");
+  const res = await fetch(import.meta.env.VITE_API_BASE_URL + "/api/category");
   categories.value = await res.json();
 }
 

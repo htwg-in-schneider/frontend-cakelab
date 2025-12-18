@@ -16,19 +16,19 @@ const props = defineProps({
 
 
 async function loadProduct(productId) {
-  const res = await fetch(`http://localhost:8081/api/product/${productId}`);
+  const res = await fetch(import.meta.env.VITE_API_BASE_URL + `/api/product/${productId}`);
   return await res.json();
 }
 
 async function loadAllProducts() {
-  const res = await fetch("http://localhost:8081/api/product");
+  const res = await fetch(import.meta.env.VITE_API_BASE_URL+ "/api/product");
   return await res.json();
 }
 
 async function loadOrder() {
   const id = route.params.id;
 
-  const res = await fetch(`http://localhost:8081/api/orders/${id}`);
+  const res = await fetch(import.meta.env.VITE_API_BASE_URL + `/orders/${id}`);
   const data = await res.json();
   order.value = data;
 
