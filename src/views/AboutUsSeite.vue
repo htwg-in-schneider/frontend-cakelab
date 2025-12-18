@@ -55,7 +55,7 @@ import Footer from "@/components/Footer.vue";
       <!-- IMAGE WRAPPER -->
       <div class="split-media">
         <img
-          src="/src/assets/images/backen_aesthetic.png"
+          src="/src/assets/images/Backen_aesthetic.png"
           alt="Backzutaten"
         />
       </div>
