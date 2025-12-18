@@ -28,7 +28,7 @@ async function loadAllProducts() {
 async function loadOrder() {
   const id = route.params.id;
 
-  const res = await fetch(import.meta.env.VITE_API_BASE_URL + `/orders/${id}`);
+  const res = await fetch(import.meta.env.VITE_API_BASE_URL + `/api/orders/${id}`);
   const data = await res.json();
   order.value = data;
 
