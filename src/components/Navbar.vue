@@ -19,7 +19,7 @@ const cart = useCartStore();
 
       <!-- Logo -->
       <router-link class="navbar-brand" to="/">
-        <img src="/src/assets/Images/Logo_schmal.png" alt="CakeLab Logo" class="logo-img">
+        <img src="/src/assets/images/Logo_schmal.png" alt="CakeLab Logo" class="logo-img">
       </router-link>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">

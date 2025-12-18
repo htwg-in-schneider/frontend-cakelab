@@ -94,7 +94,7 @@ const handleRegister = () => {
     <!-- RIGHT IMAGE -->
     <div class="auth-right">
       <img
-        src="/src/assets/Images/cake-login.png"
+        src="/src/assets/images/cake-login.png"
         class="auth-image"
         alt="Cake"
       />

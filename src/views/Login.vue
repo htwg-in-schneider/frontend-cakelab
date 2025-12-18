@@ -54,7 +54,7 @@ function handleLogout() {
 
     <!-- RIGHT: Image -->
     <div class="auth-right">
-      <img src="/src/assets/Images/cake-login.png" class="auth-image" alt="Cake" />
+      <img src="/src/assets/images/cake-login.png" class="auth-image" alt="Cake" />
     </div>
 
   </div>
