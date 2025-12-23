@@ -98,11 +98,17 @@ props:true
     name: 'login',
     component: Login,
      beforeEnter: authGuard
-  }, {
+  }, 
+  {
     path: "/about-us",
     name: "aboutUs",
     component: AboutUsSeite,
 
+  },
+    {
+    path: "/login",
+    name: "login",
+    component: Login,
   },
  
   {
