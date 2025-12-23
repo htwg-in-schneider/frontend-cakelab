@@ -64,14 +64,14 @@ const routes = [
     path: "/admin/orders",
     name: "admin-orders",
     component: MitarbeiterBestellungen,
-beforeEnter:authGuard,
+//beforeEnter:authGuard,
 props:true
   },
   {
     path: "/admin/orders",
     name: "admin-orders",
     component: MitarbeiterBestellungen,
-    beforeEnter:authGuard,
+    //beforeEnter:authGuard,
     props:true
 
   },
