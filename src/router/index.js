@@ -34,7 +34,6 @@ const routes = [
 
     path: '/cake/:id',
     name: 'cake',
-     beforeEnter: authGuard,
     component: CakeDetail,
     props: true,
   },
@@ -47,6 +46,7 @@ const routes = [
   },
 
   { path: "/profile",
+   beforeEnter: authGuard,
     component: Profile 
   },
 
@@ -104,11 +104,7 @@ props:true
     component: AboutUsSeite,
 
   },
-  {
-    path: "/login",
-    name: "login",
-    component: Login,
-  },
+ 
   {
     path: "/registrieren",
     name: "registrieren",
