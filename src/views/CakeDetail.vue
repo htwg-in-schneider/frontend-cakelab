@@ -4,13 +4,13 @@ import Footer from '@/components/Footer.vue';
 import ZusatzInfo from '@/components/ZusatzInfo.vue';
 
 import Button from '@/components/Button.vue';
-import ProductCard from '@/components/ProductCard.vue';
+import CakeCard from '@/components/CakeCard.vue';
 
 import CakeReviews from '@/components/CakeReviews.vue';
 import { ref, onMounted, computed , watch} from 'vue';
 
 import { useCartStore } from "@/stores/cart";
-const url = import.meta.env.VITE_API_BASE_URL + '/api/product';
+const url = import.meta.env.VITE_API_BASE_URL + '/api/cake';
 
 
 const props = defineProps({
@@ -20,41 +20,41 @@ const props = defineProps({
   },
 });
 
-const product = ref(null);
-const allProducts = ref([]); 
+const cake = ref(null);
+const allCakes = ref([]); 
 
 
-async function fetchProduct() {
+async function fetchCake() {
   try {
     const response = await fetch(`${url}/${props.id}`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    product.value = await response.json();
-    console.log(product.value);
+    cake.value = await response.json();
+    console.log(cake.value);
   } catch (error) {
-    console.error('Error fetching product:', error);
+    console.error('Error fetching cake:', error);
   }
 }
-async function fetchAllProducts() {
+async function fetchAllCakes() {
   try {
     const response = await fetch(url);
     if (!response.ok) throw new Error(response.statusText);
-    allProducts.value = await response.json();
+    allCakes.value = await response.json();
   } catch (error) {
-    console.error('Error fetching all products:', error);
+    console.error('Error fetching all cakes:', error);
   }
 }
-onMounted(async () => {await fetchProduct(); await fetchAllProducts()} );
+onMounted(async () => {await fetchCake(); await fetchAllCakes()} );
 watch(() => props.id, async () => {
-  await fetchProduct();
+  await fetchCake();
 });
 
-// Related products (alle außer dieses)
+// Related cakes (alle außer dieses)
 const related = computed(() =>{
-    if (!product.value) return [];
-  return allProducts.value
-    .filter((p) => p.id !== product.value.id)
+    if (!cake.value) return [];
+  return allCakes.value
+    .filter((p) => p.id !== cake.value.id)
     .slice(0, 4);
 
   });
@@ -63,8 +63,8 @@ const related = computed(() =>{
 const cart = useCartStore();
 
 function addToCart() {
-  if (!product.value) return;
-  cart.addItem(product.value);
+  if (!cake.value) return;
+  cart.addItem(cake.value);
   cart.openCart();
 }
 
@@ -77,18 +77,18 @@ function addToCart() {
   <section class="container py-5">
 
     <!-- Produkt existiert -->
-    <div v-if="product" class="row detail-container">
+    <div v-if="cake" class="row detail-container">
 
       <!-- Bild -->
       <div class="col-lg-6 image-wrapper">
-        <img :src="product.bildUrl" class="img-cake" :alt="product.name" />
+        <img :src="cake.bildUrl" class="img-cake" :alt="cake.name" />
       </div>
 
       <!-- Info -->
      <div class="col-lg-6 d-flex flex-column justify-content-center">
-        <h2 class="fw-bold">{{ product.name }}</h2>
-        <p class="fw-bold fs-4">{{ product.preis }} €</p>
-        <p class="desc">{{ product.beschreibung }}</p>
+        <h2 class="fw-bold">{{ cake.name }}</h2>
+        <p class="fw-bold fs-4">{{ cake.preis }} €</p>
+        <p class="desc">{{ cake.beschreibung }}</p>
 
         <Button 
   variant="accent" 
@@ -98,14 +98,14 @@ function addToCart() {
   In den Warenkorb
 </Button>
 
- <CakeReviews :productId="id"/>
+ <CakeReviews :cakeId="id"/>
 
       </div>
 
     </div>  
    
 
-    <!-- Related products -->
+    <!-- Related cakes -->
     <div class="related-box mt-5 p-4 text-center" >
 
       <h4 class="mb-4 fw-bold">Ähnliche Produkte</h4>
@@ -113,7 +113,7 @@ function addToCart() {
  <!-- Desktop Grid -->
 <div class="row g-4 d-none d-lg-flex">
   <div v-for="prod in related" :key="prod.id" class="col-lg-3">
-    <ProductCard :product="prod" />
+    <CakeCard :cake="prod" />
   </div>
 </div>
 
@@ -124,7 +124,7 @@ function addToCart() {
     :key="prod.id"
     class="slider-item"
   >
-    <ProductCard :product="prod" />
+    <CakeCard :cake="prod" />
   </div>
 </div>
 
@@ -137,7 +137,7 @@ function addToCart() {
 </template>
 
 <style scoped>
-  .ProductCard {
+  .CakeCard {
   width: 100% !important;
 }
 

@@ -40,7 +40,7 @@ async function submitOrder() {
 
   const orderPayload = {
     items: cart.items.map(item => ({
-      productId: item.productId ?? item.id,
+      cakeId: item.cakeId ?? item.id,
       name: item.name,
       price: item.preis,
       quantity: item.quantity,

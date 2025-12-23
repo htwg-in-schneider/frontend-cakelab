@@ -3,8 +3,8 @@
 import { authGuard } from '@auth0/auth0-vue';
 
 import { createRouter, createWebHistory } from "vue-router";
-import ProductDetail from "../views/ProductDetail.vue";
-import CreateProduct from "@/views/CreateProduct.vue";
+import CakeDetail from "../views/CakeDetail.vue";
+import CreateCake from "@/views/CreateCake.vue";
 import Home from "../views/Home.vue";
 import StandardCakes from "../views/StandardCakes.vue";
 import CustomizeCake from "@/views/CustomizeCake.vue";
@@ -32,18 +32,18 @@ const routes = [
 
   {
 
-    path: '/product/:id',
-    name: 'product',
+    path: '/cake/:id',
+    name: 'cake',
      beforeEnter: authGuard,
-    component: ProductDetail,
+    component: CakeDetail,
     props: true,
   },
   {
 
-    path: '/product/create',
-    name: 'product-create',
+    path: '/cake/create',
+    name: 'cake-create',
      beforeEnter: authGuard,
-    component: CreateProduct,
+    component: CreateCake,
   },
 
   { path: "/profile",
@@ -52,10 +52,10 @@ const routes = [
 
   {
 
-    path: '/product/edit/:id',
-    name: 'product-edit',
+    path: '/cake/edit/:id',
+    name: 'cake-edit',
      beforeEnter: authGuard,
-    component: () => import('@/views/EditProduct.vue'),
+    component: () => import('@/views/EditCake.vue'),
     
     props: true
 

@@ -13,9 +13,9 @@ const popup = ref(null);
 const route = useRoute();
 const router = useRouter();
 
-const API_URL = import.meta.env.VITE_API_BASE_URL + '/api/product';
+const API_URL = import.meta.env.VITE_API_BASE_URL + '/api/cake';
 
-const product = ref(null);
+const cake = ref(null);
 const isLoading = ref(true);
 const isSaving = ref(false);
 
@@ -27,21 +27,21 @@ const previousPage = ref(
 // 🔧 Body-Padding entfernen
 onMounted(() => {
   document.body.classList.add('no-nav-padding');
-  fetchProduct();
+  fetchCake();
 });
 onUnmounted(() => {
   document.body.classList.remove('no-nav-padding');
 });
 
 // Produkt laden
-async function fetchProduct() {
+async function fetchCake() {
   try {
     const id = route.params.id;
 
     const response = await fetch(`${API_URL}/${id}`);
     if (!response.ok) throw new Error('Produkt nicht gefunden');
 
-    product.value = await response.json();
+    cake.value = await response.json();
   } catch (error) {
     console.error(error);
     popupRef.value?.show("Produkt konnte nicht geladen werden.", "error");
@@ -52,17 +52,17 @@ async function fetchProduct() {
 }
 
 // Produkt aktualisieren
-async function updateProduct() {
+async function updateCake() {
   try {
     isSaving.value = true;
 const token = await getAccessTokenSilently();
-    const response = await fetch(`${API_URL}/${product.value.id}`, {
+    const response = await fetch(`${API_URL}/${cake.value.id}`, {
       method: "PUT",
      headers: { 
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
       },
-      body: JSON.stringify(product.value),
+      body: JSON.stringify(cake.value),
     });
 
     if (!response.ok) throw new Error();
@@ -83,11 +83,11 @@ const token = await getAccessTokenSilently();
 
 
 // Produkt löschen
-async function deleteProduct() {
+async function deleteCake() {
 
   try {
      const token = await getAccessTokenSilently();
-    const response = await fetch(`${API_URL}/${product.value.id}`, {
+    const response = await fetch(`${API_URL}/${cake.value.id}`, {
       method: "DELETE",
        headers: {
         Authorization: `Bearer ${token}`
@@ -146,43 +146,43 @@ onMounted(loadCategories);
         Lade Produkt…
       </div>
 
-      <div v-else-if="product">
+      <div v-else-if="cake">
         <!-- Bildvorschau -->
         <div class="image-wrapper">
-          <img :src="product.bildUrl" alt="Produktbild" class="product-image" />
+          <img :src="cake.bildUrl" alt="Produktbild" class="cake-image" />
         </div>
 
-        <form @submit.prevent="updateProduct" class="edit-form">
+        <form @submit.prevent="updateCake" class="edit-form">
           <div class="mb-3">
             <label class="form-label">Produkt-ID</label>
-            <input class="form-control" v-model="product.id" readonly />
+            <input class="form-control" v-model="cake.id" readonly />
           </div>
 
           <div class="mb-3">
             <label class="form-label">Name</label>
-            <input class="form-control" v-model="product.name" required />
+            <input class="form-control" v-model="cake.name" required />
           </div>
 
           <div class="mb-3">
             <label class="form-label">Beschreibung</label>
-            <textarea class="form-control" rows="3" v-model="product.beschreibung"></textarea>
+            <textarea class="form-control" rows="3" v-model="cake.beschreibung"></textarea>
           </div>
 
           <div class="mb-3">
             <label class="form-label">Preis</label>
-            <input type="number" step="0.01" class="form-control" v-model="product.preis" />
+            <input type="number" step="0.01" class="form-control" v-model="cake.preis" />
           </div>
 
           <div class="mb-3">
             <label class="form-label">Bild-URL</label>
-            <input class="form-control" v-model="product.bildUrl" />
+            <input class="form-control" v-model="cake.bildUrl" />
           </div>
 
 
           <div class="mb-3">
             <label class="form-label">Kategorie</label>
 
-            <DropdownMenu v-model="product.category" :options="categories" placeholder="Kategorie auswählen"
+            <DropdownMenu v-model="cake.category" :options="categories" placeholder="Kategorie auswählen"
               :allowAll="false" />
 
           </div>
@@ -193,7 +193,7 @@ onMounted(loadCategories);
               {{ isSaving ? 'Speichere…' : 'Aktualisieren' }}
             </Button>
 
-            <Button type="button" variant="outline" class="btn-delete" @click="deleteProduct">
+            <Button type="button" variant="outline" class="btn-delete" @click="deleteCake">
               Löschen
             </Button>
           </div>
@@ -268,7 +268,7 @@ onMounted(loadCategories);
   margin-bottom: 2rem;
 }
 
-.product-image {
+.cake-image {
   max-height: 260px;
   width: auto;
   border-radius: 1rem;

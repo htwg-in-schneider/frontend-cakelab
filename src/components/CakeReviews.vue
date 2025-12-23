@@ -2,18 +2,18 @@
 import { ref, onMounted, watch } from 'vue';
 
 const props = defineProps({
-    productId: {
+    cakeId: {
         type: [String, Number],
         required: true
     }
 });
 
 const reviews = ref([]);
-const reviewUrl = import.meta.env.VITE_API_BASE_URL + '/api/review/product';
+const reviewUrl = import.meta.env.VITE_API_BASE_URL + '/api/review/cake';
 
 async function fetchReviews() {
     try {
-        const response = await fetch(`${reviewUrl}/${props.productId}`);
+        const response = await fetch(`${reviewUrl}/${props.cakeId}`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -27,8 +27,8 @@ onMounted(() => {
     fetchReviews();
 });
 
-// Watch for prop changes in case the component is reused for different products without unmounting
-watch(() => props.productId, () => {
+// Watch for prop changes in case the component is reused for different cakes without unmounting
+watch(() => props.cakeId, () => {
     fetchReviews();
 });
 </script>

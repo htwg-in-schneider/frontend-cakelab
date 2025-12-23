@@ -15,13 +15,13 @@ const props = defineProps({
 });
 
 
-async function loadProduct(productId) {
-  const res = await fetch(import.meta.env.VITE_API_BASE_URL + `/api/product/${productId}`);
+async function loadCake(cakeId) {
+  const res = await fetch(import.meta.env.VITE_API_BASE_URL + `/api/cake/${cakeId}`);
   return await res.json();
 }
 
-async function loadAllProducts() {
-  const res = await fetch(import.meta.env.VITE_API_BASE_URL+ "/api/product");
+async function loadAllCakes() {
+  const res = await fetch(import.meta.env.VITE_API_BASE_URL+ "/api/cake");
   return await res.json();
 }
 
@@ -32,18 +32,18 @@ async function loadOrder() {
   const data = await res.json();
   order.value = data;
 
-  const allProducts = await loadAllProducts();
+  const allCakes = await loadAllCakes();
   console.log("ORDER ITEMS:", JSON.stringify(order.value.items, null, 2));
 
 
   for (const item of order.value.items) {
 
     // Normaler Kuchen
-    if (item.productId) {
-      const product = allProducts.find(p => p.id === item.productId);
-      if (product) {
-        item.bildUrl = product.bildUrl;
-        item.beschreibung = product.beschreibung;
+    if (item.cakeId) {
+      const cake = allCakes.find(p => p.id === item.cakeId);
+      if (cake) {
+        item.bildUrl = cake.bildUrl;
+        item.beschreibung = cake.beschreibung;
       }
     }
 

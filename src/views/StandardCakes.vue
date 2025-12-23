@@ -3,17 +3,17 @@ import Navbar from '@/components/Navbar.vue';
 import Footer from '@/components/Footer.vue';
 import ZusatzInfo from '@/components/ZusatzInfo.vue';
 import Searching from '@/components/Searching.vue';
-import ProductCard from '@/components/ProductCard.vue';
+import CakeCard from '@/components/CakeCard.vue';
 import { ref, onMounted, watch } from 'vue';
 import { useAuth0 } from '@auth0/auth0-vue';
 
 const { isAuthenticated, getAccessTokenSilently } = useAuth0();
 const isAdmin = ref(false);
-const url = import.meta.env.VITE_API_BASE_URL + '/api/product';
+const url = import.meta.env.VITE_API_BASE_URL + '/api/cake';
 
 const torten = ref([]);
 onMounted(async () => {
-  fetchProducts();
+  fetchCakes();
   if (isAuthenticated.value) {
     checkAdminRole();
   }
@@ -38,7 +38,7 @@ async function checkAdminRole() {
     console.error('Error checking admin role:', error);
   }
 }
-async function fetchProducts(filters = {}) {
+async function fetchCakes(filters = {}) {
   try {
     const params = new URLSearchParams();
 
@@ -60,19 +60,19 @@ async function fetchProducts(filters = {}) {
     console.log("Produkte geladen:", torten.value);
 
   } catch (error) {
-    console.error('Error fetching products:', error);
+    console.error('Error fetching cakes:', error);
   }
 }
 
 onMounted(() => {
-  fetchProducts(); 
+  fetchCakes(); 
 });
 </script>
 
 <template>
   <Navbar />
   <ZusatzInfo />
-  <Searching @productUpdate="fetchProducts" />
+  <Searching @cakeUpdate="fetchCakes" />
   
 
     <!-- HEADER + ICON ALS FLEX-BOX -->
@@ -88,7 +88,7 @@ onMounted(() => {
 
   <!-- Add Icon -->
    <div v-if="isAdmin">
-  <RouterLink to="/product/create" class="icon-wrapper">
+  <RouterLink to="/cake/create" class="icon-wrapper">
     <img src="\assets\images\plus_icon.png" alt="Torte hinzufügen" class="add-icon" />
   </RouterLink>
 </div>
@@ -96,7 +96,7 @@ onMounted(() => {
 
     <div class="row g-4 mt-4">
       <div v-for="item in torten" :key="item.id" class="col-12 col-md-6 col-lg-4">
-        <ProductCard :product="item" :show-edit-button="isAdmin"  />
+        <CakeCard :cake="item" :show-edit-button="isAdmin"  />
       </div>
     </div>
 

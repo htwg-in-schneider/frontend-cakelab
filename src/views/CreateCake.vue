@@ -8,7 +8,7 @@ import { useAuth0 } from '@auth0/auth0-vue';
  const {  getAccessTokenSilently , isAuthenticated } = useAuth0(); 
 const router = useRouter();
 const popup = ref(null);
-const API_URL = import.meta.env.VITE_API_BASE_URL + '/api/product';
+const API_URL = import.meta.env.VITE_API_BASE_URL + '/api/cake';
 
 
 
@@ -22,7 +22,7 @@ onUnmounted(() => {
 });
 
 // Produkt-Template
-const product = ref({
+const cake = ref({
     name: '',
     beschreibung: '',
     preis: 0,
@@ -39,7 +39,7 @@ function goBack() {
 }
 
 // Neues Produkt erstellen
-async function createProduct() {
+async function createCake() {
     try {
         isSaving.value = true;
  const token = await getAccessTokenSilently();
@@ -49,7 +49,7 @@ async function createProduct() {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
       },
-            body: JSON.stringify(product.value),
+            body: JSON.stringify(cake.value),
         });
 
         if (!response.ok) {
@@ -96,34 +96,34 @@ onMounted(loadCategories);
 
             <h2 class="create-title">Neue Torte erstellen</h2>
 
-            <form @submit.prevent="createProduct" class="create-form">
+            <form @submit.prevent="createCake" class="create-form">
 
                 <div class="mb-3">
                     <label class="form-label">Name</label>
-                    <input v-model="product.name" class="form-control" required />
+                    <input v-model="cake.name" class="form-control" required />
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Beschreibung</label>
-                    <textarea v-model="product.beschreibung" rows="3" class="form-control"></textarea>
+                    <textarea v-model="cake.beschreibung" rows="3" class="form-control"></textarea>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Preis (€)</label>
-                    <input v-model.number="product.preis" type="number" step="0.01" min="0" class="form-control"
+                    <input v-model.number="cake.preis" type="number" step="0.01" min="0" class="form-control"
                         required />
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Bild-URL</label>
-                    <input v-model="product.bildUrl" class="form-control"
+                    <input v-model="cake.bildUrl" class="form-control"
                         placeholder="/assets/images/Kuchen_Schokolade.png" />
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Kategorie</label>
 
-                    <DropdownMenu v-model="product.category" :options="categories" placeholder="Kategorie auswählen"
+                    <DropdownMenu v-model="cake.category" :options="categories" placeholder="Kategorie auswählen"
                         :allowAll="false" />
 
                 </div>

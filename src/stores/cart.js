@@ -43,17 +43,17 @@ export const useCartStore = defineStore("cart", {
       this.lastOrder = order;
     },
 
-    addItem(product, customization = null) {
+    addItem(cake, customization = null) {
       const lineId = crypto.randomUUID
         ? crypto.randomUUID()
         : Date.now().toString();
 
       this.items.push({
         lineId,
-        productId: product.id,
-        name: product.name,
-        preis: product.preis,
-        bildUrl: product.bildUrl,
+        cakeId: cake.id,
+        name: cake.name,
+        preis: cake.preis,
+        bildUrl: cake.bildUrl,
         quantity: 1,
         customization,
       });
@@ -79,7 +79,7 @@ export const useCartStore = defineStore("cart", {
       const order = {
         total: this.cartTotal,
         items: this.items.map((item) => ({
-          productId: item.productId,
+          cakeId: item.cakeId,
           name: item.name,
           price: item.preis,
           quantity: item.quantity,
