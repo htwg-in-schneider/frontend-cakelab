@@ -69,7 +69,7 @@ const cart = useCartStore();
           <li class="nav-item mx-3">
             <router-link class="nav-link" to="/about-us">About Us</router-link>
           </li>
-            <li class="nav-item mx-3">
+            <li class="nav-item mx-3" v-if="isAdmin">
             <router-link class="nav-link" to="/users">alle Benutzerprofile</router-link>
           </li>
 
