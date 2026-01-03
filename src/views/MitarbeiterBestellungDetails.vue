@@ -4,7 +4,10 @@ import { useRoute } from "vue-router";
 import NavBar from '@/components/Navbar.vue';
 import Footer from '@/components/Footer.vue';
 import { useAuth0 } from '@auth0/auth0-vue';
+const {   isAuthenticated,  getAccessTokenSilently } = useAuth0(); 
 
+
+const isAdmin=ref(false)
 const route = useRoute();
 const order = ref(null);
 const props = defineProps({
@@ -16,19 +19,20 @@ const props = defineProps({
 
 
 async function loadCake(cakeId) {
-  const res = await fetch(import.meta.env.VITE_API_BASE_URL + `/api/cake/${cakeId}`);
+  const token = await getAccessTokenSilently();
+  const res = await fetch(import.meta.env.VITE_API_BASE_URL +`/api/cake/${cakeId}`);
   return await res.json();
 }
 
 async function loadAllCakes() {
   const res = await fetch(import.meta.env.VITE_API_BASE_URL+ "/api/cake");
-  return await res.json();
+ return await res.json();
 }
 
 async function loadOrder() {
   const id = route.params.id;
-
-  const res = await fetch(import.meta.env.VITE_API_BASE_URL + `/api/orders/${id}`);
+  const token = await getAccessTokenSilently();
+  const res = await fetch(import.meta.env.VITE_API_BASE_URL + `/api/orders/${id}`, { headers: { Authorization: `Bearer ${token}` } });
   const data = await res.json();
   order.value = data;
 
@@ -59,12 +63,46 @@ else if (item.customization && item.customization.baseBildUrl) {
 
 
 }
+onMounted(async () => {
+
+  if (isAuthenticated.value) {
+    checkAdminRole();
+  }
+});
+watch(isAuthenticated, (newValue) => {
+  if (newValue) {
+    checkAdminRole();
+  }
+});
+async function getToken() {
+  return await getAccessTokenSilently({
+    authorizationParams: {
+      audience: import.meta.env.VITE_AUTH0_AUDIENCE,
+      scope: "openid profile email"
+    }
+  });
+}
+async function checkAdminRole() {
+  try {
+    const token = await getAccessTokenSilently();
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/profile`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (response.ok) {
+      const data = await response.json();
+      isAdmin.value = data.role === 'ADMIN';
+    }
+  } catch (error) {
+    console.error('Error checking admin role:', error);
+  }
+}
 
 onMounted(loadOrder);
 </script>
 <template>
   <NavBar />
 <section class="page-content">
+<div class="admin check" v-if="isAdmin">
   <div class="details-wrapper" v-if="order">
     
     <!-- HEADER -->
@@ -114,7 +152,7 @@ onMounted(loadOrder);
     </div>
 
   </div>
-
+</div>
 </section>
     <Footer />
  
