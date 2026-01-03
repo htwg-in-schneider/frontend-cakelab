@@ -17,6 +17,7 @@ import AboutUsSeite from "@/views/AboutUsSeite.vue";
 import Impressum from "@/views/Impressum.vue";
 import Datenschutz from "@/views/Datenschutz.vue";
 import Profile from "@/views/Profile.vue";
+import Users from "@/views/Users.vue";
 
 const routes = [
   {
@@ -64,14 +65,14 @@ const routes = [
     path: "/admin/orders",
     name: "admin-orders",
     component: MitarbeiterBestellungen,
-//beforeEnter:authGuard,
+beforeEnter:authGuard,
 props:true
   },
   {
     path: "/admin/orders",
     name: "admin-orders",
     component: MitarbeiterBestellungen,
-    //beforeEnter:authGuard,
+    beforeEnter:authGuard,
     props:true
 
   },
@@ -129,6 +130,11 @@ props:true
   {
     path: "/datenschutz",
     component: Datenschutz,
+  },
+   {
+    path: "/users",
+    component: Users,
+    beforeEnter:authGuard,
   },
 ];
 

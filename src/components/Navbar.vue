@@ -1,14 +1,38 @@
 <script setup>
-import { ref } from "vue";
+import { ref,onMounted  , watch} from "vue";
 import { useCartStore } from "@/stores/cart";
 import CartDrawer from "@/components/CartDrawer.vue";
 import router from "@/router";
 import { useAuth0 } from '@auth0/auth0-vue';
 import { routerKey } from "vue-router";
- const { user, isAuthenticated } = useAuth0(); 
-
+ const { user, isAuthenticated, getAccessTokenSilently} = useAuth0(); 
+const isAdmin = ref(false);
 console.log("Drawer:", CartDrawer); // <-- Test
+onMounted(async () => {
+  if (isAuthenticated.value) {
+    checkAdminRole();
+  }
+});
 
+watch(isAuthenticated, (newValue) => {
+  if (newValue) {
+    checkAdminRole();
+  }
+});
+async function checkAdminRole() {
+  try {
+    const token = await getAccessTokenSilently();
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/profile`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (response.ok) {
+      const data = await response.json();
+      isAdmin.value = data.role === 'ADMIN';
+    }
+  } catch (error) {
+    console.error('Error checking admin role:', error);
+  }
+}
 const cart = useCartStore();
 </script>
 
@@ -29,7 +53,7 @@ const cart = useCartStore();
       <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <ul class="navbar-nav align-items-center">
             <li class="nav-item">
-                <router-link to="/admin/orders" class="nav-link">
+                <router-link to="/admin/orders" class="nav-link" v-if="isAdmin">
                      Bestellungen
                 </router-link>
             </li>
@@ -45,19 +69,21 @@ const cart = useCartStore();
           <li class="nav-item mx-3">
             <router-link class="nav-link" to="/about-us">About Us</router-link>
           </li>
+            <li class="nav-item mx-3">
+            <router-link class="nav-link" to="/users">alle Benutzerprofile</router-link>
+          </li>
+
 
           <!-- Account -->
           <li class="nav-item ms-3">
             <router-link v-if="!isAuthenticated" to="/login">
     <img src="/src/assets/images/account_image.png" alt="Account" class="icon-img">
   </router-link>
-
+   
   <router-link v-else to="/profile">
     <img src="/src/assets/images/account_image.png" alt="Account" class="icon-img">
   </router-link>
-          </li>
-         
-
+       </li>
           <!-- Warenkorb Icon -->
           <li class="nav-item ms-3 position-relative">
            <button 
