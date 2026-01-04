@@ -13,18 +13,11 @@ const error = ref("");
 const API_USERS = import.meta.env.VITE_API_BASE_URL + "/api/users";
 const API_PROFILE = import.meta.env.VITE_API_BASE_URL + "/api/profile";
 
-async function getToken() {
-  return await getAccessTokenSilently({
-    authorizationParams: {
-      audience: import.meta.env.VITE_AUTH0_AUDIENCE,
-      scope: "openid profile email"
-    }
-  });
-}
+
 async function checkAdminRole() {
   try {
     const token = await getAccessTokenSilently();
-    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/profile`, {
+    const response = await fetch(`${API_PROFILE}`, {
       headers: { Authorization: `Bearer ${token}` }
     });
     if (response.ok) {
@@ -38,7 +31,7 @@ async function checkAdminRole() {
 
 async function loadUsers() {
   try {
-    const token = await getToken();
+    const token = await getAccessTokenSilently();
     const res = await fetch(API_USERS, {
       headers: { Authorization: `Bearer ${token}` }
     });
@@ -95,9 +88,9 @@ watch(isAuthenticated, async (v) => {
         </div>
 
         <div class="user-actions">
-          <button class="btn-order">
-            Profil →
-          </button>
+        <button class="btn-order" @click="$router.push(`/users/${user.id}`)">
+  Profil →
+</button>
         </div>
       </div>
     </div>

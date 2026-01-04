@@ -131,7 +131,7 @@ const routes = [
     component: Users,
     beforeEnter: authGuard,
   },
-  { path: "/edit/users/:id", 
+  { path: "/users/:id", 
     component: EditUser,
      beforeEnter: authGuard,
  },
