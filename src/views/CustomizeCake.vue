@@ -18,9 +18,6 @@ const cart = useCartStore();
 const popup = ref(null);
 onMounted(async () => {
   fetchTorten();
-  if (isAuthenticated.value) {
-    checkAdminRole();
-  }
 });
 const errors = ref({
   base: false,
