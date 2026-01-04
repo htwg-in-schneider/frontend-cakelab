@@ -2,7 +2,8 @@
 import { computed } from "vue";
 import { useCartStore } from "@/stores/cart";
 import { useRouter } from "vue-router";
-
+import { useAuth0 } from "@auth0/auth0-vue";
+const { getAccessTokenSilently, isAuthenticated } = useAuth0();
 const cart = useCartStore();
 const router = useRouter();
 
@@ -36,6 +37,10 @@ const freeShippingText = computed(() =>
 // Bestellung absenden
 
 async function submitOrder() {
+   if (!isAuthenticated.value) {
+    loginWithRedirect();
+    return;
+  }
   if (cart.items.length === 0) return;
 
   const orderPayload = {
@@ -59,10 +64,11 @@ async function submitOrder() {
     })),
     total: cart.cartTotal + shippingCost.value
   };
-
+const token = await getAccessTokenSilently();
     const response = await fetch(import.meta.env.VITE_API_BASE_URL + "/api/orders", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+      
       body: JSON.stringify(orderPayload)
     });
 
@@ -172,7 +178,7 @@ cart.saveLastOrder({
 
         <button 
           class="checkout-btn"
-          :disabled="cartItems.length === 0"
+          :disabled="cartItems.length === 0 || !isAuthenticated"
           @click="submitOrder"
         >
           Bestellung abschließen

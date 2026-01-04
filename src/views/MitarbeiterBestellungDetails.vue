@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted , watch} from "vue";
 import { useRoute } from "vue-router";
 import NavBar from '@/components/Navbar.vue';
 import Footer from '@/components/Footer.vue';
@@ -74,14 +74,7 @@ watch(isAuthenticated, (newValue) => {
     checkAdminRole();
   }
 });
-async function getToken() {
-  return await getAccessTokenSilently({
-    authorizationParams: {
-      audience: import.meta.env.VITE_AUTH0_AUDIENCE,
-      scope: "openid profile email"
-    }
-  });
-}
+
 async function checkAdminRole() {
   try {
     const token = await getAccessTokenSilently();

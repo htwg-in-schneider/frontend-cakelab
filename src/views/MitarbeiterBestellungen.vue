@@ -9,14 +9,7 @@ import { useAuth0 } from '@auth0/auth0-vue';
 const orders = ref([]);
 const isAdmin=ref(false)
 const router = useRouter();
-async function getToken() {
-  return await getAccessTokenSilently({
-    authorizationParams: {
-      audience: import.meta.env.VITE_AUTH0_AUDIENCE,
-      scope: "openid profile email"
-    }
-  });
-}
+
 const API_URL = import.meta.env.VITE_API_BASE_URL + "/api/orders";
 async function loadOrders() {
    const token = await getAccessTokenSilently();
