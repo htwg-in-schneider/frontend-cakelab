@@ -19,7 +19,8 @@ import Datenschutz from "@/views/Datenschutz.vue";
 import Profile from "@/views/Profile.vue";
 import Users from "@/views/Users.vue";
 import EditUser from "@/views/EditUser.vue";
-
+import EditProfile from "@/views/EditProfile.vue";
+import KundenBestellungsAnsicht from '@/views/KundenBestellungsAnsicht.vue';
 const routes = [
   {
     path: "/",
@@ -51,6 +52,16 @@ const routes = [
     path: "/profile",
     beforeEnter: authGuard,
     component: Profile
+  },
+  {
+    path: "/profile/:id",
+    beforeEnter: authGuard,
+    component: EditProfile
+  },
+  {
+    path: "/profile/orders",
+    component: KundenBestellungsAnsicht,
+     beforeEnter: authGuard,
   },
 
   {

@@ -3,17 +3,19 @@ import { useAuth0 } from '@auth0/auth0-vue'
 import { onMounted, ref } from 'vue'
 import Navbar from '@/components/Navbar.vue'
 import Footer from '@/components/Footer.vue'
-import Login  from './Login.vue'
+import Login from './Login.vue'
 const { user, isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0()
 const profileData = ref(null)
 const bearerToken = ref('')
 const error = ref('')
-
+const users = ref([]);
+const orders = ref([]);
+const API_USERS = import.meta.env.VITE_API_BASE_URL + "/api/users";
+const API_PROFILE = import.meta.env.VITE_API_BASE_URL + "/api/profile";
 function copyToClipboard(event) {
   event.target.select()
   navigator.clipboard.writeText(event.target.value)
 }
-
 
 function getRoleName(constant) {
   switch (constant) {
@@ -21,8 +23,8 @@ function getRoleName(constant) {
       return 'Kunde'
     case 'ADMIN':
       return 'Admin'
-      case 'Gast':
-        return 'Gast'
+    case 'Gast':
+      return 'Gast'
     default:
       return constant;
   }
@@ -32,7 +34,7 @@ onMounted(async () => {
     try {
       const token = await getAccessTokenSilently()
       bearerToken.value = token
-       const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/profile`, {
+      const response = await fetch(`${API_PROFILE}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -44,63 +46,346 @@ onMounted(async () => {
         error.value = `Fehler beim Laden des Profils: ${response.status} ${response.statusText}`
       }
     } catch (e) {
-       error.value = `Fehler beim Laden des Profils: ${e.message}`
+      error.value = `Fehler beim Laden des Profils: ${e.message}`
       console.warn('Could not get token:', e)
     }
   }
 })
-</script>
+async function loadUsers() {
+  try {
+    const token = await getAccessTokenSilently();
+    const res = await fetch(API_USERS, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
 
+    if (!res.ok) {
+      throw new Error(`${res.status} ${res.statusText}`);
+    }
+
+    users.value = await res.json();
+  } catch (e) {
+    error.value = "Fehler beim Laden der Nutzer";
+    console.error(e);
+  }
+}
+
+</script>
 <template>
   <Navbar />
-  <div class="container mt-5" style="min-height: 60vh;">
-    <div v-if="isLoading" class="text-center">
+
+  <div class="whole-page">
+    <div v-if="isLoading" class="spinner-container">
       <div class="spinner-border" role="status">
         <span class="visually-hidden">Loading...</span>
       </div>
     </div>
 
-    <div v-else-if="isAuthenticated && user" class="card mx-auto" style="max-width: 600px;">
-      <div class="card-header bg-accent text-white">
-        <h3 class="mb-0">Benutzer-Profil</h3>
-      </div>
-      <div class="card-body text-center">
-        <div v-if="profileData">
-          <img :src="user.picture" :alt="user.name" class="rounded-circle mb-3 border border-3 border-primary"
-            width="150" height="150">
-            <h4 class="card-title">{{ profileData.name }}</h4>
-          <p class="card-text text-muted">{{ profileData.email }}</p>
-          <p><strong>Rolle:</strong> {{ getRoleName(profileData.role) }}</p>
-        </div>
-        <div v-else>
-          <p class="card-text text-muted warning">
-            {{ error || 'Lade Profildaten...' }}
-          </p>
-        </div>
+    <div v-else-if="isAuthenticated && user" class="whole-page">
+      <div class="eclipse">
 
-        <div class="mt-4 text-start">
-          <details>
-            <summary class="btn btn-sm btn-outline-secondary mb-2">OAuth2-Debug-Info</summary>
-            <div class="mb-3">
-              <label class="form-label">User (Auth0):</label>
-              <pre class="bg-light p-3 rounded border"><code>{{ JSON.stringify(user, null, 2) }}</code></pre>
-              <label class="form-label">Bearer Token (in das Feld klicken, um Token zu kopieren):</label>
-              <textarea class="form-control" rows="3" readonly @click="copyToClipboard">{{ bearerToken }}</textarea>
+          <RouterLink to="/profile" class="circle mein-profile" active-class="active-circle">
+            Mein Profil
+          </RouterLink>
+
+          <RouterLink to="/profile/orders" class="circle meine-Bestellungen" active-class="active-circle">
+            Meine Bestellungen
+          </RouterLink>
+        </div>
+        <div class="profile-card">
+
+
+
+          <!-- Body -->
+          <div class="card-body">
+
+            <h3 class="profile-title">Mein Profil</h3>
+
+            <div v-if="profileData" class="profile-info">
+              <img :src="user.picture" :alt="user.name" class="profile-picture">
+              <div class="profile-details">
+                <h4>{{ profileData.name }}</h4>
+                <p class="email">{{ profileData.email }}</p>
+                <p><strong>Rolle:</strong> {{ getRoleName(profileData.role) }}</p>
+              </div>
             </div>
-          </details>
+
+            <div v-else class="loading-text">
+              {{ error || 'Lade Profildaten...' }}
+            </div>
+
+            <!-- OAuth2 Debug Info -->
+            <details class="debug-info">
+              <summary>OAuth2-Debug-Info</summary>
+              <pre>{{ JSON.stringify(user, null, 2) }}</pre>
+              <textarea readonly @click="copyToClipboard">{{ bearerToken }}</textarea>
+            </details>
+
+            <!-- Buttons -->
+            <div class="button-row">
+              <button class="btn-updating" @click="$router.push(`/profile/${profileData.id}`)">
+                Bearbeiten →
+              </button>
+
+              <RouterLink v-if="isAuthenticated" to="/login" class="btn-secondary">
+                Abmelden
+              </RouterLink>
+            </div>
+          </div>
+
         </div>
+
       </div>
-      <RouterLink
-  to="/login"
-  class="btn btn-secondary w-100"
->
-  Abmelden
-</RouterLink>
+
+      <div v-else class="alert alert-warning text-center">
+        Sie sind nicht eingeloggt.
+      </div>
+
     </div>
 
-    <div v-else class="alert alert-warning text-center">
-      Sie sind nicht eingeloggt.
-    </div>
-  </div>
-  <Footer />
+    <Footer />
 </template>
+
+<style scoped>
+.eclipse {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-top: -40px; 
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+/* --- Grundlayout --- */
+
+.circle {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+  z-index: 2;
+}
+
+.active-circle {
+  outline: 4px solid white;
+  box-shadow: 0 0 0 6px var(--dark-gray);
+}
+
+
+.mein-profile,
+.meine-Bestellungen {
+
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  text-align: center;
+
+  z-index: 2;
+}
+
+.meine-Bestellungen {
+  color: white;
+  background-color: var(--zweitfarbe);
+
+}
+
+.mein-profile {
+  color: white;
+  background-color: var(--rose);
+}
+
+.eclipse::after {
+  content: "";
+  position: absolute;
+
+  height: 6px;
+  width: calc(140px + 80px);
+
+  background: #999;
+
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  z-index: 1;
+}
+
+.profile-title {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  color: var(--zweitfarbe);
+}
+
+
+.whole-page {
+  min-height: calc(100vh - 120px);
+   padding: 1rem 2rem;
+  background-color: var(--light-gray);
+  max-width:1200 px; 
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  align-items: center;
+   justify-content: flex-start; 
+  padding-top: 20px;
+  gap: 20px;
+}
+
+/* --- Profilkarte --- */
+.profile-card {
+  width: 100%;
+  height:80%;
+
+  max-width: 1000px;       
+  background: white;
+  border-radius: 18px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+
+/* Header */
+.card-header {
+  padding: 1rem 1.5rem;
+  font-family: Poppins, sans-serif;
+  font-size: 1.5rem;
+}
+
+/* Body */
+.card-body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Profil Info */
+.profile-info {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.profile-picture {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 3px solid var(--rose);
+  object-fit: cover;
+}
+
+.profile-details h4 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.4rem;
+}
+
+.profile-details .email {
+  font-size: 0.95rem;
+  color: var(--dark-gray);
+  margin-bottom: 0.5rem;
+}
+
+/* OAuth2 Debug Info */
+.debug-info {
+  margin-top: 1rem;
+  background: var(--light-gray);
+  padding: 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+}
+
+.debug-info summary {
+  cursor: pointer;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+/* Buttons */
+.button-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.btn-updating {
+
+  background: var(--rose);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 10px 22px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.btn-updating:hover {
+  background: darken(var(--rose), 10%);
+}
+
+.btn-secondary {
+  background: var(--medium-gray);
+  color: white;
+  border-radius: 30px;
+  padding: 10px 22px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.btn-secondary:hover {
+  background: darken(var(--medium-gray), 10%);
+}
+
+/* Bestellungen Link */
+.order {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--rose);
+  text-decoration: underline;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  display: inline-block;
+}
+
+/* Loading Spinner */
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+}
+
+/* Warnung */
+.alert-warning {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+@media (max-width: 768px) {
+  .profile-card {
+    max-width: 100%;
+  }
+}
+</style>
