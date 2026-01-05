@@ -88,7 +88,7 @@ watch(isAuthenticated, async (v) => {
         </div>
 
         <div class="user-actions">
-        <button class="btn-order" @click="$router.push(`/users/${user.id}`)">
+        <button class="btn-user" @click="$router.push(`/users/${user.id}`)">
   Profil →
 </button>
         </div>
@@ -146,7 +146,7 @@ watch(isAuthenticated, async (v) => {
   margin-top: 12px;
 }
 
-.btn-order {
+.btn-user {
   background: var(--rose);
   border: none;
   padding: 8px 18px;

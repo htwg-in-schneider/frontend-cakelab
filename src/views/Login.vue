@@ -37,7 +37,7 @@ function handleLogout() {
         <p class="text-center mb-4" v-if="!isAuthenticated">
           Melde dich an um fortzufahren
         </p>
-        <p v-else> Sie möchten Sich abmelden</p>
+        <p  class="text-center mb-4" v-else> Sie möchten Sich abmelden</p>
 
         <!-- Login Button -->
         <button v-if="!isAuthenticated" @click="handleLogin" class="btn btn-accent w-100">

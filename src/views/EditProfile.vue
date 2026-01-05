@@ -9,12 +9,10 @@ const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
 
 
 const popup = ref(null);
-const isAdmin = ref(false);
 const route = useRoute();
 const router = useRouter();
 
 const API_URL = import.meta.env.VITE_API_BASE_URL + '/api/profile';
-const API_USERS = import.meta.env.VITE_API_BASE_URL + '/api/users';
 const profile = ref(null);
 const isLoading = ref(true);
 const isSaving = ref(false);
@@ -30,11 +28,11 @@ onUnmounted(() => {
 });
 
 // Profile laden
-async function fetchUser() {
+async function fetchProfile() {
     try {
         const id = route.params.id;
         const token = await getAccessTokenSilently();
-        const response = await fetch(`${API_USERS}/${id}`,
+        const response = await fetch(`${API_URL}/${id}`,
             {
                 headers: { Authorization: `Bearer ${token}` }
             });
@@ -51,12 +49,12 @@ async function fetchUser() {
 }
 
 // Profile aktualisieren
-async function updateUser() {
+async function updateProfile() {
     try {
         const id = route.params.id;
         isSaving.value = true;
         const token = await getAccessTokenSilently();
-        const response = await fetch(`${API_USERS}/${id}`, {
+        const response = await fetch(`${API_URL}/${id}`, {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json',
@@ -83,12 +81,12 @@ async function updateUser() {
 
 
 // Profile löschen
-async function deleteUser() {
+async function deleteProfile() {
 
     try {
         const id = route.params.id;
         const token = await getAccessTokenSilently();
-        const response = await fetch(`${API_USERS}/${id}`, {
+        const response = await fetch(`${API_URL}/${id}`, {
             method: "DELETE",
             headers: {
                 Authorization: `Bearer ${token}`
@@ -116,55 +114,22 @@ function goBack() {
 
 const roles = ref([]);
 
-async function loadRole() {
-    const token = await getAccessTokenSilently();
-    const res = await fetch(import.meta.env.VITE_API_BASE_URL + "/api/role", {
-        headers: { Authorization: `Bearer ${token}` }
-    });
-    roles.value = await res.json();
-}
-
-function formatRole(c) {
-    return c.charAt(0) + c.slice(1).toLowerCase();
-}
-
-onMounted(loadRole);
-
-async function checkAdminRole() {
-    try {
-        const token = await getAccessTokenSilently();
-        const response = await fetch(`${API_URL}`, {
-            headers: { Authorization: `Bearer ${token}` }
-        });
-        if (response.ok) {
-            const data = await response.json();
-            isAdmin.value = data.role === 'ADMIN';
-        }
-    } catch (error) {
-        console.error('Error checking admin role:', error);
-    }
-}
-
-
-
 
 onMounted(async () => {
     document.body.classList.add('no-nav-padding');
 
-    if (!isAuthenticated.value) return;
+    if (isAuthenticated.value){ 
+        await fetchProfile();
+    }
+}) ;
 
-    await checkAdminRole();
+    
 
-   // if (!isAdmin.value) {
-     //   router.push('/');
-       // return;
-    //}
-
-    await fetchUser();
+watch(isAuthenticated, async (loggedIn) => {
+    if (loggedIn) {
+        await fetchProfile();
+    }
 });
-  
-
-
 
 </script>
 
@@ -172,7 +137,7 @@ onMounted(async () => {
 <template>
 
     <Popup ref="popup" />
-    <div class="admin-container" v-if="isAdmin">
+    <div class="user-container" v-if="isAuthenticated">
         <div class="edit-page">
             <div class="edit-card">
                 <!-- Close / Zurück-Knopf -->
@@ -189,7 +154,7 @@ onMounted(async () => {
                 <div v-else-if="profile">
 
 
-                    <form @submit.prevent="updateUser" class="edit-form">
+                    <form @submit.prevent="updateProfile" class="edit-form">
 
                         <div class="mb-3">
                             <label class="form-label">Name</label>
@@ -201,29 +166,27 @@ onMounted(async () => {
                             <input class="form-control" rows="3" v-model="profile.email"></input>
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Role</label>
+                    
+              
 
-                            <DropdownMenu v-model="profile.role" :options="roles" placeholder="Role auswählen"
-                                :allowAll="false" />
+                <div class="button-row">
+                    <Button :disabled="isSaving" variant="dark" type="submit">
+                        {{ isSaving ? 'Speichere…' : 'Aktualisieren' }}
+                    </Button>
 
-                        </div>
-
-                        <div class="button-row">
-                            <Button :disabled="isSaving" variant="dark" type="submit">
-                                {{ isSaving ? 'Speichere…' : 'Aktualisieren' }}
-                            </Button>
-
-                            <Button type="button" variant="outline" class="btn-delete" @click="deleteUser">
-                                Löschen
-                            </Button>
-                        </div>
-
-                    </form>
+                    <Button type="button" variant="outline" class="btn-delete" @click="deleteProfile">
+                        Löschen
+                    </Button>
                 </div>
+                    </form>
+  </div>
+               
             </div>
+              
         </div>
     </div>
+    
+ 
 </template>
 
 <style scoped>
