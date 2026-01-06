@@ -7,7 +7,7 @@ import Navbar from "@/components/Navbar.vue";
 const orders = ref([]);
 const error = ref(null);
 const API_PROFILE = import.meta.env.VITE_API_BASE_URL + `/api/profile/orders`;
-const API_ORDER= import.meta.env.VITE_API_BASE_URL + `/api/orders`;
+const API_ORDER = import.meta.env.VITE_API_BASE_URL + `/api/orders`;
 async function loadOrders() {
   try {
     const token = await getAccessTokenSilently({
@@ -35,11 +35,11 @@ async function loadOrders() {
 }
 
 onMounted(async () => {
-    
-    if (isAuthenticated.value){ 
-        await loadOrders();
-    }
-}) ;
+
+  if (isAuthenticated.value) {
+    await loadOrders();
+  }
+});
 import { watch } from "vue";
 
 watch(isAuthenticated, (loggedIn) => {
@@ -51,88 +51,94 @@ watch(isAuthenticated, (loggedIn) => {
 </script>
 <template>
   <Navbar />
- <div class="customer-container" v-if="isAuthenticated">
-  <div class="profile-wrapper">
-     <div class="eclipse">
+  <div class="customer-container" v-if="isAuthenticated">
+    <div class="profile-wrapper">
+      <div class="eclipse">
 
-          <RouterLink to="/profile" class="circle mein-profile" active-class="active-circle">
-            Mein Profil
-          </RouterLink>
+        <RouterLink to="/profile" class="circle mein-profile" active-class="active-circle">
+          Mein Profil
+        </RouterLink>
 
-          <RouterLink to="/profile/orders" class="circle meine-Bestellungen" active-class="active-circle">
-            Meine Bestellungen
-          </RouterLink>
+        <RouterLink to="/profile/orders" class="circle meine-Bestellungen" active-class="active-circle">
+          Meine Bestellungen
+        </RouterLink>
+      </div>
+      <div v-for="order in orders" :key="order.id" class="orders-user">
+
+        <!-- ITEMS -->
+        <div v-for="item in order.items" :key="item.id" class="item-card">
+          <div class="item-order-number">
+            Bestellungsnummer: {{ order.id }}
+          </div>
+          <img :src="item.bildUrl" class="item-image" />
+
+          <div class="item-info">
+            <div class="item-name">{{ item.name }}</div>
+
+            <div class="item-price">
+              Kuchenpreis:
+              {{ (item.price * item.quantity).toFixed(2) }} €
+            </div>
+
+            <div>
+              Menge: {{ item.quantity }}
+            </div>
+          </div>
         </div>
-       <div v-for="order in orders" :key="order.id" class="orders-user">
 
-  <!-- ITEMS -->
-  <div v-for="item in order.items" :key="item.id" class="item-card">
-    <div class="item-order-number">
-        Bestellungsnummer: {{ order.id }}
-      </div>
-    <img :src="item.bildUrl" class="item-image" />
+        <!-- TRENNWAND -->
+        <!-- TRENNWAND -->
+        <div class="order-separator soft">
+          <span>=</span>
+        </div>
 
-    <div class="item-info">
-      <div class="item-name">{{ item.name }}</div>
+        <!-- BESTELL-INFOS ALS CARD -->
+        <div class="order-summary card">
+          <div class="summary-row">
+            <span>Anzahl Kuchenarten: </span>
+            <span>{{ order.items.length }}</span>
+          </div>
 
-      <div class="item-price">
-        Kuchenpreis:
-        {{ (item.price * item.quantity).toFixed(2) }} €
-      </div>
+          <div class="summary-row">
+            <span>Versand: </span>
+            <span>
+              {{ order.shippingFree ? "Kostenlos" : "Standardversand" }}
+            </span>
+          </div>
 
-      <div>
-        Menge: {{ item.quantity }}
+          <div class="summary-row total">
+            <span>= Gesamtbetrag:</span>
+            <span>{{ order.total != null ? order.total.toFixed(2) : '0.00' }} €</span>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
-
-  <!-- TRENNWAND -->
- <!-- TRENNWAND -->
-<div class="order-separator soft">
-  <span>=</span>
-</div>
-
-<!-- BESTELL-INFOS ALS CARD -->
-<div class="order-summary card">
-  <div class="summary-row">
-    <span>Anzahl Kuchenarten:</span>
-    <span>{{ order.items.length }}</span>
-  </div>
-
-  <div class="summary-row">
-    <span>Versand:</span>
-    <span>
-      {{ order.shippingFree ? "Kostenlos" : "Standardversand" }}
-    </span>
-  </div>
-
-  <div class="summary-row total">
-    <span>= Gesamtbetrag:</span>
-    <span>{{ order.total.toFixed(2) }} €</span>
-  </div>
-  </div>
-
-</div>
-</div>
-</div>
 </template>
 <style scoped>
-
-
-  .eclipse {
+.eclipse {
   position: relative;
   display: flex;
   align-items: center;
-  margin-top: -20px; 
+  margin-top: -20px;
   gap: 20px;
   margin-bottom: 40px;
-  justify-content: space-between; 
+  justify-content: space-between;
 }
 
 /* --- Grundlayout --- */
-.orders-user{
-  gap:10px; 
+.orders-user {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 60px;
+    margin-bottom: 80px;     
+  padding-bottom: 50px;   
+
+  border-bottom: 2px dashed rgba(0,0,0,0.12);
 }
+
 .circle {
   width: 140px;
   height: 140px;
@@ -189,7 +195,7 @@ watch(isAuthenticated, (loggedIn) => {
   position: absolute;
   height: 6px;
 
-  
+
   width: calc(100% - 140px);
 
   background: #999;
@@ -200,6 +206,7 @@ watch(isAuthenticated, (loggedIn) => {
 
   z-index: 1;
 }
+
 /* weichere Trennwand */
 .order-separator {
   margin: 40px 0 30px;
@@ -239,14 +246,15 @@ watch(isAuthenticated, (loggedIn) => {
   background: var(--light-gray);
   border-radius: 16px;
   padding: 20px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+  gap: 20px;
 }
 
 /* dezente Hervorhebung der Summe */
 .summary-row.total {
   margin-top: 12px;
   padding-top: 10px;
-  border-top: 1px dashed rgba(0,0,0,0.15);
+  border-top: 1px dashed rgba(0, 0, 0, 0.15);
   font-size: 1.1rem;
   font-weight: 700;
 }
@@ -257,6 +265,7 @@ watch(isAuthenticated, (loggedIn) => {
   max-width: 1100px;
   margin: auto;
 }
+
 .orders-list {
   display: grid;
   gap: 20px;
@@ -268,7 +277,7 @@ watch(isAuthenticated, (loggedIn) => {
   border-radius: 16px;
   border: 1px solid #ddd;
   transition: 0.25s ease;
-   margin-bottom: 30px;
+  margin-bottom: 30px;
 }
 
 
