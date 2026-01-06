@@ -14,10 +14,12 @@ const reviewUrl = import.meta.env.VITE_API_BASE_URL + '/api/review/cake';
 async function fetchReviews() {
     try {
         const response = await fetch(`${reviewUrl}/${props.cakeId}`);
+        
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         reviews.value = await response.json();
+        console.log(``, reviews.value)
     } catch (error) {
         console.error('Error fetching reviews:', error);
     }
@@ -41,7 +43,7 @@ watch(() => props.cakeId, () => {
             <div v-for="review in reviews" :key="review.id" class="card border-0 shadow-sm">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h5 class="card-title fw-bold mb-0">{{ review.userName }}</h5>
+                        <h5 class="card-title fw-bold mb-0"> {{ review.username  }}</h5>
                         <div class="text-warning">
                             <i v-for="n in 5" :key="n" 
                                :class="n <= review.stars ? 'bi bi-star-fill' : 'bi bi-star'"></i>

@@ -150,7 +150,7 @@ async function loadUsers() {
   position: relative;
   display: flex;
   align-items: center;
-  margin-top: -40px; 
+  margin-top: -20px; 
   gap: 20px;
   margin-bottom: 40px;
 }
@@ -236,7 +236,6 @@ async function loadUsers() {
   min-height: calc(100vh - 120px);
    padding: 1rem 2rem;
   background-color: var(--light-gray);
-  max-width:1200 px; 
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -252,7 +251,7 @@ async function loadUsers() {
   width: 100%;
   height:80%;
 
-  max-width: 1000px;       
+  max-width: 1200px;       
   background: white;
   border-radius: 18px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
@@ -275,6 +274,7 @@ async function loadUsers() {
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
+   padding: 3rem 4rem;
   gap: 1rem;
 }
 
@@ -283,6 +283,8 @@ async function loadUsers() {
   display: flex;
   gap: 1rem;
   align-items: center;
+  justify-content: flex-start;
+
 }
 
 .profile-picture {
@@ -294,6 +296,7 @@ async function loadUsers() {
 }
 
 .profile-details h4 {
+  font-size: 24px;
   margin: 0 0 0.25rem 0;
   font-size: 1.4rem;
 }
@@ -340,9 +343,7 @@ async function loadUsers() {
   transition: 0.25s ease;
 }
 
-.btn-updating:hover {
-  background: darken(var(--rose), 10%);
-}
+
 
 .btn-secondary {
   background: var(--medium-gray);
@@ -354,20 +355,9 @@ async function loadUsers() {
   transition: 0.25s ease;
 }
 
-.btn-secondary:hover {
-  background: darken(var(--medium-gray), 10%);
-}
 
-/* Bestellungen Link */
-.order {
-  font-size: 24px;
-  font-weight: 600;
-  color: var(--rose);
-  text-decoration: underline;
-  cursor: pointer;
-  margin-bottom: 1rem;
-  display: inline-block;
-}
+
+
 
 /* Loading Spinner */
 .spinner-container {

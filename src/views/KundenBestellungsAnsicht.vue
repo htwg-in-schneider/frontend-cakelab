@@ -95,7 +95,7 @@ watch(isAuthenticated, (loggedIn) => {
         <!-- BESTELL-INFOS ALS CARD -->
         <div class="order-summary card">
           <div class="summary-row">
-            <span>Anzahl Kuchenarten: </span>
+            <span>Anzahl Artikel: </span>
             <span>{{ order.items.length }}</span>
           </div>
 
