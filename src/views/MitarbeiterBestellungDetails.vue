@@ -67,11 +67,13 @@ onMounted(async () => {
 
   if (isAuthenticated.value) {
     checkAdminRole();
+    loadOrder();
   }
 });
 watch(isAuthenticated, (newValue) => {
   if (newValue) {
     checkAdminRole();
+    loadOrder();
   }
 });
 
@@ -90,7 +92,6 @@ async function checkAdminRole() {
   }
 }
 
-onMounted(loadOrder);
 </script>
 <template>
   <NavBar />
@@ -104,7 +105,7 @@ onMounted(loadOrder);
 
       <div>
         <h2 class="order-title">Bestellung #{{ order.id }}</h2>
-        <div class="customer-name">Kunde: Mustermann</div>
+        <div class="customer-name">Kunde: {{ order.user?.name }}</div>
       </div>
     </div>
 
