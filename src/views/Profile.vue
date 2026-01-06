@@ -377,5 +377,8 @@ async function loadUsers() {
   .profile-card {
     max-width: 100%;
   }
+   .debug-info {
+    display: none;
+  }
 }
 </style>
