@@ -52,6 +52,7 @@ watch(isAuthenticated, (loggedIn) => {
 <template>
   <Navbar />
  <div class="customer-container" v-if="isAuthenticated">
+  <div class="profile-wrapper">
      <div class="eclipse">
 
           <RouterLink to="/profile" class="circle mein-profile" active-class="active-circle">
@@ -62,68 +63,76 @@ watch(isAuthenticated, (loggedIn) => {
             Meine Bestellungen
           </RouterLink>
         </div>
-        <div class="profile-card">
-    <div v-for="order in orders" :key="order.id" class="orders-user">
-      <div v-for="item in order.items" :key="item.id" class="item-card">
-        <!-- Bild -->
-        <img :src="item.bildUrl" class="item-image" />
+       <div v-for="order in orders" :key="order.id" class="orders-user">
 
-        <!-- Infos -->
-        <div class="item-info">
+  <!-- ITEMS -->
+  <div v-for="item in order.items" :key="item.id" class="item-card">
+    <div class="item-order-number">
+        Bestellungsnummer: {{ order.id }}
+      </div>
+    <img :src="item.bildUrl" class="item-image" />
 
-          <div class="item-name">{{ item.name }}</div>
+    <div class="item-info">
+      <div class="item-name">{{ item.name }}</div>
 
-          <div class="item-custom" v-if="item.customization">
-            <div>Basis: {{ item.customization.baseName }}</div>
-            <div>Größe: {{ item.customization.size }}</div>
-            <div>Schriftart: {{ item.customization.fontFamily }}</div>
-            <div>Farbe: {{ item.customization.fontColor }}</div>
-            <div v-if="item.customization.text">
-              Text: "{{ item.customization.text }}"
-            </div>
-          </div>
+      <div class="item-price">
+        Kuchenpreis:
+        {{ (item.price * item.quantity).toFixed(2) }} €
+      </div>
 
-          <div class="item-price">
-            {{ (item.price * item.quantity).toFixed(2) }} €
-          </div>
-
-          <div class="summary-row">
-            <span>Anzahl Produkte: </span>
-            <span>{{ order.itemCount }}</span>
-          </div>
-
-          <div class="summary-row">
-            <span>Versand: </span>
-            <span>
-              {{ order.shippingFree ? "Kostenlos" : "Standardversand" }}
-            </span>
-          </div>
-
-          <div class="summary-row total">
-            <span>Gesamtbetrag: </span>
-            <span>{{ order.total.toFixed(2) }} €</span>
-          </div>
-
-        </div>
+      <div>
+        Menge: {{ item.quantity }}
       </div>
     </div>
   </div>
+
+  <!-- TRENNWAND -->
+ <!-- TRENNWAND -->
+<div class="order-separator soft">
+  <span>=</span>
+</div>
+
+<!-- BESTELL-INFOS ALS CARD -->
+<div class="order-summary card">
+  <div class="summary-row">
+    <span>Anzahl Kuchenarten:</span>
+    <span>{{ order.items.length }}</span>
+  </div>
+
+  <div class="summary-row">
+    <span>Versand:</span>
+    <span>
+      {{ order.shippingFree ? "Kostenlos" : "Standardversand" }}
+    </span>
+  </div>
+
+  <div class="summary-row total">
+    <span>= Gesamtbetrag:</span>
+    <span>{{ order.total.toFixed(2) }} €</span>
+  </div>
+  </div>
+
+</div>
+</div>
 </div>
 </template>
 <style scoped>
+
 
   .eclipse {
   position: relative;
   display: flex;
   align-items: center;
-  margin-top: -40px; 
+  margin-top: -20px; 
   gap: 20px;
   margin-bottom: 40px;
   justify-content: space-between; 
 }
 
 /* --- Grundlayout --- */
-
+.orders-user{
+  gap:10px; 
+}
 .circle {
   width: 140px;
   height: 140px;
@@ -191,6 +200,57 @@ watch(isAuthenticated, (loggedIn) => {
 
   z-index: 1;
 }
+/* weichere Trennwand */
+.order-separator {
+  margin: 40px 0 30px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.order-separator::before,
+.order-separator::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--dark-gray);
+  opacity: 0.35;
+}
+
+.order-separator span {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--dark-gray);
+  opacity: 0.7;
+}
+
+.order-separator.soft {
+  margin: 30px 0 20px;
+}
+
+
+.order-separator.soft span {
+  font-size: 1rem;
+  opacity: 0.6;
+}
+
+/* Info-Card */
+.order-summary.card {
+  background: var(--light-gray);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+}
+
+/* dezente Hervorhebung der Summe */
+.summary-row.total {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(0,0,0,0.15);
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
 
 .customer-container {
   padding: 30px;
@@ -208,7 +268,9 @@ watch(isAuthenticated, (loggedIn) => {
   border-radius: 16px;
   border: 1px solid #ddd;
   transition: 0.25s ease;
+   margin-bottom: 30px;
 }
+
 
 .order-card:hover {
   transform: translateY(-3px);
@@ -249,6 +311,7 @@ watch(isAuthenticated, (loggedIn) => {
 .item-name {
   font-size: 1.1rem;
   font-weight: 600;
+  font-size: 20px;
 }
 
 .item-custom {
@@ -257,7 +320,7 @@ watch(isAuthenticated, (loggedIn) => {
   margin-top: 5px;
 }
 
-.item-price {
+.item-order-number {
   font-size: 1.1rem;
   font-weight: 700;
   color: var(--black);
