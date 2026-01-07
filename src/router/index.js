@@ -118,11 +118,7 @@ const routes = [
     component: Login,
   },
 
-  {
-    path: "/registrieren",
-    name: "registrieren",
-    component: Registrieren,
-  },
+ 
   {
     path: "/bestellbestaetigung",
     name: "bestellbestaetigung",
