@@ -46,7 +46,7 @@ async function loadOrder() {
     if (item.cakeId) {
       const cake = allCakes.find(p => p.id === item.cakeId);
       if (cake) {
-        item.bildUrl = cake.bildUrl;
+        item.cake.bildUrl = cake.bildUrl;
         item.beschreibung = cake.beschreibung;
       }
     }
@@ -114,7 +114,7 @@ async function checkAdminRole() {
       <div class="item-card" v-for="item in order.items" :key="item.id">
 
         <!-- Bild -->
-        <img :src="item.bildUrl" class="item-image" />
+        <img :src="item.cake.bildUrl" class="item-image" />
 
         <!-- Infos -->
         <div class="item-info">

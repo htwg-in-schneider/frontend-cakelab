@@ -9,7 +9,6 @@ import Home from "../views/Home.vue";
 import StandardCakes from "../views/StandardCakes.vue";
 import CustomizeCake from "@/views/CustomizeCake.vue";
 import Login from "@/views/Login.vue";
-import Registrieren from "@/views/Registrieren.vue";
 import MitarbeiterBestellungen from "@/views/MitarbeiterBestellungen.vue";
 import MitarbeiterBestellungDetails from "@/views/MitarbeiterBestellungDetails.vue";
 import Bestellbestaetigung from "@/views/Bestellbestaetigung.vue";

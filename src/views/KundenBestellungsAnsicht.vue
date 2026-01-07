@@ -8,7 +8,6 @@ import Footer from "@/components/Footer.vue";
 const orders = ref([]);
 const error = ref(null);
 const API_PROFILE = import.meta.env.VITE_API_BASE_URL + `/api/profile/orders`;
-const API_ORDER = import.meta.env.VITE_API_BASE_URL + `/api/orders`;
 async function loadOrders() {
   try {
     const token = await getAccessTokenSilently({
@@ -71,7 +70,7 @@ watch(isAuthenticated, (loggedIn) => {
           <div class="item-order-number">
             Bestellungsnummer: {{ order.id }}
           </div>
-          <img :src="item.bildUrl" class="item-image" />
+          <img :src="item.cake.bildUrl" class="item-image" />
 
           <div class="item-info">
             <div class="item-name">{{ item.name }}</div>
