@@ -4,6 +4,7 @@ import { useAuth0 } from "@auth0/auth0-vue";
 const { isAuthenticated, getAccessTokenSilently } = useAuth0();
 import { RouterLink } from "vue-router";
 import Navbar from "@/components/Navbar.vue";
+import Footer from "@/components/Footer.vue"; 
 const orders = ref([]);
 const error = ref(null);
 const API_PROFILE = import.meta.env.VITE_API_BASE_URL + `/api/profile/orders`;
@@ -115,6 +116,7 @@ watch(isAuthenticated, (loggedIn) => {
       </div>
     </div>
   </div>
+ <Footer/>
 </template>
 <style scoped>
 .eclipse {
