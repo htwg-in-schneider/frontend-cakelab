@@ -14,7 +14,11 @@ defineProps({
 
 <template>
   <div class="card h-100 shadow-sm">
-    <img :src="cake.bildUrl" class="card-img-top" alt="" />
+    <img
+  :src="`${import.meta.env.BASE_URL}assets/images/${product.bildUrl}`"
+  class="card-img-top"
+  :alt="product.name"
+/>
 
     <div class="card-body d-flex flex-column">
       <h5 class="card-title">{{ cake.name }}</h5>
