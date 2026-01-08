@@ -67,10 +67,10 @@ watch(isAuthenticated, (loggedIn) => {
 
         <!-- ITEMS -->
         <div v-for="item in order.items" :key="item.id" class="item-card">
-          <div class="item-order-number">
+         <div class="item-order-number">
             Bestellungsnummer: {{ order.id }}
           </div>
-          <img :src="item.cake.bildUrl" class="item-image" />
+          <img v-if="item.cake?.bildUrl" :src="item.cake.bildUrl" class="item-image" />
 
           <div class="item-info">
             <div class="item-name">{{ item.name }}</div>

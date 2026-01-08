@@ -115,7 +115,7 @@ cart.saveLastOrder({
           :key="item.lineId"
           class="drawer-item"
         >
-          <img :src="item.cake.bildUrl" class="item-img" />
+          <img v-if="item.cake?.bildUrl" :src="item.cake.bildUrl" class="item-img" />
 
           <div class="item-info flex-grow-1 ms-2">
             <div class="fw-semibold">{{ item.name }}</div>
