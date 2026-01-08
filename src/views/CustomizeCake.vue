@@ -85,9 +85,6 @@ function addCustomizedCake() {
 const baseCake = torten.value.find(p => p.id === selectedBase.value);
 
 const customization = {
-  baseCakeId: baseCake.id,
-  baseName: baseCake.name,
-  baseBildUrl: baseCake.bildUrl,
   size: selectedSize.value,
   fontFamily: fontFamily.value,
   fontColor: fontColor.value,

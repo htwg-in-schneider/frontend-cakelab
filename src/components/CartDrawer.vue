@@ -121,7 +121,7 @@ cart.saveLastOrder({
             <div class="fw-semibold">{{ item.name }}</div>
 
             <div v-if="item.customization" class="small text-muted">
-              <div>Basis: {{ item.customization.baseName }}</div>
+              <div>Basis: {{ item.cake}}</div>
               <div>Größe: {{ item.customization.size }}</div>
               <div>Schriftart: {{ item.customization.fontFamily }}</div>
               <div>Schriftfarbe: {{ item.customization.fontColor }}</div>
