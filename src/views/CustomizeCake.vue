@@ -18,9 +18,6 @@ const cart = useCartStore();
 const popup = ref(null);
 onMounted(async () => {
   fetchTorten();
-  if (isAuthenticated.value) {
-    checkAdminRole();
-  }
 });
 const errors = ref({
   base: false,
@@ -58,7 +55,7 @@ const totalPrice = computed(() => {
   return base.preis + extra;
 });
 
-const url = import.meta.env.VITE_API_BASE_URL + '/api/product';
+const url = import.meta.env.VITE_API_BASE_URL + '/api/cake';
 
 async function fetchTorten() {
   try {
@@ -85,12 +82,12 @@ function addCustomizedCake() {
 
 
 
-const baseProduct = torten.value.find(p => p.id === selectedBase.value);
+const baseCake = torten.value.find(p => p.id === selectedBase.value);
 
 const customization = {
-  baseCakeId: baseProduct.id,
-  baseName: baseProduct.name,
-  baseBildUrl: baseProduct.bildUrl,
+  baseCakeId: baseCake.id,
+  baseName: baseCake.name,
+  baseBildUrl: baseCake.bildUrl,
   size: selectedSize.value,
   fontFamily: fontFamily.value,
   fontColor: fontColor.value,
@@ -100,10 +97,10 @@ const customization = {
 
 
   const item = {
-    id: baseProduct.id,  
+    id: baseCake.id,  
     name: "Customized Cake",
     preis: totalPrice.value,  
-    bildUrl: baseProduct.bildUrl,
+    bildUrl: baseCake.bildUrl,
   };
 
   cart.addItem(item, customization);

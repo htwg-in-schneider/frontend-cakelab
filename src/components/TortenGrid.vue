@@ -1,12 +1,12 @@
 <script setup>
 import { ref, onMounted } from 'vue';
-import ProductCard from '@/components/ProductCard.vue';
+import CakeCard from '@/components/CakeCard.vue';
 
 const torten = ref([]); // Lokaler State für Produkte
 
-const url = import.meta.env.VITE_API_BASE_URL + '/api/product';
+const url = import.meta.env.VITE_API_BASE_URL + '/api/cake';
 
-async function fetchProducts() {
+async function fetchCakes() {
   try {
     const response = await fetch(url);
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
@@ -19,11 +19,11 @@ async function fetchProducts() {
     // const data = await response.json();
     // torten.value = data.content;
   } catch (error) {
-    console.error('Error fetching products:', error);
+    console.error('Error fetching cakes:', error);
   }
 }
 
-onMounted(fetchProducts);
+onMounted(fetchCakes);
 </script>
 
 <template>
@@ -40,7 +40,7 @@ onMounted(fetchProducts);
           :key="torte.id"
           class="col-12 col-sm-6 col-lg-3"
         >
-          <ProductCard :product="torte" />
+          <CakeCard :cake="torte" />
         </div>
       </div>
 

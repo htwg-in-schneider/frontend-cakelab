@@ -10,11 +10,12 @@ const orders = ref([]);
 const isAdmin=ref(false)
 const router = useRouter();
 
-
 const API_URL = import.meta.env.VITE_API_BASE_URL + "/api/orders";
-
 async function loadOrders() {
-  const res = await fetch(API_URL);
+   const token = await getAccessTokenSilently();
+    
+  const res = await fetch(API_URL, {headers: { Authorization: `Bearer ${token}` }
+    });
   const allOrders = await res.json();
 
   // Nur Bestellungen anzeigen, die NICHT fertig sind
@@ -23,8 +24,11 @@ async function loadOrders() {
 
 
 async function setStatus(id, status) {
+   const token = await getAccessTokenSilently();
+
   // komplette Bestellung abrufen
-  const res = await fetch(`${API_URL}/${id}`);
+  const res = await fetch(`${API_URL}/${id}`, { headers: { Authorization: `Bearer ${token}` }
+    });
   const fullOrder = await res.json();
 
   // Wenn Status bereits gesetzt → wieder auf "offen"
@@ -35,7 +39,7 @@ async function setStatus(id, status) {
   // speichern
   await fetch(`${API_URL}/${id}`, {
     method: "PUT",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json" ,    Authorization: `Bearer ${token}`},
     body: JSON.stringify(fullOrder),
   });
 
@@ -44,14 +48,17 @@ async function setStatus(id, status) {
 
 
 async function finishOrder(id) {
+   const token = await getAccessTokenSilently();
   await fetch(`${API_URL}/${id}/finish`, {
-    method: "PATCH"
+    method: "PATCH",
+    headers: { Authorization: `Bearer ${token}` }
   });
 
   loadOrders();
 }
 
 function goToOrderDetails(id) {
+ 
   router.push(`/admin/orders/${id}`);
 }
 
@@ -59,12 +66,12 @@ onMounted(async () => {
 
   if (isAuthenticated.value) {
     checkAdminRole();
-  }
-});
+  } await loadOrders()
+} );
 watch(isAuthenticated, (newValue) => {
   if (newValue) {
-    checkAdminRole();
-  }
+   checkAdminRole();
+  } 
 });
 
 async function checkAdminRole() {
@@ -75,21 +82,21 @@ async function checkAdminRole() {
     });
     if (response.ok) {
       const data = await response.json();
-      isAdmin.value = data.role === 'ADMIN';
+      isAdmin.value = data.role?.toUpperCase() === 'ADMIN';
     }
   } catch (error) {
     console.error('Error checking admin role:', error);
   }
 }
 
-onMounted(loadOrders);
+console.log(isAdmin.value);
 </script>
 
 
 <template>
   <Navbar />
 
-  <! -- div class="admin-container" v-if="isAdmin"  -->
+  <div class="admin-container" v-if="isAdmin"  >
     <h2 class="admin-title">Bestellübersicht</h2>
 
     <div class="orders-list">
@@ -149,7 +156,7 @@ onMounted(loadOrders);
 
       </div>
     </div>
-  <!--/div-->
+  </div>
   <Footer />
 </template>
 

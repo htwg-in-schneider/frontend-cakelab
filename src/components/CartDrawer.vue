@@ -2,7 +2,8 @@
 import { computed } from "vue";
 import { useCartStore } from "@/stores/cart";
 import { useRouter } from "vue-router";
-
+import { useAuth0 } from "@auth0/auth0-vue";
+const { getAccessTokenSilently,loginWithRedirect , isAuthenticated } = useAuth0();
 const cart = useCartStore();
 const router = useRouter();
 
@@ -36,41 +37,40 @@ const freeShippingText = computed(() =>
 // Bestellung absenden
 
 async function submitOrder() {
+  if (!isAuthenticated.value) {
+    loginWithRedirect();
+    return;
+  }
+
   if (cart.items.length === 0) return;
 
   const orderPayload = {
     items: cart.items.map(item => ({
-      productId: item.productId ?? item.id,
+      cakeId: item.cakeId ?? item.id,
       name: item.name,
       price: item.preis,
       quantity: item.quantity,
-
-      customization: item.customization
-        ? {
-            baseCakeId: item.customization.baseCakeId,
-            baseName: item.customization.baseName,
-            baseBildUrl: item.customization.baseBildUrl,
-            size: item.customization.size,
-            fontFamily: item.customization.fontFamily,
-            fontColor: item.customization.fontColor,
-            text: item.customization.text
-          }
-        : null
+      customization: item.customization ?? null
     })),
     total: cart.cartTotal + shippingCost.value
   };
 
-    const response = await fetch(import.meta.env.VITE_API_BASE_URL + "/api/orders", {
+  const token = await getAccessTokenSilently({
+    audience: import.meta.env.VITE_AUTH0_AUDIENCE
+  });
+
+  const response = await fetch(
+    import.meta.env.VITE_API_BASE_URL + "/api/orders",
+    {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
       body: JSON.stringify(orderPayload)
-    });
-
-    if (!response.ok) {
-      return; 
     }
-
-    
+  );
+ 
    const finalTotal = cart.cartTotal + shippingCost.value;
 
 cart.saveLastOrder({
@@ -172,7 +172,7 @@ cart.saveLastOrder({
 
         <button 
           class="checkout-btn"
-          :disabled="cartItems.length === 0"
+          :disabled="cartItems.length === 0 "
           @click="submitOrder"
         >
           Bestellung abschließen

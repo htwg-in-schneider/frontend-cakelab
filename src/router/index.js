@@ -3,8 +3,8 @@
 import { authGuard } from '@auth0/auth0-vue';
 
 import { createRouter, createWebHistory } from "vue-router";
-import ProductDetail from "../views/ProductDetail.vue";
-import CreateProduct from "@/views/CreateProduct.vue";
+import CakeDetail from "../views/CakeDetail.vue";
+import CreateCake from "@/views/CreateCake.vue";
 import Home from "../views/Home.vue";
 import StandardCakes from "../views/StandardCakes.vue";
 import CustomizeCake from "@/views/CustomizeCake.vue";
@@ -17,7 +17,10 @@ import AboutUsSeite from "@/views/AboutUsSeite.vue";
 import Impressum from "@/views/Impressum.vue";
 import Datenschutz from "@/views/Datenschutz.vue";
 import Profile from "@/views/Profile.vue";
-
+import Users from "@/views/Users.vue";
+import EditUser from "@/views/EditUser.vue";
+import EditProfile from "@/views/EditProfile.vue";
+import KundenBestellungsAnsicht from '@/views/KundenBestellungsAnsicht.vue';
 const routes = [
   {
     path: "/",
@@ -32,31 +35,42 @@ const routes = [
 
   {
 
-    path: '/product/:id',
-    name: 'product',
-     beforeEnter: authGuard,
-    component: ProductDetail,
+    path: '/cake/:id',
+    name: 'cake',
+    component: CakeDetail,
     props: true,
   },
   {
 
-    path: '/product/create',
-    name: 'product-create',
-     beforeEnter: authGuard,
-    component: CreateProduct,
+    path: '/cake/create',
+    name: 'cake-create',
+    beforeEnter: authGuard,
+    component: CreateCake,
   },
 
-  { path: "/profile",
-    component: Profile 
+  {
+    path: "/profile",
+    beforeEnter: authGuard,
+    component: Profile
+  },
+  {
+    path: "/profile/:id",
+    beforeEnter: authGuard,
+    component: EditProfile
+  },
+  {
+    path: "/profile/orders",
+    component: KundenBestellungsAnsicht,
+     beforeEnter: authGuard,
   },
 
   {
 
-    path: '/product/edit/:id',
-    name: 'product-edit',
-     beforeEnter: authGuard,
-    component: () => import('@/views/EditProduct.vue'),
-    
+    path: '/cake/edit/:id',
+    name: 'cake-edit',
+    beforeEnter: authGuard,
+    component: () => import('@/views/EditCake.vue'),
+
     props: true
 
   },
@@ -64,15 +78,15 @@ const routes = [
     path: "/admin/orders",
     name: "admin-orders",
     component: MitarbeiterBestellungen,
-beforeEnter:authGuard,
-props:true
+    beforeEnter: authGuard,
+    props: true
   },
   {
     path: "/admin/orders",
     name: "admin-orders",
     component: MitarbeiterBestellungen,
-    beforeEnter:authGuard,
-    props:true
+    beforeEnter: authGuard,
+    props: true
 
   },
 
@@ -80,25 +94,19 @@ props:true
     path: "/admin/orders/:id",
     name: "admin-order-details",
     component: MitarbeiterBestellungDetails,
-     beforeEnter: authGuard,
+    beforeEnter: authGuard,
     props: true
   },
   {
     path: '/customize-cake',
     name: 'customizeCake',
-    component: CustomizeCake ,
-     beforeEnter: authGuard,
+    component: CustomizeCake,
+    beforeEnter: authGuard,
     props: true,
   },
 
 
   {
-
-    path: '/login',
-    name: 'login',
-    component: Login,
-     beforeEnter: authGuard
-  }, {
     path: "/about-us",
     name: "aboutUs",
     component: AboutUsSeite,
@@ -109,6 +117,7 @@ props:true
     name: "login",
     component: Login,
   },
+
   {
     path: "/registrieren",
     name: "registrieren",
@@ -128,6 +137,15 @@ props:true
     path: "/datenschutz",
     component: Datenschutz,
   },
+  {
+    path: "/users",
+    component: Users,
+    beforeEnter: authGuard,
+  },
+  { path: "/users/:id", 
+    component: EditUser,
+     beforeEnter: authGuard,
+ },
 ];
 
 const router = createRouter({

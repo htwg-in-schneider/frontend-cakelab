@@ -1,10 +1,13 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted , watch} from "vue";
 import { useRoute } from "vue-router";
 import NavBar from '@/components/Navbar.vue';
 import Footer from '@/components/Footer.vue';
 import { useAuth0 } from '@auth0/auth0-vue';
+const {   isAuthenticated,  getAccessTokenSilently } = useAuth0(); 
 
+
+const isAdmin=ref(false)
 const route = useRoute();
 const order = ref(null);
 const props = defineProps({
@@ -15,35 +18,36 @@ const props = defineProps({
 });
 
 
-async function loadProduct(productId) {
-  const res = await fetch(import.meta.env.VITE_API_BASE_URL + `/api/product/${productId}`);
+async function loadCake(cakeId) {
+  const token = await getAccessTokenSilently();
+  const res = await fetch(import.meta.env.VITE_API_BASE_URL +`/api/cake/${cakeId}`);
   return await res.json();
 }
 
-async function loadAllProducts() {
-  const res = await fetch(import.meta.env.VITE_API_BASE_URL+ "/api/product");
-  return await res.json();
+async function loadAllCakes() {
+  const res = await fetch(import.meta.env.VITE_API_BASE_URL+ "/api/cake");
+ return await res.json();
 }
 
 async function loadOrder() {
   const id = route.params.id;
-
-  const res = await fetch(import.meta.env.VITE_API_BASE_URL + `/api/orders/${id}`);
+  const token = await getAccessTokenSilently();
+  const res = await fetch(import.meta.env.VITE_API_BASE_URL + `/api/orders/${id}`, { headers: { Authorization: `Bearer ${token}` } });
   const data = await res.json();
   order.value = data;
 
-  const allProducts = await loadAllProducts();
+  const allCakes = await loadAllCakes();
   console.log("ORDER ITEMS:", JSON.stringify(order.value.items, null, 2));
 
 
   for (const item of order.value.items) {
 
     // Normaler Kuchen
-    if (item.productId) {
-      const product = allProducts.find(p => p.id === item.productId);
-      if (product) {
-        item.bildUrl = product.bildUrl;
-        item.beschreibung = product.beschreibung;
+    if (item.cakeId) {
+      const cake = allCakes.find(p => p.id === item.cakeId);
+      if (cake) {
+        item.bildUrl = cake.bildUrl;
+        item.beschreibung = cake.beschreibung;
       }
     }
 
@@ -59,12 +63,40 @@ else if (item.customization && item.customization.baseBildUrl) {
 
 
 }
+onMounted(async () => {
 
-onMounted(loadOrder);
+  if (isAuthenticated.value) {
+    checkAdminRole();
+    loadOrder();
+  }
+});
+watch(isAuthenticated, (newValue) => {
+  if (newValue) {
+    checkAdminRole();
+    loadOrder();
+  }
+});
+
+async function checkAdminRole() {
+  try {
+    const token = await getAccessTokenSilently();
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/profile`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (response.ok) {
+      const data = await response.json();
+      isAdmin.value = data.role === 'ADMIN';
+    }
+  } catch (error) {
+    console.error('Error checking admin role:', error);
+  }
+}
+
 </script>
 <template>
   <NavBar />
 <section class="page-content">
+<div class="admin check" v-if="isAdmin">
   <div class="details-wrapper" v-if="order">
     
     <!-- HEADER -->
@@ -73,7 +105,7 @@ onMounted(loadOrder);
 
       <div>
         <h2 class="order-title">Bestellung #{{ order.id }}</h2>
-        <div class="customer-name">Kunde: Mustermann</div>
+        <div class="customer-name">Kunde: {{ order.user?.name }}</div>
       </div>
     </div>
 
@@ -114,7 +146,7 @@ onMounted(loadOrder);
     </div>
 
   </div>
-
+</div>
 </section>
     <Footer />
  

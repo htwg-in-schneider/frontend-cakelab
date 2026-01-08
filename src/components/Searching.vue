@@ -4,7 +4,7 @@ import DropdownMenu from '@/components/DropdownMenu.vue';
 
 const categoryUrl = import.meta.env.VITE_API_BASE_URL + '/api/category';
 
-const emit = defineEmits(['productUpdate']);
+const emit = defineEmits(['cakeUpdate']);
 const categories = ref([]);
 
 const searchName = ref('');
@@ -27,7 +27,7 @@ async function fetchCategories() {
 }
 
 function onSearch() {
-  emit("productUpdate", {
+  emit("cakeUpdate", {
     name: searchName.value,
     category: selectedCategory.value === "Alle Kategorien" ? "" : selectedCategory.value
   });
@@ -37,7 +37,7 @@ function onSearch() {
 function onReset() {
   searchName.value = '';
   selectedCategory.value = '';
-  emit('productUpdate');
+  emit('cakeUpdate');
 }
 </script>
 

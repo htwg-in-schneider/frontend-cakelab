@@ -1,7 +1,7 @@
 <script setup>
 import NavButton from './NavButton.vue';
 defineProps({
-  product: {
+  cake: {
     type: Object,
     required: true,
   },
@@ -21,14 +21,14 @@ defineProps({
 />
 
     <div class="card-body d-flex flex-column">
-      <h5 class="card-title">{{ product.name }}</h5>
-      <p class="fw-bold">{{ product.preis }} €</p>
+      <h5 class="card-title">{{ cake.name }}</h5>
+      <p class="fw-bold">{{ cake.preis }} €</p>
 
       <!-- Zum Produkt -->
       <NavButton
         variant="dark"
         class="mt-auto"
-        :to="`/product/${product.id}`"
+        :to="`/cake/${cake.id}`"
       >
         Zum Produkt
       </NavButton>
@@ -37,7 +37,7 @@ defineProps({
       <NavButton v-if="showEditButton"
         variant="outline-dark"
         class="mt-2"
-        :to="`/product/edit/${product.id}`"
+        :to="`/cake/edit/${cake.id}`"
       >
         Bearbeiten
       </NavButton>
