@@ -1,21 +1,22 @@
 <script setup>
-import { onMounted, ref , watch} from "vue";
+import { onMounted, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import Navbar from '@/components/Navbar.vue';
 import Footer from '@/components/Footer.vue';
 import { useAuth0 } from '@auth0/auth0-vue';
- const {   isAuthenticated,  getAccessTokenSilently } = useAuth0(); 
+const { isAuthenticated, getAccessTokenSilently } = useAuth0();
 
 const orders = ref([]);
-const isAdmin=ref(false)
+const isAdmin = ref(false)
 const router = useRouter();
 
 const API_URL = import.meta.env.VITE_API_BASE_URL + "/api/orders";
 async function loadOrders() {
-   const token = await getAccessTokenSilently();
-    
-  const res = await fetch(API_URL, {headers: { Authorization: `Bearer ${token}` }
-    });
+  const token = await getAccessTokenSilently();
+
+  const res = await fetch(API_URL, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
   const allOrders = await res.json();
 
   // Nur Bestellungen anzeigen, die NICHT fertig sind
@@ -24,11 +25,12 @@ async function loadOrders() {
 
 
 async function setStatus(id, status) {
-   const token = await getAccessTokenSilently();
+  const token = await getAccessTokenSilently();
 
   // komplette Bestellung abrufen
-  const res = await fetch(`${API_URL}/${id}`, { headers: { Authorization: `Bearer ${token}` }
-    });
+  const res = await fetch(`${API_URL}/${id}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
   const fullOrder = await res.json();
 
   // Wenn Status bereits gesetzt → wieder auf "offen"
@@ -39,7 +41,7 @@ async function setStatus(id, status) {
   // speichern
   await fetch(`${API_URL}/${id}`, {
     method: "PUT",
-    headers: { "Content-Type": "application/json" ,    Authorization: `Bearer ${token}`},
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
     body: JSON.stringify(fullOrder),
   });
 
@@ -48,7 +50,7 @@ async function setStatus(id, status) {
 
 
 async function finishOrder(id) {
-   const token = await getAccessTokenSilently();
+  const token = await getAccessTokenSilently();
   await fetch(`${API_URL}/${id}/finish`, {
     method: "PATCH",
     headers: { Authorization: `Bearer ${token}` }
@@ -58,7 +60,7 @@ async function finishOrder(id) {
 }
 
 function goToOrderDetails(id) {
- 
+
   router.push(`/admin/orders/${id}`);
 }
 
@@ -67,11 +69,11 @@ onMounted(async () => {
   if (isAuthenticated.value) {
     checkAdminRole();
   } await loadOrders()
-} );
+});
 watch(isAuthenticated, (newValue) => {
   if (newValue) {
-   checkAdminRole();
-  } 
+    checkAdminRole();
+  }
 });
 
 async function checkAdminRole() {
@@ -96,9 +98,16 @@ console.log(isAdmin.value);
 <template>
   <Navbar />
 
-  <div class="admin-container" v-if="isAdmin"  >
-    <h2 class="admin-title">Bestellübersicht</h2>
-
+  <div class="admin-container" v-if="isAdmin">
+    <h1 class="admin-dashboard"> Admin Dashboard</h1>
+    <div class="titles">
+      <h2 class="admin-title">Bestellübersicht</h2>
+      <div class="info-box">
+        <RouterLink to="/users">
+          <h2 class="user-info">Kundenübersicht</h2>
+        </RouterLink>
+      </div>
+    </div>
     <div class="orders-list">
       <div class="order-card" v-for="order in orders" :key="order.id">
         <!-- Header -->
@@ -125,34 +134,25 @@ console.log(isAdmin.value);
         </div>
 
         <div class="order-actions">
-  
-  <!-- Linker Button -->
-  <button
-    class="btn-order"
-    @click="goToOrderDetails(order.id)"
-  >
-    Zur Bestellung →
-  </button>
 
-  <!-- Rechte Buttons -->
-  <div class="order-status-buttons">
-    <button
-      class="btn-status"
-      :class="{ activeButton: order.status === 'In bearbeitung' }"
-      @click="setStatus(order.id, 'In bearbeitung')"
-    >
-      In Bearbeitung
-    </button>
+          <!-- Linker Button -->
+          <button class="btn-order" @click="goToOrderDetails(order.id)">
+            Zur Bestellung →
+          </button>
 
-    <button
-      class="btn-status"
-      @click="finishOrder(order.id)"
-    >
-      Fertig
-    </button>
-  </div>
+          <!-- Rechte Buttons -->
+          <div class="order-status-buttons">
+            <button class="btn-status" :class="{ activeButton: order.status === 'In bearbeitung' }"
+              @click="setStatus(order.id, 'In bearbeitung')">
+              In Bearbeitung
+            </button>
 
-</div>
+            <button class="btn-status" @click="finishOrder(order.id)">
+              Fertig
+            </button>
+          </div>
+
+        </div>
 
       </div>
     </div>
@@ -161,17 +161,40 @@ console.log(isAdmin.value);
 </template>
 
 <style scoped>
+.titles {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+
+}
+
 .admin-container {
   padding: 30px;
   max-width: 1100px;
   margin: auto;
 }
 
-.admin-title {
+.admin-title,
+.user-info {
+  color: var(--zweitfarbe);
   font-size: 2rem;
   font-weight: 700;
   color: var(--black);
   margin-bottom: 25px;
+}
+
+.admin-title {
+  color: var(--zweitfarbe);
+}
+
+
+.user-info {
+  color: var(--rose);
+}
+.admin-dashboard{
+  text-align: center;
+  
 }
 
 .orders-list {
@@ -185,6 +208,7 @@ console.log(isAdmin.value);
   border-radius: 16px;
   border: 1px solid #ddd;
 }
+
 .order-actions {
   display: flex;
   justify-content: space-between;
@@ -248,7 +272,7 @@ console.log(isAdmin.value);
   color: white;
   border-color: var(--zweitfarbe);
   transform: translateY(-2px);
-  box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
 }
 
 

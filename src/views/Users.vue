@@ -70,7 +70,16 @@ watch(isAuthenticated, async (v) => {
   <Navbar />
 
   <div class="admin-container" v-if="isAdmin">
-    <h2 class="admin-title">Kundenübersicht</h2>
+ 
+    <h1 class="admin-dashboard" > Admin Dashboard</h1>
+    <div class="titles">
+      <h2 class="user-info">Kundenübersicht</h2>
+      <div class="info-box">
+        <RouterLink to="/admin/orders">
+       <h2 class="admin-title">Bestellübersicht</h2>  
+        </RouterLink>
+      </div>
+    </div>
 
     <div class="users-list">
       <div class="user-card" v-for="user in users" :key="user.id">
@@ -105,10 +114,40 @@ watch(isAuthenticated, async (v) => {
   margin: auto;
 }
 
-.admin-title {
+.titles {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+
+}
+.admin-dashboard{
+  text-align: center;
+  
+}
+
+.admin-container {
+  padding: 30px;
+  max-width: 1100px;
+  margin: auto;
+}
+
+.admin-title,
+.user-info {
+  color: var(--zweitfarbe);
   font-size: 2rem;
   font-weight: 700;
+  color: var(--black);
   margin-bottom: 25px;
+}
+
+.user-info {
+  color: var(--zweitfarbe);
+}
+
+
+.admin-title {
+  color: var(--rose);
 }
 
 .users-list {

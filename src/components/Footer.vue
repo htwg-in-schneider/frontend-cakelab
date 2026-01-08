@@ -14,7 +14,6 @@ import { useAuth0 } from '@auth0/auth0-vue';
           </div>
           <div class="col-md-3 mb-3">
             <h6>User info</h6>
-            <FooterLink text="Create an account" to="/registrieren" />
             <FooterLink text="Login"  to="/login" v-if="!isAuthenticated "/>
             <FooterLink text="Logout" to="/login" v-if="isAuthenticated"/>
             <FooterLink text="mein Profil" to="/profile" v-if="isAuthenticated"/>
