@@ -4,10 +4,10 @@ import { useAuth0 } from "@auth0/auth0-vue";
 const { isAuthenticated, getAccessTokenSilently } = useAuth0();
 import { RouterLink } from "vue-router";
 import Navbar from "@/components/Navbar.vue";
+import Footer from "@/components/Footer.vue"; 
 const orders = ref([]);
 const error = ref(null);
 const API_PROFILE = import.meta.env.VITE_API_BASE_URL + `/api/profile/orders`;
-const API_ORDER = import.meta.env.VITE_API_BASE_URL + `/api/orders`;
 async function loadOrders() {
   try {
     const token = await getAccessTokenSilently({
@@ -67,10 +67,10 @@ watch(isAuthenticated, (loggedIn) => {
 
         <!-- ITEMS -->
         <div v-for="item in order.items" :key="item.id" class="item-card">
-          <div class="item-order-number">
+         <div class="item-order-number">
             Bestellungsnummer: {{ order.id }}
           </div>
-          <img :src="item.bildUrl" class="item-image" />
+          <img v-if="item.cake?.bildUrl" :src="item.cake.bildUrl" class="item-image" />
 
           <div class="item-info">
             <div class="item-name">{{ item.name }}</div>
@@ -115,6 +115,7 @@ watch(isAuthenticated, (loggedIn) => {
       </div>
     </div>
   </div>
+ <Footer/>
 </template>
 <style scoped>
 .eclipse {
