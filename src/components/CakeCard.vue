@@ -15,7 +15,7 @@ defineProps({
 <template>
   <div class="card h-100 shadow-sm">
     <img
-  :src="`${import.meta.env.BASE_URL}assets/images/${cake.bildUrl}`"
+  :src="`${cake.bildUrl}`"
   class="card-img-top"
   :alt="cake.name"
 />
