@@ -56,7 +56,7 @@ async function fetchCakes(filters = {}) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    torten.value = await response.json(); 
+    torten.value = await response.json();
     console.log("Produkte geladen:", torten.value);
 
   } catch (error) {
@@ -65,7 +65,7 @@ async function fetchCakes(filters = {}) {
 }
 
 onMounted(() => {
-  fetchCakes(); 
+  fetchCakes();
 });
 </script>
 
@@ -73,34 +73,36 @@ onMounted(() => {
   <Navbar />
   <ZusatzInfo />
   <Searching @cakeUpdate="fetchCakes" />
-  
 
-    <!-- HEADER + ICON ALS FLEX-BOX -->
+
+  <!-- HEADER + ICON ALS FLEX-BOX -->
   <div class="d-flex align-items-center justify-content-between mb-3">
-  <div>
-    <h1 class="fw-bold mb-2 d-flex align-items-center">
-      Standard cakes
-    </h1>
-    <p class="text-muted" style="max-width: 500px;">
-      Wähle aus unseren beliebtesten Standardtorten, bereit zum Bestellen und Genießen.
-    </p>
-  </div>
-
-  <!-- Add Icon -->
-   <div v-if="isAdmin">
-  <RouterLink to="/cake/create" class="icon-wrapper">
-    <img src="\assets\images\plus_icon.png" alt="Torte hinzufügen" class="add-icon" />
-  </RouterLink>
-</div>
-  
-
-    <div class="row g-4 mt-4">
-      <div v-for="item in torten" :key="item.id" class="col-12 col-md-6 col-lg-4">
-        <CakeCard :cake="item" :show-edit-button="isAdmin"  />
-      </div>
+    <div>
+      <h1 class="fw-bold mb-2 d-flex align-items-center">
+        Standard Cakes
+      </h1>
+      <p class="text-muted" style="max-width: 500px;">
+        Wähle aus unseren beliebtesten Standardtorten, bereit zum Bestellen und Genießen.
+      </p>
     </div>
 
+
+  <!-- Add Icon -->
+  <div v-if="isAdmin">
+    <RouterLink to="/cake/create" class="icon-wrapper">
+      <img src="\assets\images\plus_icon.png" alt="Torte hinzufügen" class="add-icon" />
+    </RouterLink>
   </div>
+  </div>
+  
+
+  <div class="row g-4 mt-4">
+    <div v-for="item in torten" :key="item.id" class="col-12 col-md-6 col-lg-4">
+      <CakeCard :cake="item" :show-edit-button="isAdmin" />
+    </div>
+  </div>
+
+
 
   <Footer />
 </template>
