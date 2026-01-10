@@ -1,5 +1,6 @@
 <script setup>
 import NavButton from './NavButton.vue';
+
 defineProps({
   cake: {
     type: Object,
@@ -13,18 +14,17 @@ defineProps({
 </script>
 
 <template>
-  <div class="card h-100 shadow-sm">
+  <div class="card h-100 shadow-sm cake-card">
     <img
-  :src="`${import.meta.env.BASE_URL}assets/images/${product.bildUrl}`"
-  class="card-img-top"
-  :alt="product.name"
-/>
+      :src="`${import.meta.env.BASE_URL}assets/images/${cake.bildUrl}`"
+      class="card-img-top"
+      :alt="cake.name"
+    />
 
     <div class="card-body d-flex flex-column">
       <h5 class="card-title">{{ cake.name }}</h5>
       <p class="fw-bold">{{ cake.preis }} €</p>
 
-      <!-- Zum Produkt -->
       <NavButton
         variant="dark"
         class="mt-auto"
@@ -33,8 +33,8 @@ defineProps({
         Zum Produkt
       </NavButton>
 
-      <!-- Bearbeiten -->
-      <NavButton v-if="showEditButton"
+      <NavButton
+        v-if="showEditButton"
         variant="outline-dark"
         class="mt-2"
         :to="`/cake/edit/${cake.id}`"
@@ -46,6 +46,11 @@ defineProps({
 </template>
 
 <style scoped>
+.cake-card {
+  max-width: 360px;
+  margin: 0 auto;
+}
+
 .card {
   border: none;
   border-radius: 1rem;
@@ -53,8 +58,8 @@ defineProps({
 
 .card-img-top {
   width: 100%;
-  aspect-ratio: 1 / 1; /* Quadratische Fläche */
-  object-fit: cover;   /* Sauberer Crop */
-  border-radius: 12px 12px 0 0;
+  height: 250px;       /* WICHTIG */
+  object-fit: cover;  /* Kein Verzerren */
+  border-radius: 1rem 1rem 0 0;
 }
 </style>
