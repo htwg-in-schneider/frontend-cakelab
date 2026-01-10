@@ -2,7 +2,7 @@
 
 import { authGuard } from '@auth0/auth0-vue';
 
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory, createWebHashHistory} from "vue-router";
 import CakeDetail from "../views/CakeDetail.vue";
 import CreateCake from "@/views/CreateCake.vue";
 import Home from "../views/Home.vue";
@@ -20,7 +20,12 @@ import Users from "@/views/Users.vue";
 import EditUser from "@/views/EditUser.vue";
 import EditProfile from "@/views/EditProfile.vue";
 import KundenBestellungsAnsicht from '@/views/KundenBestellungsAnsicht.vue';
-const routes = [
+
+const router = createRouter({
+  history: createWebHashHistory(import.meta.env.BASE_URL),
+  routes: [
+
+
   {
     path: "/",
     component: Home,
@@ -141,11 +146,8 @@ const routes = [
     component: EditUser,
      beforeEnter: authGuard,
  },
-];
+],
 
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes,
 });
 
 export default router;
