@@ -135,4 +135,11 @@ onMounted(() => {
   display: flex;
   align-items: center;
 }
+
+.cakes-container {
+  max-width: 1200px;   
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
 </style>

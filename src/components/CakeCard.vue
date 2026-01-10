@@ -47,7 +47,7 @@ defineProps({
 
 <style scoped>
 .cake-card {
-  max-width: 360px;
+  max-width: 300px;
   margin: 0 auto;
 }
 
@@ -58,8 +58,8 @@ defineProps({
 
 .card-img-top {
   width: 100%;
-  height: 250px;       /* WICHTIG */
-  object-fit: cover;  /* Kein Verzerren */
+  height: 220px;       
+  object-fit: cover;  
   border-radius: 1rem 1rem 0 0;
 }
 </style>
