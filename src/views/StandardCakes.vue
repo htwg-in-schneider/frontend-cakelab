@@ -68,53 +68,48 @@ onMounted(() => {
   fetchCakes();
 });
 </script>
-
 <template>
   <Navbar />
   <ZusatzInfo />
   <Searching @cakeUpdate="fetchCakes" />
 
-<div class="container my-5">
+  <div class="container cakes-container my-5">
 
-  <!-- HEADER + ICON -->
-  <div class="d-flex align-items-center justify-content-between mb-3">
-    <div>
-      <h1 class="fw-bold mb-2">Standard cakes</h1>
-      <p class="text-muted" style="max-width: 500px;">
-        Wähle aus unseren beliebtesten Standardtorten, bereit zum Bestellen und Genießen.
-      </p>
+    <!-- HEADER + ICON -->
+    <div class="d-flex align-items-center justify-content-between mb-4">
+      <div>
+        <h1 class="fw-bold mb-2">Standard cakes</h1>
+        <p class="text-muted" style="max-width: 500px;">
+          Wähle aus unseren beliebtesten Standardtorten, bereit zum Bestellen und Genießen.
+        </p>
+      </div>
+
+      <div v-if="isAdmin">
+        <RouterLink to="/cake/create" class="icon-wrapper">
+          <img
+            src="/assets/images/plus_icon.png"
+            alt="Torte hinzufügen"
+            class="add-icon"
+          />
+        </RouterLink>
+      </div>
     </div>
 
-    <div v-if="isAdmin">
-      <RouterLink to="/cake/create" class="icon-wrapper">
-        <img src="/assets/images/plus_icon.png" alt="Torte hinzufügen" class="add-icon" />
-      </RouterLink>
+    <!-- CARDS -->
+    <div class="row g-4">
+      <div
+        v-for="item in torten"
+        :key="item.id"
+        class="col-12 col-md-6 col-lg-4 d-flex"
+      >
+        <CakeCard
+          :cake="item"
+          :show-edit-button="isAdmin"
+        />
+      </div>
     </div>
+
   </div>
-  </div>
-  
-
-  <div class="row g-4 mt-4">
-    <div v-for="item in torten" :key="item.id" class="col-12 col-md-6 col-lg-4">
-      <CakeCard :cake="item" :show-edit-button="isAdmin" />
-    </div>
-  </div>
-
-
-
-  <!-- CARDS -->
-  <div class="row g-4 mt-4">
-    <div
-      v-for="item in torten"
-      :key="item.id"
-      class="col-12 col-md-6 col-lg-4"
-    >
-      <CakeCard :cake="item" :show-edit-button="isAdmin" />
-    </div>
-  </div>
-
-</div>
-
 
   <Footer />
 </template>
@@ -126,6 +121,10 @@ onMounted(() => {
   cursor: pointer;
   transition: 0.2s ease;
 }
+.card-body h5 {
+  min-height: 48px;
+}
+
 
 .add-icon:hover {
   transform: scale(1.1);
