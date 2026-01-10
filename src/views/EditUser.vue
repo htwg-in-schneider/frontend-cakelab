@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onUnmounted, watch } from 'vue';
+import { ref, onMounted, onUnmounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import Button from '@/components/Button.vue';
 import Popup from '@/components/Popup.vue';
@@ -12,7 +12,7 @@ const popup = ref(null);
 const isAdmin = ref(false);
 const route = useRoute();
 const router = useRouter();
-
+const originalProfile = ref(null);
 const API_URL = import.meta.env.VITE_API_BASE_URL + '/api/profile';
 const API_USERS = import.meta.env.VITE_API_BASE_URL + '/api/users';
 const profile = ref(null);
@@ -41,6 +41,7 @@ async function fetchUser() {
         if (!response.ok) throw new Error('Profile nicht gefunden');
 
         profile.value = await response.json();
+        originalProfile.value = JSON.parse(JSON.stringify(profile.value));
     } catch (error) {
         console.error(error);
         popup.value?.show("Profile konnte nicht geladen werden.", "error");
@@ -49,6 +50,10 @@ async function fetchUser() {
         isLoading.value = false;
     }
 }
+const isChanged = computed(() => {
+    if (!profile.value || !originalProfile.value) return false;
+    return JSON.stringify(profile.value) !== JSON.stringify(originalProfile.value);
+});
 
 // Profile aktualisieren
 async function updateUser() {
@@ -66,7 +71,7 @@ async function updateUser() {
         });
 
         if (!response.ok) throw new Error();
-
+        originalProfile.value = JSON.parse(JSON.stringify(profile.value));
         popup.value.show("Profile erfolgreich aktualisiert!", "success");
 
         setTimeout(() => {
@@ -155,14 +160,14 @@ onMounted(async () => {
 
     await checkAdminRole();
 
-   // if (!isAdmin.value) {
-     //   router.push('/');
-       // return;
+    // if (!isAdmin.value) {
+    //   router.push('/');
+    // return;
     //}
 
     await fetchUser();
 });
-  
+
 
 
 
@@ -193,12 +198,14 @@ onMounted(async () => {
 
                         <div class="mb-3">
                             <label class="form-label">Name</label>
-                            <input class="form-control" v-model="profile.name" />
+                            <input pattern="[A-Za-zÄÖÜäöüß\- ]{1,}" class="form-control" min="1"
+                                v-model="profile.name" />
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Email</label>
-                            <input class="form-control" rows="3" v-model="profile.email"></input>
+                            <input pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$" class="form-control" rows="3"
+                                v-model="profile.email"></input>
                         </div>
 
                         <div class="mb-3">
@@ -210,7 +217,7 @@ onMounted(async () => {
                         </div>
 
                         <div class="button-row">
-                            <Button :disabled="isSaving" variant="dark" type="submit">
+                            <Button :disabled="isSaving || !isChanged" variant="dark" type="submit">
                                 {{ isSaving ? 'Speichere…' : 'Aktualisieren' }}
                             </Button>
 

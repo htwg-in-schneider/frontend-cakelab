@@ -102,10 +102,10 @@ console.log(isAdmin.value);
     <h1 class="admin-dashboard"> Admin Dashboard</h1>
     <div class="titles">
       <h2 class="admin-title">Bestellübersicht</h2>
-      <div class="info-box">
-        <RouterLink to="/users">
+      <div class="info-box"  @click="router.push('/users')">
+      
           <h2 class="user-info">Kundenübersicht</h2>
-        </RouterLink>
+        
       </div>
     </div>
     <div class="orders-list">

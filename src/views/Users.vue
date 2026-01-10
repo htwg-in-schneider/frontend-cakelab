@@ -3,13 +3,12 @@ import { ref, onMounted, watch } from "vue";
 import Navbar from "@/components/Navbar.vue";
 import Footer from "@/components/Footer.vue";
 import { useAuth0 } from "@auth0/auth0-vue";
-
 const { isAuthenticated, getAccessTokenSilently } = useAuth0();
-
+import { useRouter } from "vue-router";
+const router = useRouter();
 const users = ref([]);
 const isAdmin = ref(false);
 const error = ref("");
-
 const API_USERS = import.meta.env.VITE_API_BASE_URL + "/api/users";
 const API_PROFILE = import.meta.env.VITE_API_BASE_URL + "/api/profile";
 
@@ -70,14 +69,12 @@ watch(isAuthenticated, async (v) => {
   <Navbar />
 
   <div class="admin-container" v-if="isAdmin">
- 
-    <h1 class="admin-dashboard" > Admin Dashboard</h1>
+
+    <h1 class="admin-dashboard"> Admin Dashboard</h1>
     <div class="titles">
       <h2 class="user-info">Kundenübersicht</h2>
-      <div class="info-box">
-        <RouterLink to="/admin/orders">
-       <h2 class="admin-title">Bestellübersicht</h2>  
-        </RouterLink>
+      <div class="info-box" @click="router.push('/admin/orders')">
+        <h2 class="admin-title">Bestellübersicht</h2>
       </div>
     </div>
 
@@ -97,9 +94,9 @@ watch(isAuthenticated, async (v) => {
         </div>
 
         <div class="user-actions">
-        <button class="btn-user" @click="$router.push(`/users/${user.id}`)">
-  Profil →
-</button>
+          <button class="btn-user" @click="$router.push(`/users/${user.id}`)">
+            Profil →
+          </button>
         </div>
       </div>
     </div>
@@ -121,9 +118,10 @@ watch(isAuthenticated, async (v) => {
 
 
 }
-.admin-dashboard{
+
+.admin-dashboard {
   text-align: center;
-  
+
 }
 
 .admin-container {
