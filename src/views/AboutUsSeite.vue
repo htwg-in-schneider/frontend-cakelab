@@ -9,7 +9,7 @@ import Footer from "@/components/Footer.vue";
   <main class="about">
 
     <!-- HERO -->
-    <section class="hero">
+    <section class="hero page-container">
       <img
         src="/src/assets/images/Aboutus_bild.png"
         alt="CakeLab Team"
@@ -26,7 +26,7 @@ import Footer from "@/components/Footer.vue";
     </section>
 
     <!-- STORY BOX -->
-    <section class="story-box">
+    <section class="story-box page-container">
       <div class="story-content">
         <p>
           Was als gemeinsames Hobby in einer kleinen Küche begann,
@@ -50,9 +50,9 @@ import Footer from "@/components/Footer.vue";
     </section>
 
     <!-- SPLIT SECTION -->
-    <section class="split">
+    <section class="split page-container">
 
-      <!-- IMAGE WRAPPER -->
+      <!-- IMAGE -->
       <div class="split-media">
         <img
           src="/src/assets/images/Backen_aesthetic.png"
@@ -60,7 +60,7 @@ import Footer from "@/components/Footer.vue";
         />
       </div>
 
-      <!-- TEXT BOX -->
+      <!-- TEXT -->
       <div class="split-box">
         <h2>Warum CakeLab?</h2>
 
@@ -91,21 +91,22 @@ import Footer from "@/components/Footer.vue";
 </template>
 
 <style scoped>
-/* =========================
-   BASE
-========================= */
+
+.page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+
 .about {
   background: var(--white);
   color: var(--dark-gray);
 }
 
-/* =========================
-   HERO
-========================= */
+
 .hero {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 48px 16px 80px;
+  padding: 48px 0 80px;
   text-align: center;
 }
 
@@ -130,46 +131,33 @@ import Footer from "@/components/Footer.vue";
   line-height: 1.7;
 }
 
-/* =========================
-   STORY BOX
-========================= */
 .story-box {
   background: var(--rose);
-  margin: 0 16px 160px;
+  margin: 0 auto 160px;
   border-radius: 32px;
 }
 
 .story-content {
-  max-width: 760px;
-  margin: 0 auto;
   padding: 64px 32px;
   color: var(--white);
   font-size: 18px;
   line-height: 1.9;
 }
 
-.story-content p {
+.story-content p:not(:last-child) {
   margin-bottom: 28px;
 }
 
-/* =========================
-   SPLIT SECTION
-========================= */
 .split {
-  max-width: 1200px;
-  margin: 0 auto 180px;
-  padding: 0 16px;
-
   display: grid;
   grid-template-columns: 1fr;
   gap: 48px;
+  margin-bottom: 180px;
 }
 
-/* IMAGE WRAPPER – WICHTIG */
 .split-media {
   border-radius: 32px;
   overflow: hidden;
-  height: 100%;
 }
 
 .split-media img {
@@ -179,7 +167,6 @@ import Footer from "@/components/Footer.vue";
   display: block;
 }
 
-/* TEXT BOX */
 .split-box {
   background: var(--rose);
   border-radius: 32px;
@@ -199,7 +186,7 @@ import Footer from "@/components/Footer.vue";
   margin-bottom: 22px;
 }
 
-.split-box p {
+.split-box p:not(:last-child) {
   margin-bottom: 20px;
 }
 
@@ -208,30 +195,22 @@ import Footer from "@/components/Footer.vue";
   letter-spacing: 0.4px;
 }
 
-/* =========================
-   DESKTOP – FIXT DIE HÖHEN
-========================= */
+
 @media (min-width: 900px) {
   .hero {
-    padding: 80px 40px 120px;
+    padding: 80px 0 120px;
   }
 
   .hero-text h1 {
     font-size: 46px;
   }
 
-  .story-box {
-    margin: 0 auto 200px;
-    max-width: 1100px;
-  }
-
   .split {
     grid-template-columns: 1fr 1fr;
-    align-items: stretch;
     gap: 80px;
+    align-items: stretch;
   }
 
-  /* JETZT SIND SIE GARANTIERT GLEICH HOCH */
   .split-media,
   .split-box {
     min-height: 460px;

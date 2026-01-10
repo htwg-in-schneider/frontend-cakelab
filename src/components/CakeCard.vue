@@ -53,8 +53,7 @@ const imageBaseUrl = import.meta.env.BASE_URL;
 
 <style scoped>
 .cake-card {
-  max-width: 300px;
-  margin: 0 auto;
+ width: 100%;
 }
 
 .card {
@@ -64,8 +63,26 @@ const imageBaseUrl = import.meta.env.BASE_URL;
 
 .card-img-top {
   width: 100%;
-  height: 220px;       
-  object-fit: cover;  
+  aspect-ratio: 1 / 1;     
+  object-fit: cover;
   border-radius: 1rem 1rem 0 0;
 }
+
+@media (max-width: 992px) {
+  .card-img-top {
+    aspect-ratio: 4 / 3;
+  }
+}
+@media (max-width: 768px) {
+  .card-img-top {
+    aspect-ratio: 3 / 2;
+  }
+}
+
+@media (max-width: 576px) {
+  .card-img-top {
+    aspect-ratio: 16 / 9;
+  }
+}
+
 </style>
