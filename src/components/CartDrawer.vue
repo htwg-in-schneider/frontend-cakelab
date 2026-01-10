@@ -38,70 +38,59 @@ const freeShippingText = computed(() =>
 
 async function submitOrder() {
   if (!isAuthenticated.value) {
-    loginWithRedirect();
+    await loginWithRedirect();
     return;
   }
-
   if (cart.items.length === 0) return;
 
-  const orderPayload = {
-    items: cart.items.map(item => ({
-      cake: { id: item.cakeId },
-      name: item.name,
-      price: item.preis,
-      quantity: item.quantity,
-      customization: item.customization ?? null
-    })),
-    total: cart.cartTotal + shippingCost.value
-  };
-try{
-  const token = await getAccessTokenSilently({
-   
+  const finalTotal = cart.cartTotal + shippingCost.value;
+
+  cart.saveLastOrder({
+    itemCount: cart.itemCount,          
+    total: finalTotal,
+    shipping: shippingCost.value,
+    shippingFree: shippingCost.value === 0,
   });
 
-  const response = await fetch(
-    import.meta.env.VITE_API_BASE_URL + "/api/orders",
-    {
+  try {
+    const token = await getAccessTokenSilently();
+
+    const orderPayload = {
+      items: cart.items.map(item => ({
+        cake: { id: item.cakeId },
+        name: item.name,
+        price: item.preis,
+        quantity: item.quantity,
+        customization: item.customization ?? null
+      })),
+      total: finalTotal
+    };
+
+    const response = await fetch(import.meta.env.VITE_API_BASE_URL + "/api/orders", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`
       },
       body: JSON.stringify(orderPayload)
-    }
-  );
-          if (response.ok) {
-            // Ideally we might get a string back based on user prompt, but we handle whatever
-            const text = await response.text();
-            console.log('Order submitted successfully:', text);
-            alert(text);
-            cart.clearCart();
-            
-        } else {
-            console.error('Order submission failed', response.status);
-            alert('Fehler beim Absenden der Bestellung.');
-        }
+    });
 
-    } catch (error) {
-        console.error('Error submitting order:', error);
-        alert('Ein Fehler ist aufgetreten.');
+    if (!response.ok) {
+      console.error("Order submission failed", response.status);
+      alert("Fehler beim Absenden der Bestellung.");
+      return;
     }
 
- 
-   const finalTotal = cart.cartTotal + shippingCost.value;
-
-cart.saveLastOrder({
-  itemCount: cart.itemCount,
-  total: finalTotal,
-  shippingFree: shippingCost.value === 0
-});
-
+    // ✅ erst nach Erfolg leeren & navigieren
     cart.clearCart();
-    cart.closeCart?.(); 
+    cart.closeCart?.();
     router.push("/bestellbestaetigung");
 
+  } catch (error) {
+    console.error("Error submitting order:", error);
+    alert("Ein Fehler ist aufgetreten.");
+  }
 }
-
 
 
 
