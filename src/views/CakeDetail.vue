@@ -110,7 +110,7 @@ function addToCart() {
       </div>
     </div>
 
-    <!-- Mobile Slider -->
+  
     <div class="mobile-slider d-lg-none">
       <div v-for="prod in related" :key="prod.id" class="slider-item">
         <CakeCard class="w-100" :cake="prod" />
@@ -131,45 +131,46 @@ function addToCart() {
   align-items: start;
 }
 
-/* Bildbox wie Screenshot */
+
 .image-wrapper {
   border-radius: 1rem;
   overflow: hidden;
-  background: #eee; /* optional, falls Bild lädt */
+  background: #eee; 
 }
 
-/* Desktop: schön groß & quadratisch */
 .img-cake {
   width: 100%;
   aspect-ratio: 1 / 1;
   object-fit: cover;
+  object-position: center;
   display: block;
+  border-radius: 1rem;
 }
 
-/* Tablet: etwas weniger dominant */
 @media (max-width: 991px) {
   .img-cake {
     aspect-ratio: 4 / 3;
-    max-height: 420px;
+
   }
 }
 
-/* Mobile: kompakt */
+
 @media (max-width: 576px) {
   .img-cake {
-    aspect-ratio: 16 / 9;
-    max-height: 300px;
+    aspect-ratio: auto;     
+    max-height: 320px;
+    object-fit: contain;     
+    background: #f3f3f3;    
+    padding: 12px;
   }
 }
 
-/* RELATED BOX */
 .related-box {
   background-color: var(--rose);
   border-radius: 1rem;
   color: var(--white);
 }
 
-/* Mobile slider */
 .mobile-slider {
   display: flex;
   gap: 1.2rem;
