@@ -74,64 +74,51 @@ function addToCart() {
   <Navbar />
   <ZusatzInfo />
 
-  <section class="container py-5">
+<section class="container py-5">
+  <div v-if="cake" class="row g-5 align-items-start">
 
-    <!-- Produkt existiert -->
-    <div v-if="cake" class="row detail-container">
-
-      <!-- Bild -->
-      <div class="col-lg-6 image-wrapper">
+    <!-- Bild -->
+    <div class="col-12 col-lg-6">
+      <div class="image-wrapper">
         <img :src="cake.bildUrl" class="img-cake" :alt="cake.name" />
       </div>
-
-      <!-- Info -->
-     <div class="col-lg-6 d-flex flex-column justify-content-center">
-        <h2 class="fw-bold">{{ cake.name }}</h2>
-        <p class="fw-bold fs-4">{{ cake.preis }} €</p>
-        <p class="desc">{{ cake.beschreibung }}</p>
-
-        <Button 
-  variant="accent" 
-  class="mt-3 mb-5"
-  @click="addToCart"
->
-  In den Warenkorb
-</Button>
-
- <CakeReviews :cakeId="id"/>
-
-      </div>
-
-    </div>  
-   
-
-    <!-- Related cakes -->
-    <div class="related-box mt-5 p-4 text-center" >
-
-      <h4 class="mb-4 fw-bold">Ähnliche Produkte</h4>
-
- <!-- Desktop Grid -->
-<div class="row g-4 d-none d-lg-flex">
-  <div v-for="prod in related" :key="prod.id" class="col-lg-3">
-    <CakeCard :cake="prod" />
-  </div>
-</div>
-
-<!-- Mobile Slider -->
-<div class="mobile-slider d-lg-none">
-  <div
-    v-for="prod in related"
-    :key="prod.id"
-    class="slider-item"
-  >
-    <CakeCard :cake="prod" />
-  </div>
-</div>
-
-
     </div>
 
-  </section>
+    <!-- Info -->
+    <div class="col-12 col-lg-6 d-flex flex-column">
+      <h2 class="fw-bold">{{ cake.name }}</h2>
+      <p class="fw-bold fs-4">{{ cake.preis }} €</p>
+      <p class="desc">{{ cake.beschreibung }}</p>
+
+      <Button variant="accent" class="mt-3 mb-4 w-100 w-lg-auto" @click="addToCart">
+        In den Warenkorb
+      </Button>
+
+      <CakeReviews :cakeId="id" />
+    </div>
+
+  </div>
+
+  <!-- Related -->
+  <div class="related-box mt-5 p-4">
+    <h4 class="mb-4 fw-bold text-center">Ähnliche Produkte</h4>
+
+    <!-- Desktop Grid -->
+    <div class="row g-4 d-none d-lg-flex">
+      <div v-for="prod in related" :key="prod.id" class="col-lg-3 d-flex">
+        <CakeCard class="w-100" :cake="prod" />
+      </div>
+    </div>
+
+    <!-- Mobile Slider -->
+    <div class="mobile-slider d-lg-none">
+      <div v-for="prod in related" :key="prod.id" class="slider-item">
+        <CakeCard class="w-100" :cake="prod" />
+      </div>
+    </div>
+  </div>
+</section>
+
 
   <Footer />
 </template>
@@ -140,22 +127,39 @@ function addToCart() {
   .CakeCard {
   width: 100% !important;
 }
-
 .detail-container {
   align-items: start;
 }
+
+/* Bildbox wie Screenshot */
 .image-wrapper {
   border-radius: 1rem;
   overflow: hidden;
+  background: #eee; /* optional, falls Bild lädt */
 }
-.image-wrapper img {
-  width: 100%;
-  border-radius: 1rem;
-}
+
+/* Desktop: schön groß & quadratisch */
 .img-cake {
   width: 100%;
-  border-radius: 1rem;
-  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+
+/* Tablet: etwas weniger dominant */
+@media (max-width: 991px) {
+  .img-cake {
+    aspect-ratio: 4 / 3;
+    max-height: 420px;
+  }
+}
+
+/* Mobile: kompakt */
+@media (max-width: 576px) {
+  .img-cake {
+    aspect-ratio: 16 / 9;
+    max-height: 300px;
+  }
 }
 
 /* RELATED BOX */
@@ -172,53 +176,22 @@ function addToCart() {
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   padding: 1rem 0 1.5rem;
-
-  scrollbar-width: thin;
-  scrollbar-color: var(--zweitfarbe) transparent;
-}
-
-
-.mobile-slider::-webkit-scrollbar {
-  height: 6px; /* dünn & elegant */
-}
-
-.mobile-slider::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.25);
-  border-radius: 10px;
-}
-
-.mobile-slider::-webkit-scrollbar-thumb {
-  background: var(--zweitfarbe);
-  border-radius: 10px;
-}
-
-.mobile-slider::-webkit-scrollbar-thumb:hover {
-  background: #6f4f68; 
 }
 
 .slider-item {
-  min-width: 70%;
+  min-width: 75%;
   scroll-snap-align: center;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-/* 2 Karten bereits sehr früh aktiv */
-@media (max-width: 1500px) {
+@media (min-width: 500px) {
   .slider-item {
-    min-width: 50%; /* halb so breit → 2 sichtbar */
+    min-width: 60%;
   }
 }
 
-/* 1 Karte erst auf kleinen Geräten */
-@media (max-width: 700px) {
+@media (min-width: 700px) {
   .slider-item {
-    min-width: 75%;
-  }
-}
-@media (max-width: 991px) {
-  .image-wrapper {
-    max-width: 620px;   
-    margin: 0 auto;     
+    min-width: 45%;
   }
 }
 
