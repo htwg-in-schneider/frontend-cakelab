@@ -217,4 +217,11 @@ watch(isAuthenticated, async (v) => {
   background: #ccc;
   color: black;
 }
+@media (max-width: 768px) {
+  .titles {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+}
 </style>
