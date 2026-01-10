@@ -1,7 +1,8 @@
 <script setup>
+
 import NavButton from './NavButton.vue';
 
-defineProps({
+const props = defineProps({
   cake: {
     type: Object,
     required: true,
@@ -11,15 +12,20 @@ defineProps({
     default: false,
   },
 });
+
+const imageBaseUrl = import.meta.env.BASE_URL;
+
+
 </script>
 
 <template>
   <div class="card h-100 shadow-sm cake-card">
-    <img
-      :src="`${import.meta.env.BASE_URL}assets/images/${cake.bildUrl}`"
-      class="card-img-top"
-      :alt="cake.name"
+   <img
+  :src="`${imageBaseUrl}assets/images/${cake.bildUrl}`"
+  class="card-img-top"
+  :alt="cake.name"
     />
+
 
     <div class="card-body d-flex flex-column">
       <h5 class="card-title">{{ cake.name }}</h5>
