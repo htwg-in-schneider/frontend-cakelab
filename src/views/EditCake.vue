@@ -175,7 +175,7 @@ onMounted(loadCategories);
 
           <div class="mb-3">
             <label class="form-label">Bild-URL</label>
-            <input class="form-control" v-model="cake.bildUrl" />
+            <input  type="url" class="form-control" v-model="cake.bildUrl" />
           </div>
 
 
