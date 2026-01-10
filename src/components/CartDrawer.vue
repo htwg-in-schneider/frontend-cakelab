@@ -54,9 +54,9 @@ async function submitOrder() {
     })),
     total: cart.cartTotal + shippingCost.value
   };
-
+try{
   const token = await getAccessTokenSilently({
-    audience: import.meta.env.VITE_AUTH0_AUDIENCE
+   
   });
 
   const response = await fetch(
@@ -70,6 +70,23 @@ async function submitOrder() {
       body: JSON.stringify(orderPayload)
     }
   );
+          if (response.ok) {
+            // Ideally we might get a string back based on user prompt, but we handle whatever
+            const text = await response.text();
+            console.log('Order submitted successfully:', text);
+            alert(text);
+            cart.clearCart();
+            
+        } else {
+            console.error('Order submission failed', response.status);
+            alert('Fehler beim Absenden der Bestellung.');
+        }
+
+    } catch (error) {
+        console.error('Error submitting order:', error);
+        alert('Ein Fehler ist aufgetreten.');
+    }
+
  
    const finalTotal = cart.cartTotal + shippingCost.value;
 
@@ -84,6 +101,9 @@ cart.saveLastOrder({
     router.push("/bestellbestaetigung");
 
 }
+
+
+
 
 </script>
 
