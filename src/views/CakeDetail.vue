@@ -78,14 +78,14 @@ function addToCart() {
   <div v-if="cake" class="row g-5 align-items-start">
 
     <!-- Bild -->
-    <div class="col-12 col-lg-6">
+    <div class="col-12 col-md-6">
       <div class="image-wrapper">
         <img :src="cake.bildUrl" class="img-cake" :alt="cake.name" />
       </div>
     </div>
 
     <!-- Info -->
-    <div class="col-12 col-lg-6 d-flex flex-column">
+    <div class="col-12 col-md-6 d-flex flex-column">
       <h2 class="fw-bold">{{ cake.name }}</h2>
       <p class="fw-bold fs-4">{{ cake.preis }} €</p>
       <p class="desc">{{ cake.beschreibung }}</p>
