@@ -394,12 +394,12 @@ console.log(isAdmin.value);
 @media (max-width: 768px) {
   .order-card {
     padding: 18px;
-
+  }
     .titles {
       flex-direction: column;
       align-items: flex-start;
       gap: 16px;
     }
   }
-}
+
 </style>
