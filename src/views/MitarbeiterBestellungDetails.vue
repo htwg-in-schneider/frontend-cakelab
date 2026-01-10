@@ -114,7 +114,7 @@ async function checkAdminRole() {
       <div class="item-card" v-for="item in order.items" :key="item.id">
 
         <!-- Bild -->
-        <img :src="item.cake.bildUrl" class="item-image" />
+        <img v-if="item.cake?.bildUrl" :src="item.cake.bildUrl" class="item-image" />
 
         <!-- Infos -->
         <div class="item-info">
@@ -122,7 +122,7 @@ async function checkAdminRole() {
           <div class="item-name">{{ item.name }}</div>
 
           <div class="item-custom" v-if="item.customization">
-            <div>Basis: {{ item.customization.baseName }}</div>
+            <div>Basis: {{ item.cake.name }}</div>
             <div>Größe: {{ item.customization.size }}</div>
             <div>Schriftart: {{ item.customization.fontFamily }}</div>
             <div>Farbe: {{ item.customization.fontColor }}</div>

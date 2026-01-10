@@ -56,7 +56,7 @@ async function fetchCakes(filters = {}) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    torten.value = await response.json(); 
+    torten.value = await response.json();
     console.log("Produkte geladen:", torten.value);
 
   } catch (error) {
@@ -65,7 +65,7 @@ async function fetchCakes(filters = {}) {
 }
 
 onMounted(() => {
-  fetchCakes(); 
+  fetchCakes();
 });
 </script>
 
@@ -73,7 +73,6 @@ onMounted(() => {
   <Navbar />
   <ZusatzInfo />
   <Searching @cakeUpdate="fetchCakes" />
-  
 
 <div class="container my-5">
 
@@ -92,6 +91,16 @@ onMounted(() => {
       </RouterLink>
     </div>
   </div>
+  </div>
+  
+
+  <div class="row g-4 mt-4">
+    <div v-for="item in torten" :key="item.id" class="col-12 col-md-6 col-lg-4">
+      <CakeCard :cake="item" :show-edit-button="isAdmin" />
+    </div>
+  </div>
+
+
 
   <!-- CARDS -->
   <div class="row g-4 mt-4">

@@ -79,7 +79,7 @@ export const useCartStore = defineStore("cart", {
       const order = {
         total: this.cartTotal,
         items: this.items.map((item) => ({
-          cakeId: item.cakeId,
+          cake: {cake: item.cakeId},
           name: item.name,
           price: item.preis,
           quantity: item.quantity,

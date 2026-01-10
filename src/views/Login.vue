@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, onUnmounted } from "vue";
 import { useAuth0 } from '@auth0/auth0-vue';
-
+import "@/assets/auth.css";
 // Navbar-Padding entfernen NUR für Login-Seite
 onMounted(() => {
   document.body.classList.add("no-nav-padding");
@@ -33,11 +33,11 @@ function handleLogout() {
     <div v-if="!isLoading" class="auth-left">
       <div class="auth-card shadow-lg">
         <h2 class="fw-bold text-center mb-3" v-if="!isAuthenticated">Willkommen zurück</h2>
-<h2 class="fw-bold text-center mb-3" v-else> Auf Wiedersehen</h2>
+        <h2 class="fw-bold text-center mb-3" v-else> Auf Wiedersehen</h2>
         <p class="text-center mb-4" v-if="!isAuthenticated">
           Melde dich an um fortzufahren
         </p>
-        <p  class="text-center mb-4" v-else> Sie möchten Sich abmelden</p>
+        <p class="text-center mb-4" v-else> Sie möchten Sich abmelden</p>
 
         <!-- Login Button -->
         <button v-if="!isAuthenticated" @click="handleLogin" class="btn btn-accent w-100">
