@@ -2,13 +2,10 @@
 import Navbar from '@/components/Navbar.vue';
 import Footer from '@/components/Footer.vue';
 import ZusatzInfo from '@/components/ZusatzInfo.vue';
-
 import Button from '@/components/Button.vue';
 import CakeCard from '@/components/CakeCard.vue';
-
 import CakeReviews from '@/components/CakeReviews.vue';
 import { ref, onMounted, computed , watch} from 'vue';
-
 import { useCartStore } from "@/stores/cart";
 const url = import.meta.env.VITE_API_BASE_URL + '/api/cake';
 
