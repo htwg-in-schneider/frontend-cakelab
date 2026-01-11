@@ -15,6 +15,7 @@ async function loadOrders() {
       audience: import.meta.env.VITE_AUTH0_AUDIENCE
     });
 
+
     const res = await fetch(API_PROFILE, {
       headers: {
         Authorization: `Bearer ${token}`
