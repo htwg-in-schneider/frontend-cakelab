@@ -10,20 +10,23 @@ import { useAuth0 } from '@auth0/auth0-vue';
 const { isAuthenticated, getAccessTokenSilently } = useAuth0();
 const isAdmin = ref(false);
 const url = import.meta.env.VITE_API_BASE_URL + '/api/cake';
-
 const torten = ref([]);
+
+// Zusammengeführter onMounted Hook
 onMounted(async () => {
-  fetchCakes();
+  await fetchCakes();
   if (isAuthenticated.value) {
     checkAdminRole();
   }
 });
 
+// Beobachtet Login-Status
 watch(isAuthenticated, (newValue) => {
   if (newValue) {
     checkAdminRole();
   }
 });
+
 async function checkAdminRole() {
   try {
     const token = await getAccessTokenSilently();
@@ -38,6 +41,7 @@ async function checkAdminRole() {
     console.error('Error checking admin role:', error);
   }
 }
+
 async function fetchCakes(filters = {}) {
   try {
     const params = new URLSearchParams();
@@ -63,59 +67,56 @@ async function fetchCakes(filters = {}) {
     console.error('Error fetching cakes:', error);
   }
 }
-
-onMounted(() => {
-  fetchCakes();
-});
 </script>
+
 <template>
   <Navbar />
   <ZusatzInfo />
   <Searching @cakeUpdate="fetchCakes" />
-<section class="page-content">
-  <div class="container cakes-container my-5">
 
-    <!-- HEADER + ICON -->
-    <div class="d-flex align-items-center justify-content-between mb-4">
-      <div>
-        <h1 class="fw-bold mb-2">Standard cakes</h1>
-        <p class="text-muted" style="max-width: 500px;">
-          Wähle aus unseren beliebtesten Standardtorten, bereit zum Bestellen und Genießen.
-        </p>
+  <section class="page-content">
+    <div class="container cakes-container my-5">
+
+      <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+          <h1 class="fw-bold mb-2">Standard cakes</h1>
+          <p class="text-muted" style="max-width: 500px;">
+            Wähle aus unseren beliebtesten Standardtorten, bereit zum Bestellen und Genießen.
+          </p>
+        </div>
+
+        <div v-if="isAdmin">
+          <RouterLink to="/cake/create" class="icon-wrapper">
+            <img
+              src="/assets/images/plus_icon.png"
+              alt="Torte hinzufügen"
+              class="add-icon"
+            />
+          </RouterLink>
+        </div>
       </div>
 
-      <div v-if="isAdmin">
-        <RouterLink to="/cake/create" class="icon-wrapper">
-          <img
-            src="/assets/images/plus_icon.png"
-            alt="Torte hinzufügen"
-            class="add-icon"
+      <div class="row g-3 g-md-4">
+        <div
+          v-for="item in torten"
+          :key="item.id"
+          class="col-12 col-md-6 col-lg-4 d-flex"
+        >
+          <CakeCard
+            :cake="item"
+            :show-edit-button="isAdmin"
           />
-        </RouterLink>
+        </div>
       </div>
-    </div>
 
-    <!-- CARDS -->
-    <div class="row g-4">
-      <div
-        v-for="item in torten"
-        :key="item.id"
-        class="col-12 col-md-6 col-lg-4 d-flex"
-      >
-        <CakeCard
-          :cake="item"
-          :show-edit-button="isAdmin"
-        />
-      </div>
     </div>
-
-  </div>
-</section>
+  </section>
+  
   <Footer />
 </template>
 
 <style scoped>
-  .page-content {
+.page-content {
   min-height: calc(100vh - 350px);
 }
 
@@ -125,10 +126,12 @@ onMounted(() => {
   cursor: pointer;
   transition: 0.2s ease;
 }
+
+/* Verhindert, dass Titel bei 2 Spalten das Layout zerschießen */
 .card-body h5 {
   min-height: 48px;
+  font-size: 1rem; /* Leicht kleinere Schrift auf Mobile falls nötig */
 }
-
 
 .add-icon:hover {
   transform: scale(1.1);
@@ -141,8 +144,19 @@ onMounted(() => {
 
 .cakes-container {
   max-width: 1200px;   
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
+/* Spezielle Anpassung für sehr kleine Bildschirme */
+@media (max-width: 576px) {
+  .cakes-container {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+  
+  h1 {
+    font-size: 1.5rem;
+  }
+}
 </style>

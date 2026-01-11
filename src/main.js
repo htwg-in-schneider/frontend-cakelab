@@ -14,12 +14,13 @@ const auth0 = createAuth0({
   clientId: import.meta.env.VITE_AUTH0_CLIENT_ID,
   authorizationParams: {
     audience: import.meta.env.VITE_AUTH0_AUDIENCE,
-    redirect_uri: import.meta.env.VITE_AUTH0_REDIRECT_URI,
-    ...(import.meta.env.VITE_AUTH0_AUDIENCE
-      ? { audience: import.meta.env.VITE_AUTH0_AUDIENCE }
-      : {}),
+    redirect_uri: window.location.origin,
+  },
+  onRedirectCallback: (appState) => {
+    router.replace(appState?.target || "/");
   },
 });
+
 createApp(App)
   .use(auth0)
   .use(router)

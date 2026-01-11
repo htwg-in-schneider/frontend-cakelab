@@ -176,10 +176,16 @@ function addToCart() {
 }
 
 .slider-item {
-  min-width: 80%;
+  min-width: 100%; 
   scroll-snap-align: center;
+  transition: min-width 0.3s ease; 
 }
 
+@media (min-width: 576px) {
+  .slider-item {
+    min-width: 48%;
+  }
+}
 :deep(.cake-card) {
   border: none;
   box-shadow: 0 4px 15px rgba(0,0,0,0.1);

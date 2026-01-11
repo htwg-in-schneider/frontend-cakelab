@@ -1,6 +1,8 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
 import { useAuth0 } from "@auth0/auth0-vue";
+import { useRoute } from "vue-router";
+const route = useRoute();
 import "@/assets/auth.css";
 
 onMounted(() => {
@@ -16,8 +18,15 @@ const { loginWithRedirect, logout, isAuthenticated, isLoading, user } = useAuth0
 const confirmLogout = ref(false);
 
 function handleLogin() {
-  loginWithRedirect();
+  loginWithRedirect({
+    appState: {
+      target: window.location.hash
+        ? window.location.hash.substring(1)
+        : route.fullPath
+    }
+  });
 }
+
 
 function handleLogout() {
   logout({

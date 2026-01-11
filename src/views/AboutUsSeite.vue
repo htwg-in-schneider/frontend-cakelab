@@ -36,8 +36,8 @@ import Footer from "@/components/Footer.vue";
             Jedes Produkt entsteht frisch, von Hand und mit dem Anspruch, etwas Besonderes zu sein.
           </p>
           <p class="focus-text">
-            Heute steht CakeLab für handgefertigte Kuchen, hochwertige Zutaten und ehrliches Handwerk 
-            – ohne Abkürzungen, ohne Kompromisse.
+            Heute steht CakeLab für handgefertigte Kuchen, hochwertige Zutaten und ehrliches Handwerk, 
+            ohne Abkürzungen und ohne Kompromisse.
           </p>
         </div>
       </div>
@@ -197,6 +197,7 @@ h2 {
   padding: 30px;
   border-radius: 20px;
   margin-top: 40px;
+  margin-bottom: 60px; 
 }
 
 .manifesto-box p {
@@ -210,15 +211,33 @@ h2 {
   margin-top: 10px;
 }
 
-/* Mobile Adjustments */
 @media (max-width: 850px) {
   .split-layout {
     grid-template-columns: 1fr;
     gap: 40px;
   }
-  
+
+
+  .split-text {
+    padding: 0 10px; 
+
   .hero-section {
     padding: 40px 0;
   }
+
+  .container {
+    padding: 0 20px; 
+  }
+}
+
+@media (max-width: 480px) {
+  .manifesto-box {
+    padding: 20px; 
+  }
+  
+  h2 {
+    font-size: 1.8rem;
+  }
+}
 }
 </style>
