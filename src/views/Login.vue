@@ -31,7 +31,7 @@ function handleLogin() {
 function handleLogout() {
   logout({
     logoutParams: {
-      returnTo: window.location.origin,
+      returnTo:  import.meta.env.VITE_AUTH0_REDIRECT_URI,
     },
   });
 }
