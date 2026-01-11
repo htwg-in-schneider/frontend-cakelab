@@ -73,7 +73,6 @@ p {
   font-size: 1.05rem;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .impressum-card {
     padding: 1.5rem;

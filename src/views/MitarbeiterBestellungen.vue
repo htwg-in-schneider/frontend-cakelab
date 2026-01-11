@@ -9,13 +9,8 @@ const { isAuthenticated, getAccessTokenSilently } = useAuth0();
 const orders = ref([]);
 const isAdmin = ref(false);
 const router = useRouter();
-
 const API_URL = import.meta.env.VITE_API_BASE_URL + "/api/orders";
-
-// Hilfsfunktion für den CSS-Check (Normalisierung)
 const isProcessing = (status) => status?.toLowerCase().trim() === 'in bearbeitung';
-
-// Navigation Funktionen (behebt den Template-Fehler "undefined push")
 const goToUsers = () => router.push('/users');
 const goToOrderDetails = (id) => router.push(`/admin/orders/${id}`);
 
@@ -40,15 +35,12 @@ async function loadOrders() {
 }
 
 async function setStatus(id, newStatus) {
-  // 1. Visuelles Feedback sofort (Optimistisch)
   if (newStatus === "fertig") {
     orders.value = orders.value.filter(o => o.id !== id);
   } else {
     const order = orders.value.find(o => o.id === id);
     if (order) order.status = newStatus;
   }
-
-  // 2. Ab ans Backend
   try {
     const token = await getAccessTokenSilently();
     const res = await fetch(`${API_URL}/${id}`, {
@@ -62,7 +54,6 @@ async function setStatus(id, newStatus) {
 
     if (!res.ok) {
        console.error("Backend Fehler:", await res.text());
-       // Bei Fehler Liste neu laden um UI zurückzusetzen
        await loadOrders();
     }
   } catch (error) {
@@ -305,7 +296,6 @@ onMounted(async () => {
   width: 100%;
 }
 
-/* --- Card Hover Effekt (modern, optional) --- */
 .order-card {
   background: var(--light-gray);
   padding: 20px;
@@ -319,7 +309,6 @@ onMounted(async () => {
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
 }
 
-/* DELETE BUTTON Hover */
 .delete-btn {
   border: none;
   background: transparent;
@@ -333,7 +322,6 @@ onMounted(async () => {
   transform: scale(1.15);
 }
 
-/* --- Buttons Layout --- */
 .order-actions {
   display: flex;
   justify-content: space-between;
@@ -342,7 +330,6 @@ onMounted(async () => {
   width: 100%;
 }
 
-/* Linker Button */
 .btn-order {
   background: var(--rose);
   border: none;
@@ -360,13 +347,11 @@ onMounted(async () => {
   transform: translateY(-2px);
 }
 
-/* Rechter Button-Container */
 .order-status-buttons {
   display: flex;
   gap: 8px;
 }
 
-/* Rechte Buttons */
 .btn-status {
   background: white;
   border: 1px solid #aaa;
@@ -384,7 +369,6 @@ onMounted(async () => {
   transform: translateY(-2px);
 }
 
-/* MOBILE */
 @media (max-width: 768px) {
   .order-card {
     padding: 18px;

@@ -19,7 +19,7 @@ const isSaving = ref(false);
 const originalProfile = ref(null);
 
 const previousPage = ref(
-    router.options.history.state.back || "/"   // fallback: home
+    router.options.history.state.back || "/"  
 );
 
 
@@ -27,7 +27,6 @@ onUnmounted(() => {
     document.body.classList.remove('no-nav-padding');
 });
 
-// Profile laden
 async function fetchProfile() {
     try {
         const id = route.params.id;
@@ -49,7 +48,6 @@ async function fetchProfile() {
     }
 }
 
-// Profile aktualisieren
 async function updateProfile() {
     try {
         const id = route.params.id;
@@ -84,7 +82,6 @@ const isChanged = computed(() => {
 });
 
 
-// Profile löschen
 async function deleteProfile() {
 
     try {
@@ -110,14 +107,9 @@ async function deleteProfile() {
     }
 }
 
-
-// ✕ Button = intelligentes Zurück
 function goBack() {
     router.push(previousPage.value);
 }
-
-const roles = ref([]);
-
 
 onMounted(async () => {
     document.body.classList.add('no-nav-padding');
@@ -127,8 +119,6 @@ onMounted(async () => {
     }
 });
 
-
-
 watch(isAuthenticated, async (loggedIn) => {
     if (loggedIn) {
         await fetchProfile();
@@ -137,15 +127,13 @@ watch(isAuthenticated, async (loggedIn) => {
 
 </script>
 
-
 <template>
 
     <Popup ref="popup" />
     <div class="user-container" v-if="isAuthenticated">
         <div class="edit-page">
             <div class="edit-card">
-                <!-- Close / Zurück-Knopf -->
-                <button type="button" class="close-btn" @click="goBack">
+               <button type="button" class="close-btn" @click="goBack">
                     ✕
                 </button>
 
@@ -226,7 +214,6 @@ watch(isAuthenticated, async (loggedIn) => {
     color: var(--medium-gray);
 }
 
-/* Close-Button oben rechts */
 .close-btn {
     position: absolute;
     top: 1.5rem;
@@ -251,7 +238,6 @@ watch(isAuthenticated, async (loggedIn) => {
     color: var(--white);
 }
 
-/* Bildbereich */
 .image-wrapper {
     display: flex;
     justify-content: center;
@@ -266,7 +252,6 @@ watch(isAuthenticated, async (loggedIn) => {
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.08);
 }
 
-/* Formular */
 .edit-form .form-label {
     font-weight: 600;
     color: var(--dark-gray);
@@ -285,7 +270,6 @@ watch(isAuthenticated, async (loggedIn) => {
     box-shadow: 0 0 0 0.15rem rgba(180, 163, 176, 0.25);
 }
 
-/* Button-Reihe */
 .button-row {
     margin-top: 1.5rem;
     display: flex;
@@ -294,7 +278,6 @@ watch(isAuthenticated, async (loggedIn) => {
     justify-content: flex-end;
 }
 
-/* Delete-Button im CakeLab-Style */
 .btn-delete {
     background-color: #e25252;
     color: var(--white);
@@ -306,7 +289,6 @@ watch(isAuthenticated, async (loggedIn) => {
     opacity: 0.9;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
     .edit-card {
         padding: 1.75rem 1.25rem;

@@ -86,8 +86,6 @@ function onReset() {
   background: var(--rose);
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
 }
-
-/* Suchfeld */
 .search-bar {
   display: flex;
   align-items: center;
@@ -112,7 +110,6 @@ function onReset() {
   background: transparent;
 }
 
-/* Filter Button */
 .filter-btn {
   background: var(--zweitfarbe);
   border: none;
@@ -126,7 +123,6 @@ function onReset() {
   filter: invert(100%);
 }
 
-/* Panel */
 .filter-panel {
   margin-top: 0.9rem;
   background: var(--white);
@@ -149,7 +145,6 @@ function onReset() {
   background: var(--light-gray);
 }
 
-/* Buttons */
 .filter-actions {
   display: flex;
   gap: 0.6rem;
@@ -175,7 +170,6 @@ function onReset() {
   color: var(--dark-gray);
 }
 
-/* Animation */
 .slide-enter-active,
 .slide-leave-active {
   transition: all 0.25s ease;

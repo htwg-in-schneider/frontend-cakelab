@@ -81,7 +81,6 @@ async function submitOrder() {
       return;
     }
 
-    // ✅ erst nach Erfolg leeren & navigieren
     cart.clearCart();
     cart.closeCart?.();
     router.push("/bestellbestaetigung");

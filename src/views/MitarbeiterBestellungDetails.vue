@@ -99,7 +99,6 @@ async function checkAdminRole() {
 <div class="admin check" v-if="isAdmin">
   <div class="details-wrapper" v-if="order">
     
-    <!-- HEADER -->
     <div class="details-header">
       <button class="back-btn" @click="$router.back()">‹</button>
 
@@ -109,7 +108,6 @@ async function checkAdminRole() {
       </div>
     </div>
 
-    <!-- ITEMS -->
     <div class="items-list">
       <div class="item-card" v-for="item in order.items" :key="item.id">
 
@@ -166,7 +164,6 @@ async function checkAdminRole() {
   padding: 20px;
 }
 
-/* HEADER CARD */
 .details-header {
   background: var(--rose);
   padding: 25px;
@@ -215,7 +212,6 @@ async function checkAdminRole() {
   color: var(--dark-gray);
 }
 
-/* PRODUKT-LISTE */
 .items-list {
   display: flex;
   flex-direction: column;
@@ -264,7 +260,6 @@ async function checkAdminRole() {
   margin-top: 8px;
 }
 
-/* SUMME */
 .total-box {
   margin-top: 30px;
   background: var(--rose);

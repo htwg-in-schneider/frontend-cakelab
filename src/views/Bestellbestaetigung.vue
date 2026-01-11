@@ -91,7 +91,6 @@ onUnmounted(() => {
   align-items: center;
 }
 
-/* HERO */
 .success-hero {
   text-align: center;
   max-width: 700px;
@@ -121,7 +120,6 @@ onUnmounted(() => {
   font-size: 1.1rem;
 }
 
-/* GRID */
 .confirmation-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -136,7 +134,6 @@ onUnmounted(() => {
   }
 }
 
-/* CARDS */
 .summary-card,
 .steps-card {
   background: var(--white);
@@ -163,7 +160,6 @@ onUnmounted(() => {
   margin-top: 15px;
 }
 
-/* STEPS */
 .steps {
   list-style: none;
   padding: 0;
@@ -178,7 +174,6 @@ onUnmounted(() => {
   margin-bottom: 4px;
 }
 
-/* ACTIONS */
 .confirmation-actions {
   margin-top: 50px;
   display: flex;

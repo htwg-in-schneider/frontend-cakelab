@@ -5,7 +5,7 @@ import Button from '@/components/Button.vue';
 import Popup from '@/components/Popup.vue';
 import DropdownMenu from '@/components/DropdownMenu.vue';
 import { useAuth0 } from '@auth0/auth0-vue';
- const { loginWithRedirect, logout, user, isAuthenticated,  getAccessTokenSilently } = useAuth0(); 
+ const { getAccessTokenSilently } = useAuth0(); 
 
 
 const popup = ref(null);
@@ -21,10 +21,9 @@ const isSaving = ref(false);
 
 
 const previousPage = ref(
-  router.options.history.state.back || "/"   // fallback: home
+  router.options.history.state.back || "/"  
 );
 
-// 🔧 Body-Padding entfernen
 onMounted(() => {
   document.body.classList.add('no-nav-padding');
   fetchCake();
@@ -33,7 +32,6 @@ onUnmounted(() => {
   document.body.classList.remove('no-nav-padding');
 });
 
-// Produkt laden
 async function fetchCake() {
   try {
     const id = route.params.id;
@@ -51,7 +49,6 @@ async function fetchCake() {
   }
 }
 
-// Produkt aktualisieren
 async function updateCake() {
   try {
     isSaving.value = true;
@@ -80,9 +77,6 @@ const token = await getAccessTokenSilently();
   }
 }
 
-
-
-// Produkt löschen
 async function deleteCake() {
 
   try {
@@ -107,8 +101,6 @@ async function deleteCake() {
   }
 }
 
-
-// ✕ Button = intelligentes Zurück
 function goBack() {
   router.push(previousPage.value);
 }
@@ -119,23 +111,14 @@ async function loadCategories() {
   const res = await fetch(import.meta.env.VITE_API_BASE_URL + "/api/category");
   categories.value = await res.json();
 }
-
-function formatCategory(c) {
-  return c.charAt(0) + c.slice(1).toLowerCase();
-}
-
 onMounted(loadCategories);
-
-
 </script>
-
 
 <template>
 
   <Popup ref="popup" />
   <div class="edit-page">
     <div class="edit-card">
-      <!-- Close / Zurück-Knopf -->
       <button type="button" class="close-btn" @click="goBack">
         ✕
       </button>
@@ -147,7 +130,6 @@ onMounted(loadCategories);
       </div>
 
       <div v-else-if="cake">
-        <!-- Bildvorschau -->
         <div class="image-wrapper">
           <img :src="cake.bildUrl" alt="Produktbild" class="cake-image" />
         </div>
@@ -236,7 +218,6 @@ onMounted(loadCategories);
   color: var(--medium-gray);
 }
 
-/* Close-Button oben rechts */
 .close-btn {
   position: absolute;
   top: 1.5rem;
@@ -261,7 +242,6 @@ onMounted(loadCategories);
   color: var(--white);
 }
 
-/* Bildbereich */
 .image-wrapper {
   display: flex;
   justify-content: center;
@@ -276,7 +256,6 @@ onMounted(loadCategories);
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.08);
 }
 
-/* Formular */
 .edit-form .form-label {
   font-weight: 600;
   color: var(--dark-gray);
@@ -295,7 +274,6 @@ onMounted(loadCategories);
   box-shadow: 0 0 0 0.15rem rgba(180, 163, 176, 0.25);
 }
 
-/* Button-Reihe */
 .button-row {
   margin-top: 1.5rem;
   display: flex;
@@ -304,7 +282,6 @@ onMounted(loadCategories);
   justify-content: flex-end;
 }
 
-/* Delete-Button im CakeLab-Style */
 .btn-delete {
   background-color: #e25252;
   color: var(--white);
@@ -316,7 +293,6 @@ onMounted(loadCategories);
   opacity: 0.9;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .edit-card {
     padding: 1.75rem 1.25rem;

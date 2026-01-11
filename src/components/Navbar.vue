@@ -90,7 +90,6 @@ const cart = useCartStore();
 
               <img src="/src/assets/images/warenkorb_image.png" alt="Cart" class="icon-img">
 
-              <!-- Badge (Anzahl Produkte) -->
               <span
                 v-if="cart.itemCount > 0"
                 class="badge bg-danger position-absolute top-0 start-100 translate-middle"
@@ -106,8 +105,6 @@ const cart = useCartStore();
 
     </div>
   </nav>
-
-  <!-- Drawer -->
  <CartDrawer />
 </template>
 

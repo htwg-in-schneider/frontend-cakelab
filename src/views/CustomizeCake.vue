@@ -105,11 +105,7 @@ const customization = {
 
 
 }
-
-
 </script>
-
-
 
 <template>
   <div v-if="isAuthenticated">
@@ -129,7 +125,7 @@ const customization = {
 
           <p class="text-muted small">{{ cake.beschreibung }}</p>
 
-          <div class="flex-grow"></div> <!-- SCHIEBT Preis nach unten -->
+          <div class="flex-grow"></div> 
 
           <p class="fw-bold mt-2">{{ cake.preis }} €</p>
 
@@ -161,22 +157,19 @@ const customization = {
 
         </div>
       </div>
-
-
-      <!-- GRÖSSE -->
       <div class="col-12 col-lg-6 mb-5">
         <h2 class="fw-bold mb-3">3. Wähle die Größe</h2>
         <div class="size-grid">
          <div
-  v-for="size in Object.keys(sizePrices)"
-  :key="size"
-  class="size-item"
-  :class="{ selected: selectedSize === size }"
-  @click="selectedSize = size"
->
-  <div>{{ size }}</div>
-  <div class="size-extra">+{{ sizePrices[size] }} €</div>
-</div>
+             v-for="size in Object.keys(sizePrices)"
+              :key="size"
+              class="size-item"
+              :class="{ selected: selectedSize === size }"
+                 @click="selectedSize = size"
+             >
+            <div>{{ size }}</div>
+            <div class="size-extra">+{{ sizePrices[size] }} €</div>
+        </div>
 
           <p class="fw-bold mt-3 " style="font-size: 24px;">
             Gesamtpreis: {{ totalPrice }} €
@@ -205,7 +198,6 @@ const customization = {
   margin-bottom: 1.5rem;
 }
 
-/* Step-Boxen */
 .config-box {
   background: var(--light-gray);
   border-radius: 16px;
@@ -213,7 +205,6 @@ const customization = {
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
 }
 
-/* Base cards */
 .base-card {
   display: flex;
   flex-direction: column;
@@ -249,7 +240,6 @@ const customization = {
   object-fit: cover;
 }
 
-/* Size selection */
 .size-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -285,8 +275,6 @@ const customization = {
   opacity: 0.8;
 }
 
-
-/* Fertig Button */
 .fertig-btn {
   width: 100%;
   max-width: 380px;
@@ -311,8 +299,6 @@ const customization = {
   cursor: not-allowed;
 }
 
-
-/* Character counter */
 .char-counter {
   font-size: 14px;
   color: var(--medium-gray);
@@ -320,7 +306,6 @@ const customization = {
   text-align: right;
 }
 
-/* Inputs */
 .form-control {
   border-radius: 30px;
   padding: 12px 16px;

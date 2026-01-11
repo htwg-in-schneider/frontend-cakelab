@@ -12,7 +12,7 @@ const isAdmin = ref(false);
 const url = import.meta.env.VITE_API_BASE_URL + '/api/cake';
 const torten = ref([]);
 
-// Zusammengeführter onMounted Hook
+
 onMounted(async () => {
   await fetchCakes();
   if (isAuthenticated.value) {
@@ -20,7 +20,6 @@ onMounted(async () => {
   }
 });
 
-// Beobachtet Login-Status
 watch(isAuthenticated, (newValue) => {
   if (newValue) {
     checkAdminRole();
@@ -127,10 +126,9 @@ async function fetchCakes(filters = {}) {
   transition: 0.2s ease;
 }
 
-/* Verhindert, dass Titel bei 2 Spalten das Layout zerschießen */
 .card-body h5 {
   min-height: 48px;
-  font-size: 1rem; /* Leicht kleinere Schrift auf Mobile falls nötig */
+  font-size: 1rem; 
 }
 
 .add-icon:hover {
@@ -148,7 +146,6 @@ async function fetchCakes(filters = {}) {
   padding-right: 1rem;
 }
 
-/* Spezielle Anpassung für sehr kleine Bildschirme */
 @media (max-width: 576px) {
   .cakes-container {
     padding-left: 0.5rem;

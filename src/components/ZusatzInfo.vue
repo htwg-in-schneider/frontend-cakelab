@@ -25,7 +25,6 @@ const bannerStore = useBannerStore()
   font-weight: 600;
 }
 
-/* kleinerer Button */
 .small-btn {
   padding: 0.2rem 0.9rem;
   font-size: 0.8rem;

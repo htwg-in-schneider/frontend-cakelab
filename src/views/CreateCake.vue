@@ -142,7 +142,7 @@ onMounted(loadCategories);
 </template>
 
 <style scoped>
-/* Page Layout */
+
 .create-page {
     min-height: calc(100vh - 120px);
     padding: 3rem 1rem;
@@ -152,7 +152,6 @@ onMounted(loadCategories);
     align-items: flex-start;
 }
 
-/* Card */
 .create-card {
     position: relative;
     width: 100%;
@@ -163,7 +162,6 @@ onMounted(loadCategories);
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
 }
 
-/* Title */
 .create-title {
     text-align: center;
     margin-bottom: 1.5rem;
@@ -171,7 +169,6 @@ onMounted(loadCategories);
     color: var(--zweitfarbe);
 }
 
-/* Close Button */
 .close-btn {
     position: absolute;
     top: 1.5rem;
@@ -195,7 +192,6 @@ onMounted(loadCategories);
     color: var(--white);
 }
 
-/* Form styles */
 .create-form .form-label {
     font-weight: 600;
     color: var(--dark-gray);
@@ -214,14 +210,12 @@ onMounted(loadCategories);
     box-shadow: 0 0 0 0.15rem rgba(180, 163, 176, 0.25);
 }
 
-/* Buttons */
 .button-row {
     margin-top: 1.5rem;
     display: flex;
     justify-content: flex-end;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
     .create-card {
         padding: 1.75rem 1.25rem;

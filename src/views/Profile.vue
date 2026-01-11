@@ -92,10 +92,6 @@ async function loadUsers() {
           </RouterLink>
         </div>
         <div class="profile-card">
-
-
-
-          <!-- Body -->
           <div class="card-body">
 
             <h3 class="profile-title">Mein Profil</h3>
@@ -112,15 +108,6 @@ async function loadUsers() {
             <div v-else class="loading-text">
               {{ error || 'Lade Profildaten...' }}
             </div>
-
-            <!-- OAuth2 Debug Info -->
-            <details class="debug-info">
-              <summary>OAuth2-Debug-Info</summary>
-              <pre>{{ JSON.stringify(user, null, 2) }}</pre>
-              <textarea readonly @click="copyToClipboard">{{ bearerToken }}</textarea>
-            </details>
-
-            <!-- Buttons -->
             <div class="button-row">
               <button class="btn-updating" @click="$router.push(`/profile/${profileData.id}`)">
                 Bearbeiten →
@@ -154,8 +141,6 @@ async function loadUsers() {
   gap: 20px;
   margin-bottom: 40px;
 }
-
-/* --- Grundlayout --- */
 
 .circle {
   width: 140px;
@@ -245,8 +230,6 @@ async function loadUsers() {
   padding-top: 20px;
   gap: 20px;
 }
-
-/* --- Profilkarte --- */
 .profile-card {
   width: 100%;
   height:80%;
@@ -261,15 +244,12 @@ async function loadUsers() {
   gap: 1rem;
 }
 
-
-/* Header */
 .card-header {
   padding: 1rem 1.5rem;
   font-family: Poppins, sans-serif;
   font-size: 1.5rem;
 }
 
-/* Body */
 .card-body {
   padding: 1.5rem;
   display: flex;
@@ -278,7 +258,6 @@ async function loadUsers() {
   gap: 1rem;
 }
 
-/* Profil Info */
 .profile-info {
   display: flex;
   gap: 1rem;
@@ -307,7 +286,6 @@ async function loadUsers() {
   margin-bottom: 0.5rem;
 }
 
-/* OAuth2 Debug Info */
 .debug-info {
   margin-top: 1rem;
   background: var(--light-gray);
@@ -322,7 +300,6 @@ async function loadUsers() {
   margin-bottom: 0.5rem;
 }
 
-/* Buttons */
 .button-row {
   display: flex;
   justify-content: space-between;
@@ -355,11 +332,6 @@ async function loadUsers() {
   transition: 0.25s ease;
 }
 
-
-
-
-
-/* Loading Spinner */
 .spinner-container {
   display: flex;
   justify-content: center;
@@ -367,7 +339,6 @@ async function loadUsers() {
   height: 300px;
 }
 
-/* Warnung */
 .alert-warning {
   max-width: 600px;
   margin: 0 auto;

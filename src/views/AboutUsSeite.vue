@@ -91,7 +91,6 @@ import Footer from "@/components/Footer.vue";
   padding: 0 24px;
 }
 
-/* Hero Section */
 .hero-section {
   padding: 80px 0;
   text-align: center;
@@ -130,7 +129,6 @@ h1 {
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
 }
 
-/* Philosophy Section */
 .philosophy-section {
   background-color: var(--light-gray);
   padding: 100px 0;
@@ -155,7 +153,6 @@ h2 {
   font-size: 1.2rem;
 }
 
-/* Split Section (Why Us) */
 .split-layout {
   display: grid;
   grid-template-columns: 1fr 1fr;

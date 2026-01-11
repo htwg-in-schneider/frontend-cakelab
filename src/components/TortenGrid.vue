@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue';
 import CakeCard from '@/components/CakeCard.vue';
 
-const torten = ref([]); // Lokaler State für Produkte
+const torten = ref([]); 
 
 const url = import.meta.env.VITE_API_BASE_URL + '/api/cake';
 
@@ -10,14 +10,7 @@ async function fetchCakes() {
   try {
     const response = await fetch(url);
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
-    // Wenn Backend direkt ein Array zurückgibt:
     torten.value = await response.json();
-
-    // Wenn Backend etwas wie { content: [...] } zurückgibt,
-    // dann stattdessen:
-    // const data = await response.json();
-    // torten.value = data.content;
   } catch (error) {
     console.error('Error fetching cakes:', error);
   }

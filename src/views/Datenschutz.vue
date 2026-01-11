@@ -86,7 +86,6 @@ import Footer from '@/components/Footer.vue'
 }
 
 .page-content {
-  /* Sticky-Footer Fix */
   min-height: calc(100vh - 350px);
 }
 
@@ -103,7 +102,6 @@ p {
   font-size: 1.05rem;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .datenschutz-card {
     padding: 1.5rem;

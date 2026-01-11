@@ -137,7 +137,6 @@ watch(isAuthenticated, (loggedIn) => {
   justify-content: space-between;
 }
 
-/* --- Grundlayout --- */
 .orders-user {
   display: flex;
   flex-direction: column;
@@ -216,8 +215,6 @@ watch(isAuthenticated, (loggedIn) => {
 
   z-index: 1;
 }
-
-/* weichere Trennwand */
 .order-separator {
   margin: 40px 0 30px;
   display: flex;
@@ -251,7 +248,6 @@ watch(isAuthenticated, (loggedIn) => {
   opacity: 0.6;
 }
 
-/* Info-Card */
 .order-summary.card {
   background: var(--light-gray);
   border-radius: 16px;
@@ -260,7 +256,6 @@ watch(isAuthenticated, (loggedIn) => {
   gap: 20px;
 }
 
-/* dezente Hervorhebung der Summe */
 .summary-row.total {
   margin-top: 12px;
   padding-top: 10px;
@@ -346,7 +341,6 @@ watch(isAuthenticated, (loggedIn) => {
   margin-top: 8px;
 }
 
-/* SUMME */
 .total-box {
   margin-top: 30px;
   background: var(--rose);

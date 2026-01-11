@@ -21,7 +21,6 @@ const props = defineProps({
 
 <style scoped>
 
-/* --- Kopfbereich (geschlossener Zustand) --- */
 .styled-dropdown :deep(.vs__dropdown-toggle) {
   border-radius: 30px;
   background: var(--white);
@@ -32,14 +31,12 @@ const props = defineProps({
   height: 46px;
 }
 
-/* Cursor entfernen + bessere UX */
 .styled-dropdown :deep(.vs__search),
 .styled-dropdown :deep(.vs__dropdown-toggle) {
   cursor: pointer;
   caret-color: transparent;
 }
 
-/* SELECTED VALUE Farbe */
 .styled-dropdown :deep(.vs__selected) {
   color: var(--dark-gray);
  
@@ -48,8 +45,6 @@ const props = defineProps({
   align-items: center;
 }
 
-
-/* --- Dropdown Menü --- */
 .styled-dropdown :deep(.vs__dropdown-menu) {
   background: var(--white);
   border-radius: 16px;
@@ -58,14 +53,12 @@ const props = defineProps({
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
 }
 
-/* --- Option Normal --- */
 .styled-dropdown :deep(.vs__option) {
   padding: 10px 16px;
   font-size: 15px;
   color: var(--dark-gray);
 }
 
-/* Hover & Tastatur-Highlight */
 .styled-dropdown :deep(.vs__dropdown-option--highlight) {
   background: var(--rose) ;
   color: var(--white);
@@ -76,7 +69,6 @@ const props = defineProps({
   color: var(--white) ;
 }
 
-/* --- Entfernt das X zum Löschen --- */
 .styled-dropdown :deep(.vs__clear) {
   display: none;
 }

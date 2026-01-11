@@ -57,7 +57,6 @@
 
 <style scoped>
 
-/* Feedback */
 .feedback-section {
     background-color: var(--rose);
     padding: 3rem 1rem;
@@ -67,7 +66,6 @@
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.08);
 }
 
-/* Überschrift weiß */
 .feedback-section h2 {
     color: var(--white);
 }

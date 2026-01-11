@@ -39,7 +39,7 @@ function sendMail() {
 
     <div class="kontakt-wrapper shadow-lg rounded-4">
 
-      <!-- LEFT: FORM -->
+      <!-- FORM -->
       <div class="kontakt-left p-4">
 
         <label class="fw-bold mb-1">Name</label>
@@ -87,7 +87,7 @@ function sendMail() {
 
       </div>
 
-      <!-- RIGHT: IMAGE -->
+      <!--IMAGE -->
       <div class="kontakt-right">
         <img
           src="/src/assets/images/cake-login.png"
@@ -101,7 +101,6 @@ function sendMail() {
 </template>
 
 <style scoped>
-/* DESKTOP: zwei Spalten */
 .kontakt-wrapper {
   display: flex;
   background-color: var(--light-gray);
@@ -128,7 +127,6 @@ function sendMail() {
   object-fit: cover;
 }
 
-/* INPUTS */
 .form-control {
   border-radius: 10px;
   padding: 0.6rem 1rem;
@@ -141,7 +139,6 @@ function sendMail() {
   box-shadow: 0 0 0 3px rgba(131, 99, 122, 0.2);
 }
 
-/* ERROR */
 .invalid {
   border-color: #e57373 !important;
   background-color: #fff6f6;

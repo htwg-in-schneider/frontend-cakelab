@@ -29,7 +29,6 @@ onMounted(() => {
     fetchReviews();
 });
 
-// Watch for prop changes in case the component is reused for different cakes without unmounting
 watch(() => props.cakeId, () => {
     fetchReviews();
 });
