@@ -105,7 +105,7 @@ watch(isAuthenticated, (loggedIn) => {
           <div class="summary-row">
             <span>Versand: </span>
             <span>
-              {{ order.shippingFree ? "Kostenlos" : "Standardversand" }}
+              {{ order.total>50 ? "Kostenlos" : "Standardversand" }}
             </span>
           </div>
 
