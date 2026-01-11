@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onUnmounted, watch } from 'vue';
+import { ref, onMounted, onUnmounted, watch, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import Button from '@/components/Button.vue';
 import Popup from '@/components/Popup.vue';
@@ -16,7 +16,7 @@ const API_URL = import.meta.env.VITE_API_BASE_URL + '/api/profile';
 const profile = ref(null);
 const isLoading = ref(true);
 const isSaving = ref(false);
-
+const originalProfile = ref(null);
 
 const previousPage = ref(
     router.options.history.state.back || "/"   // fallback: home
@@ -39,6 +39,7 @@ async function fetchProfile() {
         if (!response.ok) throw new Error('Profile nicht gefunden');
 
         profile.value = await response.json();
+        originalProfile.value = JSON.parse(JSON.stringify(profile.value));
     } catch (error) {
         console.error(error);
         popup.value?.show("Profile konnte nicht geladen werden.", "error");
@@ -66,7 +67,7 @@ async function updateProfile() {
         if (!response.ok) throw new Error();
 
         popup.value.show("Profile erfolgreich aktualisiert!", "success");
-
+        originalProfile.value = JSON.parse(JSON.stringify(profile.value));
         setTimeout(() => {
             router.push(previousPage.value);
         }, 800);
@@ -77,7 +78,10 @@ async function updateProfile() {
         isSaving.value = false;
     }
 }
-
+const isChanged = computed(() => {
+    if (!profile.value || !originalProfile.value) return false;
+    return JSON.stringify(profile.value) !== JSON.stringify(originalProfile.value);
+});
 
 
 // Profile löschen
@@ -118,12 +122,12 @@ const roles = ref([]);
 onMounted(async () => {
     document.body.classList.add('no-nav-padding');
 
-    if (isAuthenticated.value){ 
+    if (isAuthenticated.value) {
         await fetchProfile();
     }
-}) ;
+});
 
-    
+
 
 watch(isAuthenticated, async (loggedIn) => {
     if (loggedIn) {
@@ -158,35 +162,36 @@ watch(isAuthenticated, async (loggedIn) => {
 
                         <div class="mb-3">
                             <label class="form-label">Name</label>
-                            <input class="form-control" v-model="profile.name" />
+                            <input pattern="[A-Za-zÄÖÜäöüß\- ]{1,}" class="form-control" v-model="profile.name" />
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Email</label>
-                            <input class="form-control" rows="3" v-model="profile.email"></input>
+                            <input pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$" class="form-control" rows="3"
+                                v-model="profile.email"></input>
                         </div>
 
-                    
-              
 
-                <div class="button-row">
-                    <Button :disabled="isSaving" variant="dark" type="submit">
-                        {{ isSaving ? 'Speichere…' : 'Aktualisieren' }}
-                    </Button>
 
-                    <Button type="button" variant="outline" class="btn-delete" @click="deleteProfile">
-                        Löschen
-                    </Button>
-                </div>
+
+                        <div class="button-row">
+                            <Button :disabled="isSaving || !isChanged" variant="dark" type="submit">
+                                {{ isSaving ? 'Speichere…' : 'Aktualisieren' }}
+                            </Button>
+
+                            <Button type="button" variant="outline" class="btn-delete" @click="deleteProfile">
+                                Löschen
+                            </Button>
+                        </div>
                     </form>
-  </div>
-               
+                </div>
+
             </div>
-              
+
         </div>
     </div>
-    
- 
+
+
 </template>
 
 <style scoped>

@@ -125,10 +125,10 @@ console.log(isAdmin.value);
     <h1 class="admin-dashboard"> Admin Dashboard</h1>
     <div class="titles">
       <h2 class="admin-title">Bestellübersicht</h2>
-      <div class="info-box">
-        <RouterLink to="/users">
-          <h2 class="user-info">Kundenübersicht</h2>
-        </RouterLink>
+      <div class="info-box" @click="router.push('/users')">
+
+        <h2 class="user-info">Kundenübersicht</h2>
+
       </div>
     </div>
     <div class="orders-list">
@@ -215,9 +215,10 @@ console.log(isAdmin.value);
 .user-info {
   color: var(--rose);
 }
-.admin-dashboard{
+
+.admin-dashboard {
   text-align: center;
-  
+
 }
 
 .orders-list {
@@ -417,5 +418,11 @@ console.log(isAdmin.value);
   .order-card {
     padding: 18px;
   }
-}
+    .titles {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+    }
+  }
+
 </style>

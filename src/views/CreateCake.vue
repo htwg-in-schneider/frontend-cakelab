@@ -116,8 +116,8 @@ onMounted(loadCategories);
 
                 <div class="mb-3">
                     <label class="form-label">Bild-URL</label>
-                    <input v-model="cake.bildUrl" class="form-control"
-                        placeholder="/assets/images/Kuchen_Schokolade.png" />
+                    <input type="url"v-model="cake.bildUrl" class="form-control"
+                        placeholder="https://htwg-in-schneider.github.io/frontend-static-cakelab/Images/Kuchen_Schokolade.png" />
                 </div>
 
                 <div class="mb-3">

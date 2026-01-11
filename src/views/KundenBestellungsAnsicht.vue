@@ -1,13 +1,14 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref , watch} from "vue";
 import { useAuth0 } from "@auth0/auth0-vue";
 const { isAuthenticated, getAccessTokenSilently } = useAuth0();
 import { RouterLink } from "vue-router";
 import Navbar from "@/components/Navbar.vue";
-import Footer from "@/components/Footer.vue"; 
+import Footer from "@/components/Footer.vue";
 const orders = ref([]);
 const error = ref(null);
 const API_PROFILE = import.meta.env.VITE_API_BASE_URL + `/api/profile/orders`;
+
 async function loadOrders() {
   try {
     const token = await getAccessTokenSilently({
@@ -40,7 +41,7 @@ onMounted(async () => {
     await loadOrders();
   }
 });
-import { watch } from "vue";
+
 
 watch(isAuthenticated, (loggedIn) => {
   if (loggedIn) {
@@ -63,29 +64,31 @@ watch(isAuthenticated, (loggedIn) => {
           Meine Bestellungen
         </RouterLink>
       </div>
-      <div v-for="order in orders" :key="order.id" class="orders-user">
+      <div v-if="orders.length > 0">
+        <div v-for="order in orders" :key="order.id" class="orders-user">
 
-        <!-- ITEMS -->
-        <div v-for="item in order.items" :key="item.id" class="item-card">
-         <div class="item-order-number">
-            Bestellungsnummer: {{ order.id }}
-          </div>
-          <img v-if="item.cake?.bildUrl" :src="item.cake.bildUrl" class="item-image" />
-
-          <div class="item-info">
-            <div class="item-name">{{ item.name }}</div>
-
-            <div class="item-price">
-              Kuchenpreis:
-              {{ (item.price * item.quantity).toFixed(2) }} €
+          <!-- ITEMS -->
+          <div v-for="item in order.items" :key="item.id" class="item-card">
+            <div class="item-order-number">
+              Bestellungsnummer: {{ order.id }}
             </div>
+            <img v-if="item.cake?.bildUrl" :src="item.cake.bildUrl" class="item-image" />
 
-            <div>
-              Menge: {{ item.quantity }}
+            <div class="item-info">
+              <div class="item-name">{{ item.name }}</div>
+
+              <div class="item-price">
+                Kuchenpreis:
+                {{ (item.price * item.quantity).toFixed(2) }} €
+              </div>
+
+              <div>
+                Menge: {{ item.quantity }}
+              </div>
             </div>
           </div>
+
         </div>
-
         <!-- TRENNWAND -->
         <!-- TRENNWAND -->
         <div class="order-separator soft">
@@ -96,7 +99,7 @@ watch(isAuthenticated, (loggedIn) => {
         <div class="order-summary card">
           <div class="summary-row">
             <span>Anzahl Artikel: </span>
-            <span>{{ order.items.length }}</span>
+            <span>{{ order?.items.length }}</span>
           </div>
 
           <div class="summary-row">
@@ -114,8 +117,11 @@ watch(isAuthenticated, (loggedIn) => {
 
       </div>
     </div>
-  </div>
- <Footer/>
+     </div>
+    <div v-else>
+      Noch keine Bestellung vorhanden
+    </div>
+  <Footer />
 </template>
 <style scoped>
 .eclipse {
@@ -134,10 +140,10 @@ watch(isAuthenticated, (loggedIn) => {
   flex-direction: column;
   gap: 10px;
   margin-bottom: 60px;
-    margin-bottom: 80px;     
-  padding-bottom: 50px;   
+  margin-bottom: 80px;
+  padding-bottom: 50px;
 
-  border-bottom: 2px dashed rgba(0,0,0,0.12);
+  border-bottom: 2px dashed rgba(0, 0, 0, 0.12);
 }
 
 .circle {
