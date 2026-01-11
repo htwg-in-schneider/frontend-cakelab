@@ -180,6 +180,9 @@ h2 {
   margin-bottom: 12px;
   font-weight: 500;
 }
+.usp-item p {
+  margin: 0; 
+}
 
 .dot {
   width: 8px;

@@ -67,7 +67,7 @@ watch(isAuthenticated, async (v) => {
 
 <template>
   <Navbar />
-
+<section class="page-content">
   <div class="admin-container" v-if="isAdmin">
 
     <h1 class="admin-dashboard"> Admin Dashboard</h1>
@@ -101,10 +101,14 @@ watch(isAuthenticated, async (v) => {
       </div>
     </div>
   </div>
-
+</section>
   <Footer />
 </template>
 <style scoped>
+  .page-content {
+  min-height: calc(100vh - 350px);
+}
+
 .admin-container {
   padding: 30px;
   max-width: 1100px;

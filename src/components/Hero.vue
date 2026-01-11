@@ -1,5 +1,6 @@
 <script setup>
 import Button from './Button.vue';
+import NavButton from './NavButton.vue';
 </script>
 
 <template>
@@ -9,11 +10,10 @@ import Button from './Button.vue';
                 <h1>Create your own cake</h1>
                 <p>Gestalte deinen Kuchen ganz nach deinem Geschmack! Ob zur Hochzeit, zum Geburtstag oder als
                     liebevolle Überraschung, dein persönlicher Touch macht ihn besonders.</p>
-                <router-link to="/customize-cake" style="text-decoration: none;">
-                    <Button variant="accent" class="mt-auto">
+                    <NavButton variant="accent" class="mt-auto":to="`/customize-cake`">
                         Shop now
-                    </Button>
-                </router-link>
+                    </NavButton>
+                
 
             </div>
         </div>

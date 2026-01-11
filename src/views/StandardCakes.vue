@@ -72,7 +72,7 @@ onMounted(() => {
   <Navbar />
   <ZusatzInfo />
   <Searching @cakeUpdate="fetchCakes" />
-
+<section class="page-content">
   <div class="container cakes-container my-5">
 
     <!-- HEADER + ICON -->
@@ -110,11 +110,15 @@ onMounted(() => {
     </div>
 
   </div>
-
+</section>
   <Footer />
 </template>
 
 <style scoped>
+  .page-content {
+  min-height: calc(100vh - 350px);
+}
+
 .add-icon {
   width: 35px;
   height: 35px;

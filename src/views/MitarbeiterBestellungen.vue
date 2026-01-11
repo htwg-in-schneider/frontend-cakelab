@@ -4,100 +4,80 @@ import { useRouter } from "vue-router";
 import Navbar from '@/components/Navbar.vue';
 import Footer from '@/components/Footer.vue';
 import { useAuth0 } from '@auth0/auth0-vue';
-const { isAuthenticated, getAccessTokenSilently } = useAuth0();
 
+const { isAuthenticated, getAccessTokenSilently } = useAuth0();
 const orders = ref([]);
-const isAdmin = ref(false)
+const isAdmin = ref(false);
 const router = useRouter();
 
 const API_URL = import.meta.env.VITE_API_BASE_URL + "/api/orders";
+
+// Hilfsfunktion für den CSS-Check (Normalisierung)
+const isProcessing = (status) => status?.toLowerCase().trim() === 'in bearbeitung';
+
+// Navigation Funktionen (behebt den Template-Fehler "undefined push")
+const goToUsers = () => router.push('/users');
+const goToOrderDetails = (id) => router.push(`/admin/orders/${id}`);
+
 async function loadOrders() {
-  const token = await getAccessTokenSilently();
+  try {
+    const token = await getAccessTokenSilently();
+    const res = await fetch(API_URL, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
 
-  const res = await fetch(API_URL, {
-    headers: { Authorization: `Bearer ${token}` }
-  });
-  const allOrders = await res.json();
+    if (!res.ok) {
+      const errorBody = await res.text();
+      console.error(`Fehler ${res.status}:`, errorBody);
+      return; 
+    }
 
-  // Nur Bestellungen anzeigen, die NICHT fertig sind
-  orders.value = allOrders.filter(o => o.status !== "fertig");
+    const allOrders = await res.json();
+    orders.value = allOrders.filter(o => o.status?.toLowerCase() !== "fertig");
+  } catch (e) {
+    console.error("Netzwerkfehler beim Laden:", e);
+  }
 }
 
-async function setStatus(id, status) {
-  const token = await getAccessTokenSilently();
-
-  // Zielstatus toggle: wenn bereits in Bearbeitung -> offen
-  const resGet = await fetch(`${API_URL}/${id}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-
-  if (!resGet.ok) {
-    console.error("GET failed:", resGet.status, await resGet.text());
-    alert("Konnte Bestellung nicht laden");
-    return;
+async function setStatus(id, newStatus) {
+  // 1. Visuelles Feedback sofort (Optimistisch)
+  if (newStatus === "fertig") {
+    orders.value = orders.value.filter(o => o.id !== id);
+  } else {
+    const order = orders.value.find(o => o.id === id);
+    if (order) order.status = newStatus;
   }
 
-  const fullOrder = await resGet.json();
-  const current = normalizeStatus(fullOrder.status);
-  const target = normalizeStatus(status);
-  const newStatusInternal = current === target ? "offen" : target;
-
-  // Backend-String (sehr wahrscheinlich!)
-  const newStatusBackend =
-    newStatusInternal === "in_bearbeitung" ? "In bearbeitung" : newStatusInternal;
-
-  // ✅ Versuch 1: PATCH nur status (am kompatibelsten)
-  const patchRes = await fetch(`${API_URL}/${id}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({ status: newStatusBackend }),
-  });
-
-  // Wenn PATCH nicht supported -> Fallback auf PUT (optional)
-  if (patchRes.status === 405) {
-    const putRes = await fetch(`${API_URL}/${id}`, {
-      method: "PUT",
+  // 2. Ab ans Backend
+  try {
+    const token = await getAccessTokenSilently();
+    const res = await fetch(`${API_URL}/${id}`, {
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      // ⚠️ Bei PUT schicken wir weiterhin die ganze Order, aber mit Backend-Status
-      body: JSON.stringify({ ...fullOrder, status: newStatusBackend }),
+      body: JSON.stringify({ status: newStatus }),
     });
 
-    if (!putRes.ok) {
-      console.error("PUT failed:", putRes.status, await putRes.text());
-      alert("Konnte Status nicht speichern");
-      return;
+    if (!res.ok) {
+       console.error("Backend Fehler:", await res.text());
+       // Bei Fehler Liste neu laden um UI zurückzusetzen
+       await loadOrders();
     }
-  } else if (!patchRes.ok) {
-    console.error("PATCH failed:", patchRes.status, await patchRes.text());
-    alert("Konnte Status nicht speichern");
-    return;
+  } catch (error) {
+    console.error("Netzwerkfehler (CORS?):", error);
   }
-
-  await loadOrders();
 }
 
-function goToOrderDetails(id) {
+const toggleProcessing = (order) => {
+  const next = isProcessing(order.status) ? "offen" : "In bearbeitung";
+  setStatus(order.id, next);
+};
 
-  router.push(`/admin/orders/${id}`);
-}
-
-onMounted(async () => {
-
-  if (isAuthenticated.value) {
-    checkAdminRole();
-  } await loadOrders()
-});
-watch(isAuthenticated, (newValue) => {
-  if (newValue) {
-    checkAdminRole();
-  }
-});
+const finishOrder = (id) => {
+  setStatus(id, "fertig");
+};
 
 async function checkAdminRole() {
   try {
@@ -109,81 +89,72 @@ async function checkAdminRole() {
       const data = await response.json();
       isAdmin.value = data.role?.toUpperCase() === 'ADMIN';
     }
-  } catch (error) {
-    console.error('Error checking admin role:', error);
-  }
+  } catch (e) { console.error(e); }
 }
 
-console.log(isAdmin.value);
+onMounted(async () => {
+  if (isAuthenticated.value) await checkAdminRole();
+  await loadOrders();
+});
 </script>
-
-
 <template>
   <Navbar />
-
-  <div class="admin-container" v-if="isAdmin">
-    <h1 class="admin-dashboard"> Admin Dashboard</h1>
-    <div class="titles">
-      <h2 class="admin-title">Bestellübersicht</h2>
-      <div class="info-box" @click="router.push('/users')">
-
-        <h2 class="user-info">Kundenübersicht</h2>
-
-      </div>
-    </div>
-    <div class="orders-list">
-      <div class="order-card" v-for="order in orders" :key="order.id">
-        <!-- Header -->
-        <div class="order-header">
-          <div>
-            <div class="order-id">Bestell-ID: {{ order.id }}</div>
-
-            <div class="order-meta">
-              Anzahl Artikel: {{ order.items.length }}
-            </div>
-
-            <div class="order-meta">
-              Summe: {{ (order.total ?? 0).toFixed(2) }} €
-            </div>
-
-            <div class="order-meta">
-              Status:
-              <span class="status-badge" :class="order.status">
-                {{ order.status ?? "offen" }}
-              </span>
-            </div>
-
-          </div>
+  <section class="page-content">
+    <div class="admin-container" v-if="isAdmin">
+      <h1 class="admin-dashboard">Admin Dashboard</h1>
+      <div class="titles">
+        <h2 class="admin-title">Bestellübersicht</h2>
+        <div class="info-box" @click="goToUsers" style="cursor: pointer;">
+          <h2 class="user-info">Kundenübersicht</h2>
         </div>
+      </div>
 
-        <div class="order-actions">
-
-          <!-- Linker Button -->
-          <button class="btn-order" @click="goToOrderDetails(order.id)">
-            Zur Bestellung →
-          </button>
-
-          <!-- Rechte Buttons -->
-          <div class="order-status-buttons">
-            <button class="btn-status" :class="{ activeButton: order.status === 'In bearbeitung' }"
-              @click="setStatus(order.id, 'In bearbeitung')">
-              In Bearbeitung
-            </button>
-
-            <button class="btn-status" @click="finishOrder(order.id)">
-              Fertig
-            </button>
+      <div class="orders-list">
+        <div class="order-card" v-for="order in orders" :key="order.id">
+          <div class="order-header">
+            <div>
+              <div class="order-id">Bestell-ID: {{ order.id }}</div>
+              <div class="order-meta">Summe: {{ (order.total ?? 0).toFixed(2) }} €</div>
+              <div class="order-meta">
+                Status: 
+                <span class="status-badge" :class="order.status?.toLowerCase()">
+                  {{ order.status ?? "offen" }}
+                </span>
+              </div>
+            </div>
           </div>
 
-        </div>
+          <div class="order-actions">
+            <button class="btn-order" @click="goToOrderDetails(order.id)">
+              Details →
+            </button>
 
+            <div class="order-status-buttons">
+              <button 
+                class="btn-status" 
+                :class="{ activeButton: isProcessing(order.status) }"
+                @click="toggleProcessing(order)"
+              >
+                In Bearbeitung
+              </button>
+
+              <button class="btn-status" @click="finishOrder(order.id)">
+                Fertig
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
+  </section>
   <Footer />
 </template>
-
 <style scoped>
+  
+  .page-content {
+  min-height: calc(100vh - 350px);
+}
+
 .titles {
   display: flex;
   justify-content: space-between;

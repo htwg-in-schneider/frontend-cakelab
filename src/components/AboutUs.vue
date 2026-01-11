@@ -1,5 +1,6 @@
 <script setup>
 import Button from './Button.vue';
+import NavButton from './NavButton.vue';
 </script>
 
 <template>
@@ -7,7 +8,7 @@ import Button from './Button.vue';
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-5 mb-4 mb-md-0">
-                    <h2>Created by</h2>
+                    <h2>Das sind wir</h2>
                     <h6>Unsere Geschichte:</h6>
                     <p>Zwei Schwestern, eine große Leidenschaft fürs Backen. Aus einem kleinen Küchenprojekt wurde unser
                         Herzensbusiness.</p>
@@ -17,9 +18,9 @@ import Button from './Button.vue';
                     <h6>Unsere Vision:</h6>
                     <p>Freude schenken mit Torten, die Geschichten erzählen und jeden Anlass ein bisschen besonderer
                         machen.</p>
-                    <Button variant="dark" class="mt-auto">
+                    <NavButton variant="dark" class="mt-auto" :to="`/about-us`">
                         Lerne uns kennen
-                    </Button>
+                    </NavButton>
                 </div>
                 <div class="col-md-7 text-center">
                     <img src="/src/assets/images/Aboutus_bild.png" class="img-fluid rounded shadow"

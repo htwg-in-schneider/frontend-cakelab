@@ -59,7 +59,7 @@ const cart = useCartStore();
             </li>
 
           <li class="nav-item mx-3">
-            <router-link class="nav-link" to="/standard-cakes">Standard Cake</router-link>
+            <router-link class="nav-link" to="/standard-cakes">Standard Cakes</router-link>
           </li>
 
           <li class="nav-item mx-3">

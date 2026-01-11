@@ -52,78 +52,80 @@ watch(isAuthenticated, (loggedIn) => {
 </script>
 <template>
   <Navbar />
-  <div class="customer-container" v-if="isAuthenticated">
-    <div class="profile-wrapper">
-      <div class="eclipse">
+  <section class="page-content">
+    <div class="customer-container" v-if="isAuthenticated">
+      <div class="profile-wrapper">
+        <div class="eclipse">
+          <RouterLink to="/profile" class="circle mein-profile" active-class="active-circle">
+            Mein Profil
+          </RouterLink>
 
-        <RouterLink to="/profile" class="circle mein-profile" active-class="active-circle">
-          Mein Profil
-        </RouterLink>
+          <RouterLink to="/profile/orders" class="circle meine-Bestellungen" active-class="active-circle">
+            Meine Bestellungen
+          </RouterLink>
+        </div>
 
-        <RouterLink to="/profile/orders" class="circle meine-Bestellungen" active-class="active-circle">
-          Meine Bestellungen
-        </RouterLink>
-      </div>
-      <div v-if="orders.length > 0">
-        <div v-for="order in orders" :key="order.id" class="orders-user">
-
-          <!-- ITEMS -->
-          <div v-for="item in order.items" :key="item.id" class="item-card">
-            <div class="item-order-number">
-              Bestellungsnummer: {{ order.id }}
-            </div>
-            <img v-if="item.cake?.bildUrl" :src="item.cake.bildUrl" class="item-image" />
-
-            <div class="item-info">
-              <div class="item-name">{{ item.name }}</div>
-
-              <div class="item-price">
-                Kuchenpreis:
-                {{ (item.price * item.quantity).toFixed(2) }} €
+        <div v-if="orders.length > 0">
+          <div v-for="order in orders" :key="order.id" class="order-group">
+            
+            <div class="orders-user">
+              <div class="item-order-number">
+                Bestellungsnummer: {{ order.id }}
               </div>
 
-              <div>
-                Menge: {{ item.quantity }}
+              <div v-for="item in order.items" :key="item.id" class="item-card">
+                <img v-if="item.cake?.bildUrl" :src="item.cake.bildUrl" class="item-image" />
+                <div class="item-info">
+                  <div class="item-name">{{ item.name }}</div>
+                  <div class="item-price">
+                    Preis: {{ (item.price * item.quantity).toFixed(2) }} €
+                  </div>
+                  <div>Menge: {{ item.quantity }}</div>
+                </div>
               </div>
             </div>
-          </div>
 
-        </div>
-        <!-- TRENNWAND -->
-        <!-- TRENNWAND -->
-        <div class="order-separator soft">
-          <span>=</span>
-        </div>
+            <div class="order-separator soft">
+              <span>Bestellübersicht</span>
+            </div>
 
-        <!-- BESTELL-INFOS ALS CARD -->
-        <div class="order-summary card">
-          <div class="summary-row">
-            <span>Anzahl Artikel: </span>
-            <span>{{ order?.items.length }}</span>
-          </div>
+            <div class="order-summary card mb-5">
+              <div class="summary-row">
+                <span>Anzahl Artikel: </span>
+                <span>{{ order.items.length }}</span>
+              </div>
+              <div class="summary-row">
+                <span>Versand: </span>
+                <span>
+                  {{ order.total >= 50 ? "Kostenlos" : "Standardversand" }}
+                </span>
+              </div>
+              <div class="summary-row total">
+                <span>= Gesamtbetrag:</span>
+                <span>{{ order.total != null ? order.total.toFixed(2) : '0.00' }} €</span>
+              </div>
+            </div>
 
-          <div class="summary-row">
-            <span>Versand: </span>
-            <span>
-              {{ order.shippingFree ? "Kostenlos" : "Standardversand" }}
-            </span>
-          </div>
-
-          <div class="summary-row total">
-            <span>= Gesamtbetrag:</span>
-            <span>{{ order.total != null ? order.total.toFixed(2) : '0.00' }} €</span>
           </div>
         </div>
 
+        <div v-else class="no-orders-message">
+          <p>Noch keine Bestellung vorhanden.</p>
+        </div>
       </div>
     </div>
-     </div>
-    <div v-else>
-      Noch keine Bestellung vorhanden
+    
+    <div v-else class="customer-container">
+      Bitte loggen Sie sich ein, um Ihre Bestellungen zu sehen.
     </div>
+  </section>
   <Footer />
 </template>
 <style scoped>
+  .page-content {
+  min-height: calc(100vh - 350px);
+}
+
 .eclipse {
   position: relative;
   display: flex;

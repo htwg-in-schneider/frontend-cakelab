@@ -119,79 +119,69 @@ function addToCart() {
 
   <Footer />
 </template>
-
 <style scoped>
-  .CakeCard {
-  width: 100% !important;
-}
-.detail-container {
-  align-items: start;
-}
-
-
 .image-wrapper {
-  border-radius: 1rem;
+  border-radius: 1.5rem;
   overflow: hidden;
-  background: #eee; 
+  background: #f8f3f3;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
 }
 
 .img-cake {
   width: 100%;
-  aspect-ratio: 1 / 1;
+  display: block;
   object-fit: cover;
   object-position: center;
-  display: block;
-  border-radius: 1rem;
+  aspect-ratio: 1 / 1; 
 }
-
-@media (max-width: 991px) {
-  .img-cake {
-    aspect-ratio: 4 / 3;
-
-  }
-}
-
 
 @media (max-width: 576px) {
   .img-cake {
-    aspect-ratio: auto;     
-    max-height: 320px;
-    object-fit: contain;     
-    background: #f3f3f3;    
-    padding: 12px;
+    border-radius: 1.25rem;
   }
 }
 
 .related-box {
   background-color: var(--rose);
-  border-radius: 1rem;
+  border-radius: 1.5rem;
   color: var(--white);
+  margin-bottom: 2rem;
 }
+
 
 .mobile-slider {
   display: flex;
   gap: 1.2rem;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
-  padding: 1rem 0 1.5rem;
+  padding: 0.5rem 0 1.5rem 0; 
+  scrollbar-width: thin;
+  scrollbar-color: var(--zweitfarbe) transparent;
+}
+
+
+.mobile-slider::-webkit-scrollbar {
+  height: 6px; 
+}
+
+.mobile-slider::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.2); 
+  border-radius: 10px;
+}
+
+.mobile-slider::-webkit-scrollbar-thumb {
+  background-color: var(--zweitfarbe); 
+  border-radius: 10px;
+  border: 1px solid transparent;
 }
 
 .slider-item {
-  min-width: 75%;
+  min-width: 80%;
   scroll-snap-align: center;
 }
 
-@media (min-width: 500px) {
-  .slider-item {
-    min-width: 60%;
-  }
+:deep(.cake-card) {
+  border: none;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
-
-@media (min-width: 700px) {
-  .slider-item {
-    min-width: 45%;
-  }
-}
-
-
 </style>
