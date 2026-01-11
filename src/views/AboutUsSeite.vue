@@ -5,215 +5,217 @@ import Footer from "@/components/Footer.vue";
 
 <template>
   <Navbar />
-
-  <main class="about">
-
-    <!-- HERO -->
-    <section class="hero page-container">
-      <img
-        src="/src/assets/images/Aboutus_bild.png"
-        alt="CakeLab Team"
-        class="hero-image"
-      />
-
-      <div class="hero-text">
-        <h1>About CakeLab</h1>
-        <p>
-          CakeLab begann nicht als Unternehmen,
-          sondern als gemeinsame Leidenschaft zweier Schwestern.
-        </p>
+  <div class="about-page">
+    <section class="hero-section">
+      <div class="container">
+        <div class="hero-text">
+          <span class="badge">Unsere Geschichte</span>
+          <h1>About CakeLab</h1>
+          <p class="description">
+            CakeLab begann nicht als Unternehmen, sondern als gemeinsame Leidenschaft zweier Schwestern.
+            Was als gemeinsames Hobby in einer kleinen Küche begann, wurde schnell mehr: 
+            die Idee, Backwaren zu schaffen, die nicht nur gut schmecken, sondern echte Erinnerungen erzeugen.
+          </p>
+        </div>
+        <div class="hero-image-container">
+          <img
+            src="/src/assets/images/Aboutus_bild.png"
+            alt="CakeLab Team"
+            class="hero-image"
+          />
+        </div>
       </div>
     </section>
 
-    <!-- STORY BOX -->
-    <section class="story-box page-container">
-      <div class="story-content">
-        <p>
-          Was als gemeinsames Hobby in einer kleinen Küche begann,
-          wurde schnell mehr: die Idee, Backwaren zu schaffen,
-          die nicht nur gut schmecken, sondern echte Erinnerungen erzeugen.
-        </p>
-
-        <p>
-          Für uns ist Backen mehr als ein Rezept.
-          Es ist Zeit, Hingabe und Liebe zum Detail.
-          Jedes Produkt entsteht frisch, von Hand
-          und mit dem Anspruch, etwas Besonderes zu sein.
-        </p>
-
-        <p>
-          Heute steht CakeLab für handgefertigte Kuchen,
-          hochwertige Zutaten und ehrliches Handwerk –
-          ohne Abkürzungen, ohne Kompromisse.
-        </p>
+    <section class="philosophy-section">
+      <div class="container">
+        <div class="content-box">
+          <h2>Mehr als ein Rezept</h2>
+          <p>
+            Für uns ist Backen mehr als ein Rezept. Es ist Zeit, Hingabe und Liebe zum Detail. 
+            Jedes Produkt entsteht frisch, von Hand und mit dem Anspruch, etwas Besonderes zu sein.
+          </p>
+          <p class="focus-text">
+            Heute steht CakeLab für handgefertigte Kuchen, hochwertige Zutaten und ehrliches Handwerk 
+            – ohne Abkürzungen, ohne Kompromisse.
+          </p>
+        </div>
       </div>
     </section>
 
-    <!-- SPLIT SECTION -->
-    <section class="split page-container">
+    <section class="why-us-section">
+      <div class="container split-layout">
+        <div class="split-media">
+          <img
+            src="/src/assets/images/Backen_aesthetic.png"
+            alt="Backzutaten"
+            class="side-image"
+          />
+        </div>
+        <div class="split-text">
+          <h2>Warum CakeLab?</h2>
+          <p>Weil wir an Qualität glauben. Bei CakeLab bekommt jedes Produkt die Zeit und Aufmerksamkeit, die es verdient.</p>
+          
+          <div class="usp-grid">
+            <div class="usp-item">
+              <span class="dot"></span>
+              <p>Hausgemachte Rezepte</p>
+            </div>
+            <div class="usp-item">
+              <span class="dot"></span>
+              <p>Individuelle Designs</p>
+            </div>
+            <div class="usp-item">
+              <span class="dot"></span>
+              <p>Echte Leidenschaft</p>
+            </div>
+          </div>
 
-      <!-- IMAGE -->
-      <div class="split-media">
-        <img
-          src="/src/assets/images/Backen_aesthetic.png"
-          alt="Backzutaten"
-        />
+          <div class="manifesto-box">
+            <p>Keine Massenproduktion.</p>
+            <p>Keine Kompromisse.</p>
+            <p class="highlight-pink">Nur ehrlicher Geschmack.</p>
+          </div>
+        </div>
       </div>
-
-      <!-- TEXT -->
-      <div class="split-box">
-        <h2>Warum CakeLab?</h2>
-
-        <p>
-          Weil wir an Qualität glauben.
-          Bei CakeLab bekommt jedes Produkt die Zeit
-          und Aufmerksamkeit, die es verdient.
-        </p>
-
-        <p>
-          Unsere Rezepte sind hausgemacht,
-          unsere Designs individuell
-          und unsere Arbeit geprägt von echter Leidenschaft.
-        </p>
-
-        <p class="emphasis">
-          Keine Massenproduktion.<br />
-          Keine Kompromisse.<br />
-          Nur ehrlicher Geschmack.
-        </p>
-      </div>
-
     </section>
-
-  </main>
-
+  </div>
   <Footer />
 </template>
 
 <style scoped>
 
-.page-container {
-  max-width: 1200px;
+.container {
+  max-width: 1100px;
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 0 24px;
 }
 
-
-.about {
-  background: var(--white);
-  color: var(--dark-gray);
-}
-
-
-.hero {
-  padding: 48px 0 80px;
+/* Hero Section */
+.hero-section {
+  padding: 80px 0;
   text-align: center;
+}
+
+.badge {
+  display: inline-block;
+  background-color: var(--rosa);
+  color: var(--zweitfarbe);
+  padding: 6px 16px;
+  border-radius: 100px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+h1 {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  color: var(--black);
+  margin-bottom: 24px;
+  font-weight: 800;
+}
+
+.description {
+  max-width: 750px;
+  margin: 0 auto 60px;
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: var(--medium-gray);
 }
 
 .hero-image {
   width: 100%;
-  max-height: 420px;
+  border-radius: 32px;
   object-fit: cover;
-  border-radius: 28px;
-  margin-bottom: 36px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
 }
 
-.hero-text h1 {
-  font-size: 34px;
-  margin-bottom: 14px;
+/* Philosophy Section */
+.philosophy-section {
+  background-color: var(--light-gray);
+  padding: 100px 0;
 }
 
-.hero-text p {
-  font-size: 18px;
-  color: var(--medium-gray);
-  max-width: 560px;
+.content-box {
+  max-width: 800px;
   margin: 0 auto;
-  line-height: 1.7;
+  text-align: center;
 }
 
-.story-box {
-  background: var(--rose);
-  margin: 0 auto 160px;
-  border-radius: 32px;
+h2 {
+  font-size: 2.2rem;
+  color: var(--zweitfarbe);
+  margin-bottom: 24px;
 }
 
-.story-content {
-  padding: 64px 32px;
-  color: var(--white);
-  font-size: 18px;
-  line-height: 1.9;
-}
-
-.story-content p:not(:last-child) {
-  margin-bottom: 28px;
-}
-
-.split {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 48px;
-  margin-bottom: 180px;
-}
-
-.split-media {
-  border-radius: 32px;
-  overflow: hidden;
-}
-
-.split-media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.split-box {
-  background: var(--rose);
-  border-radius: 32px;
-  padding: 56px 40px;
-  color: var(--white);
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-  font-size: 18px;
-  line-height: 1.8;
-}
-
-.split-box h2 {
-  font-size: 30px;
-  margin-bottom: 22px;
-}
-
-.split-box p:not(:last-child) {
-  margin-bottom: 20px;
-}
-
-.emphasis {
+.focus-text {
+  margin-top: 24px;
   font-weight: 600;
-  letter-spacing: 0.4px;
+  color: var(--dark-gray);
+  font-size: 1.2rem;
 }
 
+/* Split Section (Why Us) */
+.split-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  padding: 80px 0;
+}
 
-@media (min-width: 900px) {
-  .hero {
-    padding: 80px 0 120px;
+.side-image {
+  width: 100%;
+  border-radius: 24px;
+}
+
+.usp-grid {
+  margin: 32px 0;
+}
+
+.usp-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--rose);
+  border-radius: 50%;
+}
+
+.manifesto-box {
+  background-color: var(--white);
+  border: 1px solid var(--rosa);
+  padding: 30px;
+  border-radius: 20px;
+  margin-top: 40px;
+}
+
+.manifesto-box p {
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.highlight-pink {
+  color: var(--zweitfarbe);
+  font-size: 1.4rem;
+  margin-top: 10px;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 850px) {
+  .split-layout {
+    grid-template-columns: 1fr;
+    gap: 40px;
   }
-
-  .hero-text h1 {
-    font-size: 46px;
-  }
-
-  .split {
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: stretch;
-  }
-
-  .split-media,
-  .split-box {
-    min-height: 460px;
+  
+  .hero-section {
+    padding: 40px 0;
   }
 }
 </style>

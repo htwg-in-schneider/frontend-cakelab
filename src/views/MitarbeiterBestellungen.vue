@@ -23,40 +23,63 @@ async function loadOrders() {
   orders.value = allOrders.filter(o => o.status !== "fertig");
 }
 
-
 async function setStatus(id, status) {
   const token = await getAccessTokenSilently();
 
-  // komplette Bestellung abrufen
-  const res = await fetch(`${API_URL}/${id}`, {
-    headers: { Authorization: `Bearer ${token}` }
-  });
-  const fullOrder = await res.json();
-
-  // Wenn Status bereits gesetzt → wieder auf "offen"
-  const newStatus = fullOrder.status === status ? "offen" : status;
-
-  fullOrder.status = newStatus;
-
-  // speichern
-  await fetch(`${API_URL}/${id}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-    body: JSON.stringify(fullOrder),
+  // Zielstatus toggle: wenn bereits in Bearbeitung -> offen
+  const resGet = await fetch(`${API_URL}/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
   });
 
-  loadOrders();
-}
+  if (!resGet.ok) {
+    console.error("GET failed:", resGet.status, await resGet.text());
+    alert("Konnte Bestellung nicht laden");
+    return;
+  }
 
+  const fullOrder = await resGet.json();
+  const current = normalizeStatus(fullOrder.status);
+  const target = normalizeStatus(status);
+  const newStatusInternal = current === target ? "offen" : target;
 
-async function finishOrder(id) {
-  const token = await getAccessTokenSilently();
-  await fetch(`${API_URL}/${id}/finish`, {
+  // Backend-String (sehr wahrscheinlich!)
+  const newStatusBackend =
+    newStatusInternal === "in_bearbeitung" ? "In bearbeitung" : newStatusInternal;
+
+  // ✅ Versuch 1: PATCH nur status (am kompatibelsten)
+  const patchRes = await fetch(`${API_URL}/${id}`, {
     method: "PATCH",
-    headers: { Authorization: `Bearer ${token}` }
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ status: newStatusBackend }),
   });
 
-  loadOrders();
+  // Wenn PATCH nicht supported -> Fallback auf PUT (optional)
+  if (patchRes.status === 405) {
+    const putRes = await fetch(`${API_URL}/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      // ⚠️ Bei PUT schicken wir weiterhin die ganze Order, aber mit Backend-Status
+      body: JSON.stringify({ ...fullOrder, status: newStatusBackend }),
+    });
+
+    if (!putRes.ok) {
+      console.error("PUT failed:", putRes.status, await putRes.text());
+      alert("Konnte Status nicht speichern");
+      return;
+    }
+  } else if (!patchRes.ok) {
+    console.error("PATCH failed:", patchRes.status, await patchRes.text());
+    alert("Konnte Status nicht speichern");
+    return;
+  }
+
+  await loadOrders();
 }
 
 function goToOrderDetails(id) {

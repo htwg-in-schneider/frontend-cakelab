@@ -133,7 +133,7 @@ const cart = useCartStore();
 }
 
 .navbar .nav-link {
-    color: var(--rose);
+    color: var(--white);
     font-weight: 600;
 }
 
