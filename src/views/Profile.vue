@@ -7,9 +7,7 @@ const { user, isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0()
 const profileData = ref(null)
 const bearerToken = ref('')
 const error = ref('')
-const users = ref([]);
-const orders = ref([]);
-const API_USERS = import.meta.env.VITE_API_BASE_URL + "/api/users";
+
 const API_PROFILE = import.meta.env.VITE_API_BASE_URL + "/api/profile";
 
 function getRoleName(constant) {

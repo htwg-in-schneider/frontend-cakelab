@@ -1,7 +1,7 @@
 <script setup>
 import { defineProps, defineModel } from "vue";
 
-const model = defineModel(); // v-model wrapper
+const model = defineModel(); 
 
 const props = defineProps({
   options: { type: Array, required: true },

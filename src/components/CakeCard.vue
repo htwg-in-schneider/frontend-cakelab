@@ -13,9 +13,6 @@ const props = defineProps({
   },
 });
 
-const imageBaseUrl = import.meta.env.BASE_URL;
-
-
 </script>
 
 <template>

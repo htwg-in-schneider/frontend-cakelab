@@ -122,10 +122,6 @@ async function loadRole() {
     roles.value = await res.json();
 }
 
-function formatRole(c) {
-    return c.charAt(0) + c.slice(1).toLowerCase();
-}
-
 onMounted(loadRole);
 
 async function checkAdminRole() {

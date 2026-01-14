@@ -11,9 +11,6 @@ const popup = ref(null);
 const API_URL = import.meta.env.VITE_API_BASE_URL + '/api/cake';
 
 
-
-
-// Body-Padding entfernen (wie Edit-Seite)
 onMounted(() => {
     document.body.classList.add("no-nav-padding");
 });
@@ -32,7 +29,6 @@ const cake = ref({
 
 const isSaving = ref(false);
 
-// Zurück (✕ Button)
 function goBack() {
     router.push("/standard-cakes");
 
@@ -91,7 +87,6 @@ onMounted(loadCategories);
     <div class="create-page">
         <div class="create-card">
 
-            <!-- Close Button -->
             <button type="button" class="close-btn" @click="goBack">✕</button>
 
             <h2 class="create-title">Neue Torte erstellen</h2>

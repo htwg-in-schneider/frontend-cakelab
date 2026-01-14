@@ -6,14 +6,9 @@ import { useAuth0 } from "@auth0/auth0-vue";
 const { getAccessTokenSilently,loginWithRedirect , isAuthenticated } = useAuth0();
 const cart = useCartStore();
 const router = useRouter();
-
-// Items
 const cartItems = computed(() => cart.items);
 
-// Preise
-const total = computed(() => cart.cartTotal.toFixed(2));
-
-// Versandkosten-Logik
+// Versandkosten berechnen
 const shippingCost = computed(() => {
   return cart.cartTotal >= 50 ? 0 : 3.99;
 });
@@ -35,7 +30,6 @@ const freeShippingText = computed(() =>
 );
 
 // Bestellung absenden
-
 async function submitOrder() {
   if (!isAuthenticated.value) {
     await loginWithRedirect();

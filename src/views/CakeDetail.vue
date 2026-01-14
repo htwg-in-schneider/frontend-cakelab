@@ -47,7 +47,6 @@ watch(() => props.id, async () => {
   await fetchCake();
 });
 
-// Related cakes (alle außer dieses)
 const related = computed(() =>{
     if (!cake.value) return [];
   return allCakes.value

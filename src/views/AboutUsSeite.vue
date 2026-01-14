@@ -220,14 +220,11 @@ h2 {
   .split-text {
     padding: 0 10px; 
 
-  .hero-section {
-    padding: 40px 0;
   }
-
   .container {
     padding: 0 20px; 
   }
-}
+
 
 @media (max-width: 480px) {
   .manifesto-box {

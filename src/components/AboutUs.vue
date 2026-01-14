@@ -1,5 +1,4 @@
 <script setup>
-import Button from './Button.vue';
 import NavButton from './NavButton.vue';
 </script>
 

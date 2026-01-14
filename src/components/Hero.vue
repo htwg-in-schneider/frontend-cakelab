@@ -1,5 +1,4 @@
 <script setup>
-import Button from './Button.vue';
 import NavButton from './NavButton.vue';
 </script>
 
@@ -21,7 +20,6 @@ import NavButton from './NavButton.vue';
 </template>
 
 <style scoped>
-/* Hero */
 .hero {
     background: url('/src/assets/images/Landing_page_bild.png') center/cover no-repeat;
     height: 600px;

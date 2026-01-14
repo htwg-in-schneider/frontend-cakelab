@@ -1,13 +1,13 @@
-<script setup>import Navbar from '@/components/Navbar.vue';
+<script setup>
+import Navbar from '@/components/Navbar.vue';
 import Footer from '@/components/Footer.vue';
 import { ref, onMounted, computed } from 'vue';
 import ZusatzInfo from '@/components/ZusatzInfo.vue';
 import DropdownMenu from '@/components/DropdownMenu.vue';
 import { useCartStore } from '@/stores/cart';
-import { useAttrs } from 'vue';
-
 import  {useAuth0} from '@auth0/auth0-vue';
-const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
+
+const { isAuthenticated} = useAuth0();
 const selectedBase = ref(null);
 const selectedSize = ref(null);
 const fontColor = ref("");
@@ -15,7 +15,6 @@ const fontFamily = ref("");
 const textInput = ref("");
 const torten = ref([]);
 const cart = useCartStore();
-const popup = ref(null);
 onMounted(async () => {
   fetchTorten();
 });
@@ -80,19 +79,13 @@ function addCustomizedCake() {
   errors.value.fontColor = !fontColor.value;
   errors.value.textInput = textInput.value.trim().length === 0;
 
-
-
 const baseCake = torten.value.find(p => p.id === selectedBase.value);
-
 const customization = {
   size: selectedSize.value,
   fontFamily: fontFamily.value,
   fontColor: fontColor.value,
   text: textInput.value,
 };
-
-
-
   const item = {
     id: baseCake.id,  
     name: "Customized Cake",
@@ -102,8 +95,6 @@ const customization = {
 
   cart.addItem(item, customization);
   cart.openCart();
-
-
 }
 </script>
 

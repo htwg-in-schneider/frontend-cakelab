@@ -2,12 +2,11 @@
 import { ref,onMounted  , watch} from "vue";
 import { useCartStore } from "@/stores/cart";
 import CartDrawer from "@/components/CartDrawer.vue";
-import router from "@/router";
 import { useAuth0 } from '@auth0/auth0-vue';
-import { routerKey } from "vue-router";
+
  const { user, isAuthenticated, getAccessTokenSilently} = useAuth0(); 
 const isAdmin = ref(false);
-console.log("Drawer:", CartDrawer); // <-- Test
+console.log("Drawer:", CartDrawer); 
 onMounted(async () => {
   if (isAuthenticated.value) {
     checkAdminRole();

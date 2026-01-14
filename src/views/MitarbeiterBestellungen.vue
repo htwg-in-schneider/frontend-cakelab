@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import Navbar from '@/components/Navbar.vue';
 import Footer from '@/components/Footer.vue';
@@ -150,8 +150,6 @@ onMounted(async () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-
 }
 
 .admin-container {

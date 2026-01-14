@@ -41,8 +41,6 @@ async function loadOrder() {
 
 
   for (const item of order.value.items) {
-
-    // Normaler Kuchen
     if (item.cakeId) {
       const cake = allCakes.find(p => p.id === item.cakeId);
       if (cake) {
@@ -50,17 +48,11 @@ async function loadOrder() {
         item.beschreibung = cake.beschreibung;
       }
     }
-
-    // Custom Cake mit Base
- // Custom Cake – direkt Bild & Name aus der Bestellung
 else if (item.customization && item.customization.baseBildUrl) {
   item.bildUrl = item.customization.baseBildUrl;
-  item.beschreibung = ""; // optional
+  item.beschreibung = ""; 
 }
-
-
 }
-
 
 }
 onMounted(async () => {
