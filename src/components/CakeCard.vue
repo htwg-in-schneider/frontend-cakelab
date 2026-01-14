@@ -63,7 +63,7 @@ const imageBaseUrl = import.meta.env.BASE_URL;
 
 .card-img-top {
   width: 100%;
-  aspect-ratio: 1 / 1;     
+  aspect-ratio: 1 / 1;
   object-fit: cover;
   border-radius: 1rem 1rem 0 0;
 }
@@ -73,16 +73,12 @@ const imageBaseUrl = import.meta.env.BASE_URL;
     aspect-ratio: 4 / 3;
   }
 }
+
 @media (max-width: 768px) {
   .card-img-top {
-    aspect-ratio: 3 / 2;
+    aspect-ratio: 5 / 4;
   }
 }
 
-@media (max-width: 576px) {
-  .card-img-top {
-    aspect-ratio: 16 / 9;
-  }
-}
 
 </style>
