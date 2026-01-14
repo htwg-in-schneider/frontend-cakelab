@@ -3,7 +3,6 @@ import { useAuth0 } from '@auth0/auth0-vue'
 import { onMounted, ref } from 'vue'
 import Navbar from '@/components/Navbar.vue'
 import Footer from '@/components/Footer.vue'
-import Login from './Login.vue'
 const { user, isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0()
 const profileData = ref(null)
 const bearerToken = ref('')
@@ -12,10 +11,6 @@ const users = ref([]);
 const orders = ref([]);
 const API_USERS = import.meta.env.VITE_API_BASE_URL + "/api/users";
 const API_PROFILE = import.meta.env.VITE_API_BASE_URL + "/api/profile";
-function copyToClipboard(event) {
-  event.target.select()
-  navigator.clipboard.writeText(event.target.value)
-}
 
 function getRoleName(constant) {
   switch (constant) {
@@ -51,23 +46,6 @@ onMounted(async () => {
     }
   }
 })
-async function loadUsers() {
-  try {
-    const token = await getAccessTokenSilently();
-    const res = await fetch(API_USERS, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-
-    if (!res.ok) {
-      throw new Error(`${res.status} ${res.statusText}`);
-    }
-
-    users.value = await res.json();
-  } catch (e) {
-    error.value = "Fehler beim Laden der Nutzer";
-    console.error(e);
-  }
-}
 
 </script>
 <template>
@@ -216,20 +194,18 @@ async function loadUsers() {
   color: var(--zweitfarbe);
 }
 
-
 .whole-page {
-  min-height: calc(100vh - 120px);
-   padding: 1rem 2rem;
+  min-height: 100vh;
   background-color: var(--light-gray);
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
 
+  display: flex;
+  flex-direction: column;
   align-items: center;
-   justify-content: flex-start; 
-  padding-top: 20px;
+
+  padding: 1rem;
   gap: 20px;
 }
+
 .profile-card {
   width: 100%;
   height:80%;
@@ -350,6 +326,9 @@ async function loadUsers() {
   }
    .debug-info {
     display: none;
+  }
+  .whole-page {
+    justify-content: center;
   }
 }
 </style>

@@ -1,10 +1,12 @@
 <script setup>
 import Navbar from "@/components/Navbar.vue";
 import Footer from "@/components/Footer.vue";
+import ZusatzInfo from "@/components/ZusatzInfo.vue";
 </script>
 
 <template>
   <Navbar />
+  <ZusatzInfo />
   <div class="about-page">
     <section class="hero-section">
       <div class="container">

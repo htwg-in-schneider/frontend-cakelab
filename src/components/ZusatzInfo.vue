@@ -21,7 +21,7 @@ const bannerStore = useBannerStore()
 <style scoped>
 .versand-info {
   background-color:var(--rose);
-  color: var(--light-gray);
+  color: var(--white);
   font-weight: 600;
 }
 
@@ -30,4 +30,11 @@ const bannerStore = useBannerStore()
   font-size: 0.8rem;
   border-radius: 30px;
 }
+@media (max-width: 768px) {
+  .versand-info {
+    padding-left: 1rem;
+    padding-right: 1.5rem; 
+  }
+}
+
 </style>

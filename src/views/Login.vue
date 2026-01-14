@@ -1,10 +1,9 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted, computed} from "vue";
 import { useAuth0 } from "@auth0/auth0-vue";
 import { useRoute } from "vue-router";
-const route = useRoute();
 import "@/assets/auth.css";
-
+const route = useRoute();
 onMounted(() => {
   document.body.classList.add("no-nav-padding");
 });
@@ -27,7 +26,6 @@ function handleLogin() {
   });
 }
 
-
 function handleLogout() {
   logout({
     logoutParams: {
@@ -35,6 +33,7 @@ function handleLogout() {
     },
   });
 }
+
 </script>
 <template>
   <div class="auth-container">
@@ -49,7 +48,7 @@ function handleLogout() {
 
         <template v-else>
           <h2 class="fw-bold text-center mb-3 user-name">
-            Hi {{ user?.name }}
+            Hi {{  user?.given_name || user?.nickname || user?.name }}
           </h2>
 
           <template v-if="!confirmLogout">

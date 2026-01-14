@@ -70,25 +70,23 @@ const cart = useCartStore();
             <router-link class="nav-link" to="/about-us">About Us</router-link>
           </li>
            
-
-
           <!-- Account -->
           <li class="nav-item ms-3">
             <router-link v-if="!isAuthenticated" to="/login">
-    <img src="/src/assets/images/account_image.png" alt="Account" class="icon-img">
-  </router-link>
+              <img src="/src/assets/images/account_image.png" alt="Account" class="icon-img">
+           </router-link>
    
-  <router-link v-else to="/profile">
-    <img src="/src/assets/images/account_image.png" alt="Account" class="icon-img">
-  </router-link>
-       </li>
+          <router-link v-else to="/profile">
+              <img src="/src/assets/images/account_image.png" alt="Account" class="icon-img">
+          </router-link>
+         </li>
           <!-- Warenkorb Icon -->
           <li class="nav-item ms-3 position-relative">
            <button 
-  class="btn p-0 border-0 bg-transparent"
-  @click="cart.openCart()">
+                 class="btn p-0 border-0 bg-transparent"
+                  @click="cart.openCart()">
 
-              <img src="/src/assets/images/warenkorb_image.png" alt="Cart" class="icon-img">
+              <img src="/src/assets/images/warenkorb_image.png" alt="Cart" class="icon-img cart-icon">
 
               <span
                 v-if="cart.itemCount > 0"
@@ -143,7 +141,11 @@ const cart = useCartStore();
 }
 
 .icon-img {
-    height: 35px;
+    height: 30px;
     cursor: pointer;
+}
+
+.cart-icon {
+    height: 35px;
 }
 </style>

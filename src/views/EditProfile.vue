@@ -184,12 +184,13 @@ watch(isAuthenticated, async (loggedIn) => {
 
 <style scoped>
 .edit-page {
-    min-height: calc(100vh - 120px);
-    padding: 3rem 1rem;
+    min-height: 100vh;
+    padding: 2rem 1rem;
     background-color: var(--light-gray);
+
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center; 
 }
 
 .edit-card {
