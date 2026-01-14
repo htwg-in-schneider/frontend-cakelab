@@ -2,7 +2,7 @@
 
 import { authGuard } from '@auth0/auth0-vue';
 
-import { createRouter, createWebHistory, createWebHashHistory} from "vue-router";
+import { createRouter, createWebHashHistory} from "vue-router";
 import CakeDetail from "../views/CakeDetail.vue";
 import CreateCake from "@/views/CreateCake.vue";
 import Home from "../views/Home.vue";
@@ -148,6 +148,11 @@ const router = createRouter({
  },
 ],
 
+scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    }
+    return { top: 0 }
+  }
 });
-
 export default router;
