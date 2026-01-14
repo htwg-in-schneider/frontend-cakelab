@@ -4,11 +4,16 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
 import { createPinia } from "pinia";
+import piniaPersist from 'pinia-plugin-persistedstate'
+
+
 import Vue3Select from "vue3-select";
 import "vue3-select/dist/vue3-select.css";
 import "https://unpkg.com/@phosphor-icons/web?module";
 
 const pinia = createPinia();
+pinia.use(piniaPersist)
+
 const auth0 = createAuth0({
   domain: import.meta.env.VITE_AUTH0_DOMAIN,
   clientId: import.meta.env.VITE_AUTH0_CLIENT_ID,

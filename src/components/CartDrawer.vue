@@ -285,4 +285,27 @@ async function submitOrder() {
   border: none;
   border-radius: 30px;
 }
+
+@media (max-width: 768px) {
+  .drawer-item .btn-group-sm > .btn {
+    padding: 2px 6px;  
+    font-size: 0.8rem;
+    min-width: 28px;
+  }
+}
+@media (max-width: 768px) {
+  .drawer-item .btn-group-sm .disabled {
+    padding: 2px 6px;
+    min-width: 26px;
+  }
+}
+
+@media (max-width: 768px) {
+  .drawer-item .btn-outline-danger {
+    padding: 2px 6px;
+    font-size: 0.75rem;
+  }
+}
+
+
 </style>

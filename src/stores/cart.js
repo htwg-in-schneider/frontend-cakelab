@@ -10,6 +10,12 @@ export const useCartStore = defineStore("cart", {
     lastOrder: null,
   }),
 
+   persist: {
+    key: 'cart',
+    storage: localStorage,
+    paths: ['items', 'lastOrder']
+  },
+
   getters: {
     cartTotal(state) {
       return state.items.reduce(
