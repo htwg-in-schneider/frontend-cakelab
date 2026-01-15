@@ -1,15 +1,32 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import Navbar from '@/components/Navbar.vue';
 import Footer from '@/components/Footer.vue';
+import DropdownMenu from '@/components/DropdownMenu.vue';
 import { useAuth0 } from '@auth0/auth0-vue';
 
 const { isAuthenticated, getAccessTokenSilently } = useAuth0();
 const orders = ref([]);
 const isAdmin = ref(false);
 const router = useRouter();
+const searchQuery = ref(""); 
+const statusFilter = ref("Alle"); 
+const statusOptions = ["Alle", "offen", "In bearbeitung"]; 
+
 const API_URL = import.meta.env.VITE_API_BASE_URL + "/api/orders";
+
+const filteredOrders = computed(() => {
+  return orders.value.filter(order => {
+    const matchesId = searchQuery.value === "" || 
+                     order.id.toString().includes(searchQuery.value);
+    const matchesStatus = statusFilter.value === "Alle" || 
+                         order.status?.toLowerCase() === statusFilter.value.toLowerCase();
+    
+    return matchesId && matchesStatus;
+  });
+});
+
 const isProcessing = (status) => status?.toLowerCase().trim() === 'in bearbeitung';
 const goToUsers = () => router.push('/users');
 const goToOrderDetails = (id) => router.push(`/admin/orders/${id}`);
@@ -88,11 +105,13 @@ onMounted(async () => {
   await loadOrders();
 });
 </script>
+
 <template>
   <Navbar />
   <section class="page-content">
     <div class="admin-container" v-if="isAdmin">
       <h1 class="admin-dashboard">Admin Dashboard</h1>
+      
       <div class="titles">
         <h2 class="admin-title">Bestellübersicht</h2>
         <div class="info-box" @click="goToUsers" style="cursor: pointer;">
@@ -100,15 +119,35 @@ onMounted(async () => {
         </div>
       </div>
 
+      <div class="filter-section">
+        <div class="search-container">
+          <input 
+            type="text" 
+            v-model="searchQuery" 
+            placeholder="Bestell-ID suchen..."
+            class="id-search-input"
+            @input="searchQuery = searchQuery.replace(/[^0-9]/g, '')"
+          />
+        </div>
+        
+        <div class="dropdown-container">
+          <DropdownMenu 
+            v-model="statusFilter" 
+            :options="statusOptions" 
+            placeholder="Status filtern"
+          />
+        </div>
+      </div>
+
       <div class="orders-list">
-        <div class="order-card" v-for="order in orders" :key="order.id">
+        <div class="order-card" v-for="order in filteredOrders" :key="order.id">
           <div class="order-header">
             <div>
               <div class="order-id">Bestell-ID: {{ order.id }}</div>
               <div class="order-meta">Summe: {{ (order.total ?? 0).toFixed(2) }} €</div>
               <div class="order-meta">
                 Status: 
-                <span class="status-badge" :class="order.status?.toLowerCase()">
+                <span class="status-badge" :class="order.status?.toLowerCase().replace(/\s+/g, '-')">
                   {{ order.status ?? "offen" }}
                 </span>
               </div>
@@ -135,13 +174,61 @@ onMounted(async () => {
             </div>
           </div>
         </div>
+
+        <div v-if="filteredOrders.length === 0" class="empty-state">
+          Keine Bestellungen gefunden, die deiner Suche entsprechen.
+        </div>
       </div>
     </div>
   </section>
   <Footer />
 </template>
+
 <style scoped>
-  
+
+.filter-section {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 30px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.search-container {
+  flex: 1;
+  min-width: 250px;
+}
+
+.dropdown-container {
+  width: 250px;
+}
+
+.id-search-input {
+  width: 100%;
+  height: 46px;
+  border-radius: 30px;
+  border: 2px solid var(--zweitfarbe);
+  padding: 0 20px;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.id-search-input:focus {
+  border-color: var(--rose);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 50px;
+  color: var(--dark-gray);
+  font-style: italic;
+  background: var(--light-gray);
+  border-radius: 16px;
+}
+
+.status-badge.in-bearbeitung { background: #d1ecf1; color: #0c5460; }
+.status-badge.offen { background: #fff3cd; color: #856404; }  
   .page-content {
   min-height: calc(100vh - 350px);
 }
